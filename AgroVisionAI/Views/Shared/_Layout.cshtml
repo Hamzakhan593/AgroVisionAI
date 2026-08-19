@@ -1,0 +1,165 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - AgroVision AI</title>
+
+    <!-- Meta Data for Professional Showcase / SEO -->
+    <meta name="description" content="AI-powered crop disease detection and practical agricultural guidance system." />
+    <meta name="theme-color" content="#15803d" />
+
+    <!-- Google Fonts: Inter -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+    <!-- Bootstrap 5 & Bootstrap Icons -->
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+
+    <!-- Application Styles -->
+    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/AgroVisionAI.styles.css" asp-append-version="true" />
+</head>
+<body class="site-wrapper">
+
+    <!-- Header Navigation -->
+    <header class="sticky-top">
+        <nav class="navbar navbar-expand-lg app-navbar">
+            <div class="container">
+
+                <!-- Brand -->
+                <a class="navbar-brand app-brand" asp-controller="Home" asp-action="Index">
+                    <div class="brand-icon">
+                        <i class="bi bi-flower1" aria-hidden="true"></i>
+                    </div>
+                    <span class="brand-text">Agro<span>Vision</span> AI</span>
+                </a>
+
+                <!-- Mobile Navigation Toggler -->
+                <button class="navbar-toggler app-toggler"
+                        type="button"
+                        data-bs-toggle="collapse"
+                        data-bs-target="#mainNavbar"
+                        aria-controls="mainNavbar"
+                        aria-expanded="false"
+                        aria-label="Toggle navigation">
+                    <i class="bi bi-list" aria-hidden="true"></i>
+                </button>
+
+                <!-- Navigation Menu Links -->
+                <div class="collapse navbar-collapse" id="mainNavbar">
+                    <ul class="navbar-nav ms-auto align-items-lg-center">
+                        <li class="nav-item">
+                            <a class="nav-link nav-link-custom" asp-controller="Home" asp-action="Index">
+                                Home
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link nav-link-custom" asp-controller="Home" asp-action="Index" asp-fragment="how-it-works">
+                                How It Works
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link nav-link-custom" asp-controller="Home" asp-action="Index" asp-fragment="crops">
+                                Supported Crops
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link nav-link-custom" asp-controller="Home" asp-action="Index" asp-fragment="about">
+                                About
+                            </a>
+                        </li>
+                        <li class="nav-item d-none d-lg-block nav-divider-item">
+                            <div class="nav-divider"></div>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link nav-link-custom" asp-controller="Account" asp-action="Login">
+                                Sign In
+                            </a>
+                        </li>
+                        <li class="nav-item ms-lg-2 mt-3 mt-lg-0">
+                            <a class="btn btn-nav-cta" asp-controller="Detection" asp-action="Index">
+                                <i class="bi bi-camera-fill me-1.5" aria-hidden="true"></i> Scan Crop
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+
+            </div>
+        </nav>
+    </header>
+
+    <!-- Main Content Container -->
+    <main role="main" class="site-main">
+        @RenderBody()
+    </main>
+
+    <!-- Footer -->
+    <footer class="app-footer">
+        <div class="container">
+            <div class="row g-4 g-lg-5 pb-5 border-bottom border-secondary border-opacity-25">
+
+                <!-- Brand Column -->
+                <div class="col-lg-5">
+                    <a class="navbar-brand app-brand footer-brand mb-3 d-inline-flex" asp-controller="Home" asp-action="Index">
+                        <div class="brand-icon">
+                            <i class="bi bi-flower1" aria-hidden="true"></i>
+                        </div>
+                        <span class="brand-text">Agro<span>Vision</span> AI</span>
+                    </a>
+                    <p class="footer-tagline">
+                        Precision agricultural intelligence platform designed to diagnose leaf diseases, evaluate health severity, and provide actionable treatment recommendations.
+                    </p>
+                    <div class="footer-badges">
+                        <span class="badge footer-pill"><i class="bi bi-shield-check me-1" aria-hidden="true"></i> Research Backed</span>
+                        <span class="badge footer-pill"><i class="bi bi-lightning-charge me-1" aria-hidden="true"></i> Fast Inference</span>
+                    </div>
+                </div>
+
+                <!-- Platform Column -->
+                <div class="col-6 col-lg-3 offset-lg-1">
+                    <h5 class="footer-title">Platform</h5>
+                    <ul class="footer-menu">
+                        <li><a asp-controller="Detection" asp-action="Index">Disease Diagnostic</a></li>
+                        <li><a asp-controller="Home" asp-action="Index" asp-fragment="crops">Supported Crops</a></li>
+                        <li><a asp-controller="Home" asp-action="Index" asp-fragment="how-it-works">Methodology</a></li>
+                        <li><a asp-controller="Home" asp-action="Index" asp-fragment="features">Capabilities</a></li>
+                    </ul>
+                </div>
+
+                <!-- Resources Column -->
+                <div class="col-6 col-lg-3">
+                    <h5 class="footer-title">Resources</h5>
+                    <ul class="footer-menu">
+                        <li><a asp-controller="Home" asp-action="Index" asp-fragment="about">About Project</a></li>
+                        <li><a href="https://github.com" target="_blank" rel="noopener noreferrer">Source Code</a></li>
+                        <li><a asp-controller="Home" asp-action="Index" asp-fragment="how-it-works">System Status</a></li>
+                        <li><a asp-controller="Home" asp-action="Index" asp-fragment="about">Contact</a></li>
+                    </ul>
+                </div>
+
+            </div>
+
+            <!-- Footer Bottom -->
+            <div class="footer-bottom d-flex flex-column flex-md-row justify-content-between align-items-center pt-4">
+                <p class="mb-2 mb-md-0">
+                    &copy; 2026 AgroVision AI. Built for Smart Agriculture.
+                </p>
+                <div class="footer-legal-links">
+                    <a asp-controller="Home" asp-action="Privacy">Privacy Policy</a>
+                    <a href="javascript:void(0)">Terms of Service</a>
+                    <a href="javascript:void(0)">Security</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Bootstrap Scripts -->
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="~/js/site.js" asp-append-version="true"></script>
+    @await RenderSectionAsync("Scripts", required: false)
+</body>
+</html>
