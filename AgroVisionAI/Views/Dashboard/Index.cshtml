@@ -1,0 +1,252 @@
+﻿@{
+    ViewData["Title"] = "Dashboard";
+}
+
+<div class="dashboard-page">
+
+    <div class="container">
+
+        <!-- Welcome -->
+        <section class="dashboard-welcome">
+
+            <div>
+                <span class="dashboard-eyebrow">
+                    YOUR AGROVISION DASHBOARD
+                </span>
+
+                <h1>
+                    Welcome back, @User.Identity?.Name
+                </h1>
+
+                <p>
+                    Check your crop health, review previous analyses,
+                    and get practical disease guidance.
+                </p>
+            </div>
+
+            <a asp-controller="Detection"
+               asp-action="Index"
+               class="btn dashboard-primary-btn">
+
+                <i class="bi bi-camera-fill"></i>
+                Scan Your Crop
+
+            </a>
+
+        </section>
+
+
+        <!-- Quick Action -->
+        <section class="dashboard-scan-card">
+
+            <div class="scan-card-icon">
+                <i class="bi bi-image"></i>
+            </div>
+
+            <div class="scan-card-content">
+
+                <span>READY TO ANALYZE?</span>
+
+                <h2>
+                    Upload a crop image and let AgroVision help.
+                </h2>
+
+                <p>
+                    Select a clear image of a crop leaf to begin
+                    an AI-based disease assessment.
+                </p>
+
+            </div>
+
+            <a asp-controller="Detection"
+               asp-action="Index"
+               class="scan-card-link">
+
+                Start Analysis
+                <i class="bi bi-arrow-right"></i>
+
+            </a>
+
+        </section>
+
+
+        <!-- Recent Analyses -->
+        <section class="dashboard-section">
+
+            <div class="dashboard-section-heading">
+
+                <div>
+                    <span class="dashboard-eyebrow">
+                        YOUR ACTIVITY
+                    </span>
+
+                    <h2>Recent Analyses</h2>
+                </div>
+
+                <a href="#" class="dashboard-view-link">
+                    View History
+                    <i class="bi bi-arrow-right"></i>
+                </a>
+
+            </div>
+
+            <div class="empty-history">
+
+                <div class="empty-history-icon">
+                    <i class="bi bi-clipboard2-pulse"></i>
+                </div>
+
+                <h3>No analyses yet</h3>
+
+                <p>
+                    Your crop analysis history will appear here
+                    after you scan your first crop.
+                </p>
+
+                <a asp-controller="Detection"
+                   asp-action="Index"
+                   class="btn dashboard-outline-btn">
+
+                    Analyze Your First Crop
+
+                </a>
+
+            </div>
+
+        </section>
+
+
+        <!-- Supported Crops -->
+        <section class="dashboard-section">
+
+            <div class="dashboard-section-heading">
+
+                <div>
+                    <span class="dashboard-eyebrow">
+                        SUPPORTED CROPS
+                    </span>
+
+                    <h2>Choose a crop to get started</h2>
+                </div>
+
+            </div>
+
+            <div class="row g-4">
+
+                <!-- Cotton -->
+                <div class="col-md-4">
+
+                    <div class="dashboard-crop-card">
+
+                        <div class="dashboard-crop-image">
+                            <img src="~/images/cotton.jpg"
+                                 alt="Cotton crop" />
+                        </div>
+
+                        <div class="dashboard-crop-content">
+
+                            <span>CROP 01</span>
+
+                            <h3>Cotton</h3>
+
+                            <p>
+                                Check cotton leaves for signs of
+                                common diseases.
+                            </p>
+
+                            <a asp-controller="Detection"
+                               asp-action="Index"
+                               class="dashboard-crop-link">
+
+                                Analyze
+                                <i class="bi bi-arrow-right"></i>
+
+                            </a>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+
+                <!-- Wheat -->
+                <div class="col-md-4">
+
+                    <div class="dashboard-crop-card">
+
+                        <div class="dashboard-crop-image">
+                            <img src="~/images/wheat.jpg"
+                                 alt="Wheat crop" />
+                        </div>
+
+                        <div class="dashboard-crop-content">
+
+                            <span>CROP 02</span>
+
+                            <h3>Wheat</h3>
+
+                            <p>
+                                Identify possible disease symptoms
+                                affecting wheat plants.
+                            </p>
+
+                            <a asp-controller="Detection"
+                               asp-action="Index"
+                               class="dashboard-crop-link">
+
+                                Analyze
+                                <i class="bi bi-arrow-right"></i>
+
+                            </a>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+
+                <!-- Rice -->
+                <div class="col-md-4">
+
+                    <div class="dashboard-crop-card">
+
+                        <div class="dashboard-crop-image">
+                            <img src="~/images/rice.jpg"
+                                 alt="Rice crop" />
+                        </div>
+
+                        <div class="dashboard-crop-content">
+
+                            <span>CROP 03</span>
+
+                            <h3>Rice</h3>
+
+                            <p>
+                                Check rice leaves for visible disease
+                                symptoms.
+                            </p>
+
+                            <a asp-controller="Detection"
+                               asp-action="Index"
+                               class="dashboard-crop-link">
+
+                                Analyze
+                                <i class="bi bi-arrow-right"></i>
+
+                            </a>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </section>
+
+    </div>
+
+</div>

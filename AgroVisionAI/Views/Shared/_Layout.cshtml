@@ -49,43 +49,113 @@
                 </button>
 
                 <!-- Navigation Menu Links -->
+                <!-- Navigation Menu Links -->
                 <div class="collapse navbar-collapse" id="mainNavbar">
+
                     <ul class="navbar-nav ms-auto align-items-lg-center">
+
                         <li class="nav-item">
-                            <a class="nav-link nav-link-custom" asp-controller="Home" asp-action="Index">
+                            <a class="nav-link nav-link-custom"
+                               asp-controller="Home"
+                               asp-action="Index">
                                 Home
                             </a>
                         </li>
+
                         <li class="nav-item">
-                            <a class="nav-link nav-link-custom" asp-controller="Home" asp-action="Index" asp-fragment="how-it-works">
+                            <a class="nav-link nav-link-custom"
+                               asp-controller="Home"
+                               asp-action="Index"
+                               asp-fragment="how-it-works">
                                 How It Works
                             </a>
                         </li>
+
                         <li class="nav-item">
-                            <a class="nav-link nav-link-custom" asp-controller="Home" asp-action="Index" asp-fragment="crops">
+                            <a class="nav-link nav-link-custom"
+                               asp-controller="Home"
+                               asp-action="Index"
+                               asp-fragment="crops">
                                 Supported Crops
                             </a>
                         </li>
+
                         <li class="nav-item">
-                            <a class="nav-link nav-link-custom" asp-controller="Home" asp-action="Index" asp-fragment="about">
+                            <a class="nav-link nav-link-custom"
+                               asp-controller="Home"
+                               asp-action="Index"
+                               asp-fragment="about">
                                 About
                             </a>
                         </li>
+
                         <li class="nav-item d-none d-lg-block nav-divider-item">
                             <div class="nav-divider"></div>
                         </li>
-                        <li class="nav-item">
-                            <a class="nav-link nav-link-custom" asp-controller="Account" asp-action="Login">
-                                Sign In
-                            </a>
-                        </li>
-                        <li class="nav-item ms-lg-2 mt-3 mt-lg-0">
-                            <a class="btn btn-nav-cta" asp-controller="Detection" asp-action="Index">
-                                <i class="bi bi-camera-fill me-1.5" aria-hidden="true"></i> Scan Crop
-                            </a>
-                        </li>
+
+
+                        @if (User.Identity?.IsAuthenticated == true)
+                        {
+                            <!-- Logged-in user -->
+
+                            <li class="nav-item">
+                                <span class="nav-link nav-link-custom">
+                                    <i class="bi bi-person-circle me-1"></i>
+                                    @User.Identity.Name
+                                </span>
+                            </li>
+
+                            <li class="nav-item ms-lg-2 mt-3 mt-lg-0">
+                                <a class="btn btn-nav-cta"
+                                   asp-controller="Detection"
+                                   asp-action="Index">
+                                    <i class="bi bi-camera-fill me-1" aria-hidden="true"></i>
+                                    Scan Crop
+                                </a>
+                            </li>
+
+                            <li class="nav-item ms-lg-2 mt-3 mt-lg-0">
+                                <form asp-controller="Account"
+                                      asp-action="Logout"
+                                      method="post"
+                                      class="m-0">
+
+                                    @Html.AntiForgeryToken()
+
+                                    <button type="submit"
+                                            class="btn btn-nav-logout">
+                                        Sign Out
+                                    </button>
+
+                                </form>
+                            </li>
+                        }
+                        else
+                        {
+                            <!-- Logged-out user -->
+
+                            <li class="nav-item">
+                                <a class="nav-link nav-link-custom"
+                                   asp-controller="Account"
+                                   asp-action="Login">
+                                    Sign In
+                                </a>
+                            </li>
+
+                            <li class="nav-item ms-lg-2 mt-3 mt-lg-0">
+                                <a class="btn btn-nav-cta"
+                                   asp-controller="Account"
+                                   asp-action="Register">
+                                    Get Started
+                                    <i class="bi bi-arrow-up-right ms-1"></i>
+                                </a>
+                            </li>
+                        }
+
                     </ul>
+
                 </div>
+
 
             </div>
         </nav>
