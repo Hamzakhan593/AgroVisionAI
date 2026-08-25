@@ -1,0 +1,117 @@
+﻿@model IEnumerable<AgroVisionAI.Models.Detection>
+
+@{
+    ViewData["Title"] = "Analysis History";
+}
+
+<div class="history-page">
+
+    <div class="container">
+
+        <div class="history-header">
+
+            <div>
+                <span class="dashboard-eyebrow">
+                    YOUR ACTIVITY
+                </span>
+
+                <h1>Analysis History</h1>
+
+                <p>
+                    View the crop images you have previously submitted
+                    for analysis.
+                </p>
+            </div>
+
+            <a asp-controller="Detection"
+               asp-action="Index"
+               class="btn dashboard-primary-btn">
+
+                <i class="bi bi-camera-fill"></i>
+                Scan New Crop
+
+            </a>
+
+        </div>
+
+
+        @if (!Model.Any())
+        {
+            <div class="history-empty">
+
+                <div class="empty-history-icon">
+                    <i class="bi bi-clock-history"></i>
+                </div>
+
+                <h2>No analysis history yet</h2>
+
+                <p>
+                    Your previous crop analyses will appear here
+                    after you upload your first image.
+                </p>
+
+                <a asp-controller="Detection"
+                   asp-action="Index"
+                   class="btn dashboard-outline-btn">
+
+                    Analyze Your First Crop
+
+                </a>
+
+            </div>
+        }
+        else
+        {
+            <div class="history-grid">
+
+                @foreach (var detection in Model)
+                {
+                    <div class="history-card">
+
+                        <div class="history-image">
+
+                            <img src="@detection.ImagePath"
+                                 alt="@detection.Crop crop image" />
+
+                        </div>
+
+                        <div class="history-content">
+
+                            <div class="history-card-top">
+
+                                <span class="history-crop">
+                                    @detection.Crop
+                                </span>
+
+                                <span class="history-status">
+                                    Pending
+                                </span>
+
+                            </div>
+
+                            <p class="history-date">
+                                @detection.CreatedAt.ToLocalTime()
+                                .ToString("dd MMM yyyy, hh:mm tt")
+                            </p>
+
+                            <a asp-controller="Detection"
+                               asp-action="Result"
+                               asp-route-id="@detection.Id"
+                               class="history-view-link">
+
+                                View Analysis
+                                <i class="bi bi-arrow-right"></i>
+
+                            </a>
+
+                        </div>
+
+                    </div>
+                }
+
+            </div>
+        }
+
+    </div>
+
+</div>

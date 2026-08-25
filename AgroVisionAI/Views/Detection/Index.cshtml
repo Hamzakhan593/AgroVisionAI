@@ -1,0 +1,214 @@
+﻿@{
+    ViewData["Title"] = "Scan Your Crop";
+}
+
+<div class="detection-page">
+
+    <div class="container">
+
+        <div class="detection-header">
+
+            <span class="dashboard-eyebrow">
+                AI CROP HEALTH CHECK
+            </span>
+
+            <h1>
+                Check your crop
+            </h1>
+
+            <p>
+                Select your crop and upload a clear image of an
+                affected leaf to begin your analysis.
+            </p>
+
+
+
+            @*upload ssuccessful or failed*@
+
+            @if (TempData["DetectionError"] != null)
+            {
+                <div class="alert alert-danger detection-alert">
+                    <i class="bi bi-exclamation-circle me-2"></i>
+                    @TempData["DetectionError"]
+                </div>
+            }
+
+            @if (TempData["DetectionSuccess"] != null)
+            {
+                <div class="alert alert-success detection-alert">
+                    <i class="bi bi-check-circle me-2"></i>
+                    @TempData["DetectionSuccess"]
+                </div>
+            }
+
+        </div>
+
+        <div class="detection-card">
+
+            <form asp-controller="Detection"
+                  asp-action="Analyze"
+                  method="post"
+                  enctype="multipart/form-data"
+                  id="detectionForm">
+
+                @Html.AntiForgeryToken()
+
+                <!-- Step 1 -->
+                <div class="detection-step">
+                    <span>01</span>
+
+                    <h2>
+                        Select your crop
+                    </h2>
+
+                    <p>
+                        Choose the crop shown in your image.
+                    </p>
+                </div>
+
+                <div class="crop-selection">
+
+                    <button type="button"
+                            class="crop-option"
+                            data-crop="Cotton">
+
+                        <i class="bi bi-flower1"></i>
+                        <span>Cotton</span>
+
+                    </button>
+
+                    <button type="button"
+                            class="crop-option"
+                            data-crop="Wheat">
+
+                        <i class="bi bi-grass"></i>
+                        <span>Wheat</span>
+
+                    </button>
+
+                    <button type="button"
+                            class="crop-option"
+                            data-crop="Rice">
+
+                        <i class="bi bi-water"></i>
+                        <span>Rice</span>
+
+                    </button>
+
+                </div>
+
+                <!-- Selected Crop -->
+                <div class="selected-crop-message"
+                     id="selectedCropMessage">
+
+                    <i class="bi bi-check-circle-fill"></i>
+
+                    <span>
+                        Selected crop:
+                        <strong id="selectedCropName"></strong>
+                    </span>
+
+                </div>
+
+                <!-- Hidden crop value -->
+                <input type="hidden"
+                       name="selectedCrop"
+                       id="selectedCrop" />
+
+
+                <!-- Step 2 -->
+                <div class="upload-section"
+                     id="uploadSection">
+
+                    <div class="detection-step">
+
+                        <span>02</span>
+
+                        <h2>
+                            Upload a crop image
+                        </h2>
+
+                        <p>
+                            Use a clear image showing the affected
+                            leaf or plant.
+                        </p>
+
+                    </div>
+
+                    <label for="cropImage"
+                           class="upload-area">
+
+                        <div class="upload-icon">
+                            <i class="bi bi-cloud-arrow-up"></i>
+                        </div>
+
+                        <h3>
+                            Upload your image
+                        </h3>
+
+                        <p>
+                            Click to browse or drag and drop an image here.
+                        </p>
+
+                        <span class="upload-formats">
+                            JPG, JPEG or PNG · Maximum 5 MB
+                        </span>
+
+                        <input type="file"
+                               id="cropImage"
+                               name="cropImage"
+                               accept=".jpg,.jpeg,.png"
+                               required />
+
+                    </label>
+
+
+                    <!-- Image Preview -->
+                    <div class="image-preview-container"
+                         id="imagePreviewContainer">
+
+                        <img id="imagePreview"
+                             src="#"
+                             alt="Selected crop preview" />
+
+                        <div class="preview-info">
+
+                            <span>
+                                Selected image
+                            </span>
+
+                            <button type="button"
+                                    id="removeImage"
+                                    class="remove-image-btn">
+
+                                <i class="bi bi-trash3"></i>
+                                Remove
+
+                            </button>
+
+                        </div>
+
+                    </div>
+
+
+                    <!-- Analyze -->
+                    <button type="submit"
+                            id="analyzeButton"
+                            class="btn analyze-btn">
+
+                        <i class="bi bi-stars"></i>
+
+                        Analyze Crop
+
+                    </button>
+
+                </div>
+
+            </form>
+
+        </div>
+
+
+    </div>
+
+</div>

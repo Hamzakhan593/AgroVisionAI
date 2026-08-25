@@ -49,7 +49,6 @@
                 </button>
 
                 <!-- Navigation Menu Links -->
-                <!-- Navigation Menu Links -->
                 <div class="collapse navbar-collapse" id="mainNavbar">
 
                     <ul class="navbar-nav ms-auto align-items-lg-center">
@@ -99,10 +98,22 @@
                             <!-- Logged-in user -->
 
                             <li class="nav-item">
-                                <span class="nav-link nav-link-custom">
+                                <a class="nav-link nav-link-custom"
+                                   asp-controller="Profile"
+                                   asp-action="Index">
+
                                     <i class="bi bi-person-circle me-1"></i>
                                     @User.Identity.Name
-                                </span>
+
+                                </a>
+                            </li>
+
+                            <li class="nav-item">
+                                <a class="nav-link nav-link-custom"
+                                   asp-controller="History"
+                                   asp-action="Index">
+                                    History
+                                </a>
                             </li>
 
                             <li class="nav-item ms-lg-2 mt-3 mt-lg-0">

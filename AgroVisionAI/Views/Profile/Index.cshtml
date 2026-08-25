@@ -1,0 +1,155 @@
+﻿@model AgroVisionAI.Models.ApplicationUser
+
+@{
+    ViewData["Title"] = "My Profile";
+}
+
+<div class="profile-page">
+
+    <div class="container">
+
+        <div class="profile-header">
+
+            <div>
+                <span class="dashboard-eyebrow">
+                    ACCOUNT
+                </span>
+
+                <h1>My Profile</h1>
+
+                <p>
+                    Manage your basic AgroVision AI account information.
+                </p>
+            </div>
+
+        </div>
+
+
+        @if (TempData["ProfileSuccess"] != null)
+        {
+            <div class="alert alert-success profile-alert">
+                <i class="bi bi-check-circle me-2"></i>
+                @TempData["ProfileSuccess"]
+            </div>
+        }
+
+
+        <div class="profile-layout">
+
+            <!-- Profile Summary -->
+
+            <div class="profile-summary-card">
+
+                <div class="profile-avatar">
+                    <i class="bi bi-person"></i>
+                </div>
+
+                <h2>
+                    @Model.FullName
+                </h2>
+
+                <p>
+                    @Model.Email
+                </p>
+
+                <span class="profile-member-badge">
+                    AgroVision User
+                </span>
+
+            </div>
+
+
+            <!-- Profile Form -->
+
+            <div class="profile-form-card">
+
+                <div class="profile-card-heading">
+
+                    <span class="dashboard-eyebrow">
+                        PERSONAL INFORMATION
+                    </span>
+
+                    <h2>Account details</h2>
+
+                </div>
+
+
+                @if (!ViewData.ModelState.IsValid)
+                {
+                    <div class="alert alert-danger profile-alert">
+                        <div asp-validation-summary="All"></div>
+                    </div>
+                }
+
+
+                <form asp-controller="Profile"
+                      asp-action="Index"
+                      method="post">
+
+                    @Html.AntiForgeryToken()
+
+
+                    <div class="mb-4">
+
+                        <label for="fullName"
+                               class="form-label profile-label">
+                            Full Name
+                        </label>
+
+                        <input type="text"
+                               id="fullName"
+                               name="fullName"
+                               value="@Model.FullName"
+                               class="form-control auth-input"
+                               placeholder="Enter your full name"
+                               required />
+
+                    </div>
+
+
+                    <div class="mb-4">
+
+                        <label for="email"
+                               class="form-label profile-label">
+                            Email Address
+                        </label>
+
+                        <input type="email"
+                               id="email"
+                               name="email"
+                               value="@Model.Email"
+                               class="form-control auth-input"
+                               placeholder="you@example.com"
+                               required />
+
+                    </div>
+
+
+                    <div class="profile-email-note">
+
+                        <i class="bi bi-info-circle"></i>
+
+                        <span>
+                            Your email is used to sign in to AgroVision AI.
+                        </span>
+
+                    </div>
+
+
+                    <button type="submit"
+                            class="btn dashboard-primary-btn profile-save-btn">
+
+                        <i class="bi bi-check2"></i>
+                        Save Changes
+
+                    </button>
+
+                </form>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>

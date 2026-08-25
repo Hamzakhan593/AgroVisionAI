@@ -8,12 +8,12 @@ using Microsoft.EntityFrameworkCore;
 namespace AgroVisionAI.Controllers
 {
     [Authorize]
-    public class DashboardController : Controller
+    public class HistoryController : Controller
     {
         private readonly ApplicationDbContext _context;
         private readonly UserManager<ApplicationUser> _userManager;
 
-        public DashboardController(
+        public HistoryController(
             ApplicationDbContext context,
             UserManager<ApplicationUser> userManager)
         {
@@ -21,6 +21,7 @@ namespace AgroVisionAI.Controllers
             _userManager = userManager;
         }
 
+        [HttpGet]
         public async Task<IActionResult> Index()
         {
             var user = await _userManager.GetUserAsync(User);
@@ -30,13 +31,12 @@ namespace AgroVisionAI.Controllers
                 return RedirectToAction("Login", "Account");
             }
 
-            var recentDetections = await _context.Detections
+            var detections = await _context.Detections
                 .Where(d => d.UserId == user.Id)
                 .OrderByDescending(d => d.CreatedAt)
-                .Take(3)
                 .ToListAsync();
 
-            return View(recentDetections);
+            return View(detections);
         }
     }
 }

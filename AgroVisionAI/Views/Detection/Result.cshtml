@@ -1,0 +1,144 @@
+﻿@model AgroVisionAI.Models.Detection
+
+@{
+    ViewData["Title"] = "Analysis Result";
+}
+
+<div class="result-page">
+
+    <div class="container">
+
+        <div class="result-header">
+
+            <span class="dashboard-eyebrow">
+                ANALYSIS COMPLETE
+            </span>
+
+            <h1>
+                Crop analysis result
+            </h1>
+
+            <p>
+                Here is the result of your AgroVision AI analysis.
+            </p>
+
+        </div>
+
+
+        <div class="result-layout">
+
+            <!-- Image -->
+            <div class="result-image-card">
+
+                <img src="@Model.ImagePath"
+                     alt="@Model.Crop leaf image" />
+
+                <div class="result-image-caption">
+                    <span>Analyzed crop</span>
+
+                    <strong>
+                        @Model.Crop
+                    </strong>
+                </div>
+
+            </div>
+
+
+            <!-- Result -->
+            <div class="result-info-card">
+
+                <div class="result-status">
+                    <i class="bi bi-check-circle-fill"></i>
+
+                    <span>
+                        Analysis complete
+                    </span>
+                </div>
+
+
+                <div class="result-crop">
+                    <span>SELECTED CROP</span>
+
+                    <h2>
+                        @Model.Crop
+                    </h2>
+                </div>
+
+
+                <div class="result-disease">
+
+                    <span>DETECTED CONDITION</span>
+
+                    <h2>
+                        Analysis Pending
+                    </h2>
+
+                    <p>
+                        The AI disease detection model will provide
+                        the disease prediction here.
+                    </p>
+
+                </div>
+
+
+                <div class="result-confidence">
+
+                    <div class="confidence-heading">
+                        <span>AI CONFIDENCE</span>
+
+                        <strong>
+                            Pending
+                        </strong>
+                    </div>
+
+                    <div class="confidence-bar">
+                        <div class="confidence-progress"
+                             style="width: 0%;">
+                        </div>
+                    </div>
+
+                </div>
+
+
+                <div class="result-note">
+
+                    <i class="bi bi-info-circle"></i>
+
+                    <p>
+                        This result will be updated once the
+                        AgroVision AI disease detection model
+                        is connected.
+                    </p>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <div class="result-actions">
+
+            <a asp-controller="Detection"
+               asp-action="Index"
+               class="btn dashboard-outline-btn">
+
+                <i class="bi bi-arrow-left me-1"></i>
+                Analyze Another Crop
+
+            </a>
+
+            <a asp-controller="Dashboard"
+               asp-action="Index"
+               class="btn dashboard-primary-btn">
+
+                Go to Dashboard
+                <i class="bi bi-arrow-right"></i>
+
+            </a>
+
+        </div>
+
+    </div>
+
+</div>

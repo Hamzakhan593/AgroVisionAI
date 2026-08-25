@@ -1,4 +1,6 @@
-﻿@{
+﻿@model IEnumerable<AgroVisionAI.Models.Detection>
+
+@{
     ViewData["Title"] = "Dashboard";
 }
 
@@ -83,38 +85,92 @@
                     <h2>Recent Analyses</h2>
                 </div>
 
-                <a href="#" class="dashboard-view-link">
+                <a asp-controller="History"
+                   asp-action="Index"
+                   class="dashboard-view-link">
+
                     View History
                     <i class="bi bi-arrow-right"></i>
+
                 </a>
 
             </div>
 
-            <div class="empty-history">
 
-                <div class="empty-history-icon">
-                    <i class="bi bi-clipboard2-pulse"></i>
+            @if (!Model.Any())
+            {
+                <div class="empty-history">
+
+                    <div class="empty-history-icon">
+                        <i class="bi bi-clipboard2-pulse"></i>
+                    </div>
+
+                    <h3>No analyses yet</h3>
+
+                    <p>
+                        Your crop analysis history will appear here
+                        after you scan your first crop.
+                    </p>
+
+                    <a asp-controller="Detection"
+                       asp-action="Index"
+                       class="btn dashboard-outline-btn">
+
+                        Analyze Your First Crop
+
+                    </a>
+
                 </div>
+            }
+            else
+            {
+                <div class="dashboard-recent-list">
 
-                <h3>No analyses yet</h3>
+                    @foreach (var detection in Model)
+                    {
+                        <div class="dashboard-recent-item">
 
-                <p>
-                    Your crop analysis history will appear here
-                    after you scan your first crop.
-                </p>
+                            <div class="dashboard-recent-image">
 
-                <a asp-controller="Detection"
-                   asp-action="Index"
-                   class="btn dashboard-outline-btn">
+                                <img src="@detection.ImagePath"
+                                     alt="@detection.Crop crop image" />
 
-                    Analyze Your First Crop
+                            </div>
 
-                </a>
+                            <div class="dashboard-recent-info">
 
-            </div>
+                                <strong>
+                                    @detection.Crop
+                                </strong>
+
+                                <span>
+                                    @detection.CreatedAt
+                                    .ToLocalTime()
+                                    .ToString("dd MMM yyyy, hh:mm tt")
+                                </span>
+
+                            </div>
+
+                            <span class="history-status">
+                                Pending
+                            </span>
+
+                            <a asp-controller="Detection"
+                               asp-action="Result"
+                               asp-route-id="@detection.Id"
+                               class="dashboard-recent-link">
+
+                                <i class="bi bi-arrow-right"></i>
+
+                            </a>
+
+                        </div>
+                    }
+
+                </div>
+            }
 
         </section>
-
 
         <!-- Supported Crops -->
         <section class="dashboard-section">

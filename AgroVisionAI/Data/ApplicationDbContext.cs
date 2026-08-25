@@ -6,9 +6,13 @@ namespace AgroVisionAI.Data
 {
     public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
     {
-        public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
+        public ApplicationDbContext(
+            DbContextOptions<ApplicationDbContext> options)
             : base(options)
         {
         }
+
+        public DbSet<Detection> Detections { get; set; }
+        public DbSet<Disease> Diseases { get; set; }
     }
 }
