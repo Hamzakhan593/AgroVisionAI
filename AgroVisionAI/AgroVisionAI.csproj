@@ -20,7 +20,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="wwwroot\uploads\crop-images\" />
+    <Folder Include="App_Data\CropImages\" />
   </ItemGroup>
 
 </Project>

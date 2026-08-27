@@ -65,7 +65,7 @@ namespace AgroVisionAI.Controllers
             if (result.Succeeded)
             {
                 await _signInManager.SignInAsync(user, isPersistent: false);
-                return RedirectToAction("Index", "Home");
+                return RedirectToAction("Index", "Dashboard");
             }
 
             foreach (var error in result.Errors)
@@ -105,7 +105,7 @@ namespace AgroVisionAI.Controllers
                 email,
                 password,
                 rememberMe,
-                lockoutOnFailure: false);
+                lockoutOnFailure: true);
 
             if (result.Succeeded)
             {
@@ -115,7 +115,7 @@ namespace AgroVisionAI.Controllers
                     return Redirect(returnUrl);
                 }
 
-                return RedirectToAction("Index", "Home");
+                return RedirectToAction("Index", "Dashboard");
             }
 
             if (result.IsLockedOut)

@@ -1,4 +1,14 @@
-﻿<!DOCTYPE html>
+﻿@using Microsoft.AspNetCore.Identity
+@using AgroVisionAI.Models
+@inject UserManager<ApplicationUser> UserManager
+
+@{
+    var currentUser = await UserManager.GetUserAsync(User);
+}
+
+
+
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="utf-8" />
@@ -103,8 +113,7 @@
                                    asp-action="Index">
 
                                     <i class="bi bi-person-circle me-1"></i>
-                                    @User.Identity.Name
-
+                                    @currentUser?.FullName
                                 </a>
                             </li>
 
@@ -125,21 +134,21 @@
                                 </a>
                             </li>
 
-                            <li class="nav-item ms-lg-2 mt-3 mt-lg-0">
-                                <form asp-controller="Account"
-                                      asp-action="Logout"
-                                      method="post"
-                                      class="m-0">
 
-                                    @Html.AntiForgeryToken()
+                            <form asp-controller="Account"
+                                  asp-action="Logout"
+                                  method="post"
+                                  class="d-inline">
 
-                                    <button type="submit"
-                                            class="btn btn-nav-logout">
-                                        Sign Out
-                                    </button>
+                                @Html.AntiForgeryToken()
 
-                                </form>
-                            </li>
+                                <button type="submit"
+                                        class="nav-link nav-link-custom border-0 bg-transparent">
+                                    Sign Out
+                                </button>
+
+                            </form>
+
                         }
                         else
                         {
@@ -215,7 +224,7 @@
                     <h5 class="footer-title">Resources</h5>
                     <ul class="footer-menu">
                         <li><a asp-controller="Home" asp-action="Index" asp-fragment="about">About Project</a></li>
-                        <li><a href="https://github.com" target="_blank" rel="noopener noreferrer">Source Code</a></li>
+                        <li><a href="https://github.com/Hamzakhan593/AgroVisionAI" target="_blank" rel="noopener noreferrer">Source Code</a></li>
                         <li><a asp-controller="Home" asp-action="Index" asp-fragment="how-it-works">System Status</a></li>
                         <li><a asp-controller="Home" asp-action="Index" asp-fragment="about">Contact</a></li>
                     </ul>

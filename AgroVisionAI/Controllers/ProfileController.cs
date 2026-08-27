@@ -9,11 +9,14 @@ namespace AgroVisionAI.Controllers
     public class ProfileController : Controller
     {
         private readonly UserManager<ApplicationUser> _userManager;
+        private readonly SignInManager<ApplicationUser> _signInManager;
 
         public ProfileController(
-            UserManager<ApplicationUser> userManager)
+            UserManager<ApplicationUser> userManager,
+            SignInManager<ApplicationUser> signInManager)
         {
             _userManager = userManager;
+            _signInManager = signInManager;
         }
 
         [HttpGet]
@@ -32,9 +35,14 @@ namespace AgroVisionAI.Controllers
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Index(
-            string fullName,
-            string email)
+        string fullName,
+        string email)
         {
+            if (!User.Identity?.IsAuthenticated ?? true)
+            {
+                return RedirectToAction("Login", "Account");
+            }
+
             var user = await _userManager.GetUserAsync(User);
 
             if (user == null)
@@ -77,10 +85,10 @@ namespace AgroVisionAI.Controllers
             }
 
             user.FullName = fullName.Trim();
-            user.Email = normalizedEmail;
-            user.UserName = normalizedEmail;
 
-            var result = await _userManager.UpdateAsync(user);
+            var result = await _userManager.SetEmailAsync(
+                user,
+                normalizedEmail);
 
             if (!result.Succeeded)
             {
@@ -93,6 +101,38 @@ namespace AgroVisionAI.Controllers
 
                 return View(user);
             }
+
+            result = await _userManager.SetUserNameAsync(
+                user,
+                normalizedEmail);
+
+            if (!result.Succeeded)
+            {
+                foreach (var error in result.Errors)
+                {
+                    ModelState.AddModelError(
+                        "",
+                        error.Description);
+                }
+
+                return View(user);
+            }
+
+            result = await _userManager.UpdateAsync(user);
+
+            if (!result.Succeeded)
+            {
+                foreach (var error in result.Errors)
+                {
+                    ModelState.AddModelError(
+                        "",
+                        error.Description);
+                }
+
+                return View(user);
+            }
+
+            await _signInManager.RefreshSignInAsync(user);
 
             TempData["ProfileSuccess"] =
                 "Your profile has been updated successfully.";

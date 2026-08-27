@@ -1,5 +1,4 @@
-﻿@model IEnumerable<AgroVisionAI.Models.Detection>
-
+﻿@model AgroVisionAI.Models.DashboardViewModel
 @{
     ViewData["Title"] = "Dashboard";
 }
@@ -17,7 +16,7 @@
                 </span>
 
                 <h1>
-                    Welcome back, @User.Identity?.Name
+                    Welcome back, @Model.User.FullName
                 </h1>
 
                 <p>
@@ -97,8 +96,7 @@
             </div>
 
 
-            @if (!Model.Any())
-            {
+            @if (!Model.RecentDetections.Any()){
                 <div class="empty-history">
 
                     <div class="empty-history-icon">
@@ -126,13 +124,11 @@
             {
                 <div class="dashboard-recent-list">
 
-                    @foreach (var detection in Model)
-                    {
+                    @foreach (var detection in Model.RecentDetections){
                         <div class="dashboard-recent-item">
 
                             <div class="dashboard-recent-image">
-
-                                <img src="@detection.ImagePath"
+                                <img src="@Url.Action("Image", "Detection", new { id = detection.Id })"
                                      alt="@detection.Crop crop image" />
 
                             </div>

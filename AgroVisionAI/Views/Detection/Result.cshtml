@@ -15,11 +15,12 @@
             </span>
 
             <h1>
-                Crop analysis result
+                Crop analysis
             </h1>
 
             <p>
-                Here is the result of your AgroVision AI analysis.
+                Your image has been uploaded successfully and is ready
+                for AI analysis.
             </p>
 
         </div>
@@ -30,7 +31,7 @@
             <!-- Image -->
             <div class="result-image-card">
 
-                <img src="@Model.ImagePath"
+                <img src="@Url.Action("Image", "Detection", new { id = Model.Id })"
                      alt="@Model.Crop leaf image" />
 
                 <div class="result-image-caption">
@@ -47,11 +48,11 @@
             <!-- Result -->
             <div class="result-info-card">
 
-                <div class="result-status">
-                    <i class="bi bi-check-circle-fill"></i>
+                <div class="result-status result-status-pending">
+                    <i class="bi bi-hourglass-split"></i>
 
                     <span>
-                        Analysis complete
+                        Awaiting AI analysis
                     </span>
                 </div>
 

@@ -36,7 +36,13 @@ namespace AgroVisionAI.Controllers
                 .Take(3)
                 .ToListAsync();
 
-            return View(recentDetections);
+            var model = new DashboardViewModel
+            {
+                User = user,
+                RecentDetections = recentDetections
+            };
+
+            return View(model);
         }
     }
 }
