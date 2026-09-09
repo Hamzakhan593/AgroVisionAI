@@ -31,8 +31,10 @@
     <!-- Application Styles -->
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/AgroVisionAI.styles.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/css/automatic-update.css" asp-append-version="true" />
 </head>
 <body class="site-wrapper">
+    <a href="#main-content" class="skip-link">Skip to content</a>
 
     <!-- Header Navigation -->
     <header class="sticky-top">
@@ -106,6 +108,7 @@
                         @if (User.Identity?.IsAuthenticated == true)
                         {
                             <!-- Logged-in user -->
+                            <li class="nav-item"><a class="nav-link nav-link-custom" asp-controller="Dashboard" asp-action="Index">Dashboard</a></li>
 
                             <li class="nav-item">
                                 <a class="nav-link nav-link-custom"
@@ -135,7 +138,7 @@
                             </li>
 
 
-                            <form asp-controller="Account"
+                            <li class="nav-item"><form asp-controller="Account"
                                   asp-action="Logout"
                                   method="post"
                                   class="d-inline">
@@ -147,7 +150,7 @@
                                     Sign Out
                                 </button>
 
-                            </form>
+                            </form></li>
 
                         }
                         else
@@ -182,7 +185,7 @@
     </header>
 
     <!-- Main Content Container -->
-    <main role="main" class="site-main">
+    <main id="main-content" tabindex="-1" class="site-main">
         @RenderBody()
     </main>
 
@@ -200,7 +203,7 @@
                         <span class="brand-text">Agro<span>Vision</span> AI</span>
                     </a>
                     <p class="footer-tagline">
-                        Precision agricultural intelligence platform designed to diagnose leaf diseases, evaluate health severity, and provide actionable treatment recommendations.
+                        Automatic crop identification and leaf disease decision support for Cotton, Wheat and Rice. AI results require field confirmation.
                     </p>
                     <div class="footer-badges">
                         <span class="badge footer-pill"><i class="bi bi-shield-check me-1" aria-hidden="true"></i> Research Backed</span>
@@ -225,7 +228,7 @@
                     <ul class="footer-menu">
                         <li><a asp-controller="Home" asp-action="Index" asp-fragment="about">About Project</a></li>
                         <li><a href="https://github.com/Hamzakhan593/AgroVisionAI" target="_blank" rel="noopener noreferrer">Source Code</a></li>
-                        <li><a asp-controller="Home" asp-action="Index" asp-fragment="how-it-works">System Status</a></li>
+                        <li><a asp-controller="Home" asp-action="Index" asp-fragment="how-it-works">How analysis works</a></li>
                         <li><a asp-controller="Home" asp-action="Index" asp-fragment="about">Contact</a></li>
                     </ul>
                 </div>
@@ -239,8 +242,8 @@
                 </p>
                 <div class="footer-legal-links">
                     <a asp-controller="Home" asp-action="Privacy">Privacy Policy</a>
-                    <a href="javascript:void(0)">Terms of Service</a>
-                    <a href="javascript:void(0)">Security</a>
+                    
+                    
                 </div>
             </div>
         </div>

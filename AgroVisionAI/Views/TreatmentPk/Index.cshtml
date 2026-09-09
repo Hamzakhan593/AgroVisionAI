@@ -1,0 +1,14 @@
+@model AgroVisionAI.TreatmentPk.TreatmentPage
+@using AgroVisionAI.TreatmentPk
+@using System.Collections.Generic
+@{ ViewData["Title"] = "Pakistan crop-care reference"; var records = ViewBag.Records as List<ConditionRecord> ?? new(); }
+<link rel="stylesheet" href="~/css/treatment-pk.css" asp-append-version="true" />
+<div class="tpk-wrap">
+    <h1>Pakistan crop-care reference</h1>
+    <p>Choose a condition to read its management guide. This selection does not diagnose your crop.</p>
+    <div class="tpk-condition-list">
+    @foreach (var record in records)
+    { <a href="@Url.Action("Index", "TreatmentPk", new { crop = record.Crop, disease = record.Key })">@record.Name</a> }
+    </div>
+    @await Html.PartialAsync("~/Views/Shared/Components/TreatmentPk/Default.cshtml", Model)
+</div>

@@ -1,214 +1,49 @@
-﻿@{
+@{
     ViewData["Title"] = "Scan Your Crop";
 }
-
 <div class="detection-page">
-
     <div class="container">
-
         <div class="detection-header">
-
-            <span class="dashboard-eyebrow">
-                AI CROP HEALTH CHECK
-            </span>
-
-            <h1>
-                Check your crop
-            </h1>
-
-            <p>
-                Select your crop and upload a clear image of an
-                affected leaf to begin your analysis.
-            </p>
-
-
-
-            @*upload ssuccessful or failed*@
-
+            <span class="dashboard-eyebrow">AUTOMATIC CROP CHECK</span>
+            <h1>One leaf. Start here.</h1>
+            <p>Upload a clear leaf photograph. We identify Cotton, Wheat, or Rice before checking for disease patterns.</p>
             @if (TempData["DetectionError"] != null)
             {
-                <div class="alert alert-danger detection-alert">
-                    <i class="bi bi-exclamation-circle me-2"></i>
-                    @TempData["DetectionError"]
-                </div>
+                <div class="alert alert-danger detection-alert" role="alert">@TempData["DetectionError"]</div>
             }
-
-            @if (TempData["DetectionSuccess"] != null)
-            {
-                <div class="alert alert-success detection-alert">
-                    <i class="bi bi-check-circle me-2"></i>
-                    @TempData["DetectionSuccess"]
-                </div>
-            }
-
         </div>
-
         <div class="detection-card">
-
-            <form asp-controller="Detection"
-                  asp-action="Analyze"
-                  method="post"
-                  enctype="multipart/form-data"
-                  id="detectionForm">
-
+            <div class="auto-crop-info">
+                <i class="bi bi-stars" aria-hidden="true"></i>
+                <div><strong>No crop selection needed</strong><p>Cotton · Wheat · Rice. Unsupported or uncertain predictions are stopped before disease analysis.</p></div>
+            </div>
+            <form asp-controller="Detection" asp-action="Analyze" method="post" enctype="multipart/form-data" id="detectionForm">
                 @Html.AntiForgeryToken()
-
-                <!-- Step 1 -->
-                <div class="detection-step">
-                    <span>01</span>
-
-                    <h2>
-                        Select your crop
-                    </h2>
-
-                    <p>
-                        Choose the crop shown in your image.
-                    </p>
-                </div>
-
-                <div class="crop-selection">
-
-                    <button type="button"
-                            class="crop-option"
-                            data-crop="Cotton">
-
-                        <i class="bi bi-flower1"></i>
-                        <span>Cotton</span>
-
-                    </button>
-
-                    <button type="button"
-                            class="crop-option"
-                            data-crop="Wheat">
-
-                        <i class="bi bi-grass"></i>
-                        <span>Wheat</span>
-
-                    </button>
-
-                    <button type="button"
-                            class="crop-option"
-                            data-crop="Rice">
-
-                        <i class="bi bi-water"></i>
-                        <span>Rice</span>
-
-                    </button>
-
-                </div>
-
-                <!-- Selected Crop -->
-                <div class="selected-crop-message"
-                     id="selectedCropMessage">
-
-                    <i class="bi bi-check-circle-fill"></i>
-
-                    <span>
-                        Selected crop:
-                        <strong id="selectedCropName"></strong>
-                    </span>
-
-                </div>
-
-                <!-- Hidden crop value -->
-                <input type="hidden"
-                       name="selectedCrop"
-                       id="selectedCrop" />
-
-
-                <!-- Step 2 -->
-                <div class="upload-section"
-                     id="uploadSection">
-
+                <div class="upload-section visible" id="uploadSection">
                     <div class="detection-step">
-
-                        <span>02</span>
-
-                        <h2>
-                            Upload a crop image
-                        </h2>
-
-                        <p>
-                            Use a clear image showing the affected
-                            leaf or plant.
-                        </p>
-
+                        <span>01</span><h2>Upload a leaf photograph</h2>
+                        <p>Show one leaf in focus, in natural light. Avoid grain heads, flowers, collages and screenshots.</p>
                     </div>
-
-                    <label for="cropImage"
-                           class="upload-area">
-
-                        <div class="upload-icon">
-                            <i class="bi bi-cloud-arrow-up"></i>
-                        </div>
-
-                        <h3>
-                            Upload your image
-                        </h3>
-
-                        <p>
-                            Click to browse or drag and drop an image here.
-                        </p>
-
-                        <span class="upload-formats">
-                            JPG, JPEG or PNG · Maximum 5 MB
-                        </span>
-
-                        <input type="file"
-                               id="cropImage"
-                               name="cropImage"
-                               accept=".jpg,.jpeg,.png"
-                               required />
-
-                    </label>
-
-
-                    <!-- Image Preview -->
-                    <div class="image-preview-container"
-                         id="imagePreviewContainer">
-
-                        <img id="imagePreview"
-                             src="#"
-                             alt="Selected crop preview" />
-
-                        <div class="preview-info">
-
-                            <span>
-                                Selected image
-                            </span>
-
-                            <button type="button"
-                                    id="removeImage"
-                                    class="remove-image-btn">
-
-                                <i class="bi bi-trash3"></i>
-                                Remove
-
-                            </button>
-
-                        </div>
-
+                    <div class="upload-area" id="dropZone">
+                        <div class="upload-icon"><i class="bi bi-cloud-arrow-up" aria-hidden="true"></i></div>
+                        <label for="cropImage" class="upload-label">Choose a leaf image</label>
+                        <p>Or drag and drop one image here.</p>
+                        <span class="upload-formats" id="fileHelp">JPG, JPEG or PNG · Maximum 5 MB</span>
+                        <input type="file" id="cropImage" name="cropImage" accept=".jpg,.jpeg,.png" aria-describedby="fileHelp uploadFeedback" required />
                     </div>
-
-
-                    <!-- Analyze -->
-                    <button type="submit"
-                            id="analyzeButton"
-                            class="btn analyze-btn">
-
-                        <i class="bi bi-stars"></i>
-
-                        Analyze Crop
-
+                    <p id="uploadFeedback" class="upload-feedback" role="status" aria-live="polite"></p>
+                    <div class="image-preview-container" id="imagePreviewContainer">
+                        <img id="imagePreview" alt="Your selected leaf photograph" />
+                        <div class="preview-info"><span id="imageFileName">Selected image</span>
+                            <button type="button" id="removeImage" class="remove-image-btn">Remove image</button>
+                        </div>
+                    </div>
+                    <button type="submit" id="analyzeButton" class="btn analyze-btn visible" disabled>
+                        <i class="bi bi-stars" aria-hidden="true"></i><span>Detect crop &amp; analyze</span>
                     </button>
-
+                    <p class="scan-disclaimer">AI can make mistakes, including confident ones. This is leaf-image decision support, not a laboratory diagnosis or a guarantee of crop identity.</p>
                 </div>
-
             </form>
-
         </div>
-
-
     </div>
-
 </div>

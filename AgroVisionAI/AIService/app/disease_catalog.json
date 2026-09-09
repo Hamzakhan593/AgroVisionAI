@@ -1,0 +1,97 @@
+{
+  "cotton": {
+    "bacterial_blight": {
+      "name": "Bacterial Blight",
+      "description": "A bacterial cotton disease that can damage leaves, stems and bolls, especially in warm and humid conditions.",
+      "symptoms": "Angular water-soaked leaf spots that become dark, vein blackening, stem lesions, and dark sunken spots on bolls.",
+      "treatment": "Remove badly infected residues, avoid field work while plants are wet, and ask a local crop specialist about locally approved bactericide or copper-based options.",
+      "prevention": "Use certified disease-free seed, resistant varieties, crop rotation, balanced fertilizer and clean field tools.",
+      "is_healthy": false
+    },
+    "curl_virus": {
+      "name": "Cotton Leaf Curl Virus",
+      "description": "A viral disease commonly spread by whiteflies that reduces plant growth and yield.",
+      "symptoms": "Upward or downward leaf curling, thickened veins, leaf-like growths under leaves and stunted plants.",
+      "treatment": "There is no direct cure for an infected plant. Remove severely affected plants where practical and manage whiteflies using locally recommended integrated pest-management methods.",
+      "prevention": "Grow resistant varieties, control weeds and alternate hosts, monitor whiteflies early and avoid unnecessary insecticide use.",
+      "is_healthy": false
+    },
+    "healthy": {
+      "name": "Healthy Cotton",
+      "description": "The uploaded cotton image does not show a disease pattern recognized by this model.",
+      "symptoms": "Leaves appear generally green and normally shaped without a strong recognized disease pattern.",
+      "treatment": "No disease treatment is indicated by this image. Continue normal crop care and field monitoring.",
+      "prevention": "Maintain balanced irrigation and nutrition, scout regularly, control weeds and use clean seed.",
+      "is_healthy": true
+    }
+  },
+  "wheat": {
+    "brown_rust": {
+      "name": "Wheat Brown Rust",
+      "description": "A fungal leaf-rust disease that can spread rapidly when susceptible wheat experiences suitable moisture and temperature.",
+      "symptoms": "Small orange-brown powdery pustules scattered mainly across the upper leaf surface.",
+      "treatment": "Confirm the disease in the field and consult a local agriculture specialist about a registered wheat fungicide when crop stage and disease pressure justify it.",
+      "prevention": "Use resistant varieties, remove volunteer wheat, sow at the recommended time and monitor fields for early rust development.",
+      "is_healthy": false
+    },
+    "healthy": {
+      "name": "Healthy Wheat",
+      "description": "The uploaded wheat image does not show a rust pattern recognized by this model.",
+      "symptoms": "Leaves appear generally green without characteristic brown- or yellow-rust pustules.",
+      "treatment": "No rust treatment is indicated by this image. Continue routine crop care and monitoring.",
+      "prevention": "Use suitable resistant varieties, balanced nutrition, good irrigation practices and regular field scouting.",
+      "is_healthy": true
+    },
+    "yellow_rust": {
+      "name": "Wheat Yellow Rust",
+      "description": "A fungal rust disease that can reduce photosynthesis and grain yield, particularly in cool and moist conditions.",
+      "symptoms": "Yellow-orange powdery pustules arranged in narrow stripes parallel to the leaf veins.",
+      "treatment": "Verify the symptoms across the field and seek local advice on a registered fungicide if the disease is active and economically important.",
+      "prevention": "Plant resistant varieties, avoid very early sowing where risky, remove volunteer wheat and scout during cool humid weather.",
+      "is_healthy": false
+    }
+  },
+  "rice": {
+    "bacterial_leaf_blight": {
+      "name": "Rice Bacterial Leaf Blight",
+      "description": "A bacterial rice disease that enters through wounds or leaf openings and can spread with rain and irrigation water.",
+      "symptoms": "Water-soaked streaks near leaf tips or margins that enlarge, turn yellow and then become straw-colored with wavy edges.",
+      "treatment": "There is no dependable curative spray. Avoid excess nitrogen, improve drainage where possible and consult local extension staff for approved management guidance.",
+      "prevention": "Use resistant varieties and clean seed, avoid plant injury, maintain field sanitation and apply balanced fertilizer.",
+      "is_healthy": false
+    },
+    "brown_spot": {
+      "name": "Rice Brown Spot",
+      "description": "A fungal disease often associated with infected seed, stressed plants or nutrient-poor soil.",
+      "symptoms": "Round to oval brown lesions with a gray or pale center, sometimes surrounded by a yellow halo.",
+      "treatment": "Improve crop nutrition and water management, use clean seed in future crops, and obtain local advice before applying any registered fungicide.",
+      "prevention": "Use certified seed, treat seed where locally recommended, maintain balanced soil fertility and remove infected residues.",
+      "is_healthy": false
+    },
+    "healthy": {
+      "name": "Healthy Rice",
+      "description": "The uploaded rice image does not show a disease pattern recognized by this model.",
+      "symptoms": "Leaves appear generally green without strong characteristic blight, spot, blast or tungro symptoms.",
+      "treatment": "No disease treatment is indicated by this image. Continue normal crop care and regular scouting.",
+      "prevention": "Use clean seed, balanced fertilizer, suitable water management and good field sanitation.",
+      "is_healthy": true
+    },
+    "leaf_blast": {
+      "name": "Rice Leaf Blast",
+      "description": "A fungal rice disease favored by prolonged leaf wetness, high humidity and susceptible varieties.",
+      "symptoms": "Diamond- or spindle-shaped lesions with gray centers and brown or reddish margins.",
+      "treatment": "Reduce avoidable crop stress and seek local guidance on a registered blast fungicide if disease pressure and crop stage require control.",
+      "prevention": "Use resistant varieties and clean seed, avoid excessive nitrogen, manage plant spacing and prevent long periods of leaf wetness.",
+      "is_healthy": false
+    },
+    "tungro": {
+      "name": "Rice Tungro",
+      "description": "A viral disease complex spread mainly by green leafhoppers that can cause severe stunting and yield loss.",
+      "symptoms": "Yellow to orange leaf discoloration, stunted plants, reduced tillering and delayed flowering.",
+      "treatment": "There is no cure for infected plants. Remove infection sources where practical and manage leafhopper vectors using locally recommended integrated methods.",
+      "prevention": "Use resistant varieties, synchronize planting, remove volunteer rice and weeds, and monitor leafhopper activity early.",
+      "is_healthy": false
+    }
+  }
+}
+

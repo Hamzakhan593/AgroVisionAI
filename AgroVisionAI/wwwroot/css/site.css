@@ -1594,6 +1594,22 @@ body {
         color: #ffffff;
     }
 
+    .analyze-btn:disabled {
+        background: #6b9b7d;
+        cursor: wait;
+        opacity: 1;
+    }
+
+.analyze-spinner {
+    animation: analyze-spin 0.9s linear infinite;
+}
+
+@keyframes analyze-spin {
+    to {
+        transform: rotate(360deg);
+    }
+}
+
 
 /* Selected Crop */
 
@@ -1850,6 +1866,83 @@ body {
     color: #8a6d2f;
 }
 
+.result-status-healthy {
+    background: #e7f7ed;
+    color: #187442;
+}
+
+.result-status-detected {
+    background: #fff3e5;
+    color: #a35711;
+}
+
+.result-guidance {
+    margin-top: 42px;
+}
+
+.result-guidance-heading {
+    margin-bottom: 22px;
+}
+
+.result-guidance-heading h2 {
+    margin: 0;
+    color: #1f2933;
+    font-size: 1.55rem;
+    font-weight: 700;
+}
+
+.result-guidance-grid {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 20px;
+}
+
+.guidance-card {
+    padding: 24px;
+    border: 1px solid #e4ebe6;
+    border-radius: 16px;
+    background: #ffffff;
+    box-shadow: 0 8px 25px rgba(31, 41, 51, 0.04);
+}
+
+.guidance-icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 42px;
+    height: 42px;
+    margin-bottom: 16px;
+    border-radius: 11px;
+    background: #eaf6ef;
+    color: #198754;
+    font-size: 1.05rem;
+}
+
+.guidance-icon-symptoms {
+    background: #fff3e5;
+    color: #a35711;
+}
+
+.guidance-card h3 {
+    margin-bottom: 9px;
+    color: #26332c;
+    font-size: 1rem;
+    font-weight: 650;
+}
+
+.guidance-card p {
+    margin: 0;
+    color: #68756e;
+    font-size: 0.86rem;
+    line-height: 1.7;
+}
+
+@media (max-width: 991.98px) {
+    .result-guidance-grid {
+        grid-template-columns: 1fr;
+    }
+}
+
 
 
 
@@ -1972,6 +2065,14 @@ body {
     margin: 7px 0 17px;
     font-size: 0.78rem;
     color: #89948e;
+}
+
+.history-condition {
+    display: block;
+    margin-top: 12px;
+    color: #26332c;
+    font-size: 0.9rem;
+    font-weight: 650;
 }
 
 .history-view-link {

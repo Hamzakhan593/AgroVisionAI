@@ -1,0 +1,765 @@
+{
+  "schemaVersion": 1,
+  "catalogVersion": "2026.09.06-integrated",
+  "country": "PK",
+  "sources": [
+    {
+      "id": "cotton_blight_aces",
+      "title": "Alabama Extension: Bacterial Blight of Cotton",
+      "url": "https://www.aces.edu/blog/topics/crop-production/bacterial-blight-of-cotton/",
+      "scope": "International agronomy; not Pakistani product authorization",
+      "access": "page_read",
+      "published": "2026-07-31",
+      "checkedOn": "2026-09-06",
+      "note": "",
+      "kind": "reference"
+    },
+    {
+      "id": "cotton_curl_nsw",
+      "title": "NSW DPI: Cotton leaf curl disease",
+      "url": "https://www.dpird.nsw.gov.au/dpi/biosecurity/plant-biosecurity/insect-pests-plant-diseases/cotton-leaf-curl-disease",
+      "scope": "International disease biology and hygiene; Australian reporting rules excluded",
+      "access": "page_read",
+      "published": null,
+      "checkedOn": "2026-09-06",
+      "note": "",
+      "kind": "reference"
+    },
+    {
+      "id": "cotton_curl_pk",
+      "title": "CGIAR: Improving resistance to cotton leaf curl virus in Pakistan",
+      "url": "https://mel.cgiar.org/projects/205",
+      "scope": "Pakistan research: resistance and integrated pest management",
+      "access": "search_excerpt",
+      "published": null,
+      "checkedOn": "2026-09-06",
+      "note": "",
+      "kind": "reference"
+    },
+    {
+      "id": "wheat_rust_cpn",
+      "title": "Crop Protection Network: An overview of stripe rust of wheat",
+      "url": "https://cropprotectionnetwork.org/publications/an-overview-of-stripe-rust-of-wheat",
+      "scope": "International wheat rust biology and management; not local product authorization",
+      "access": "page_read",
+      "published": "2020-09-22",
+      "checkedOn": "2026-09-06",
+      "note": "",
+      "kind": "reference"
+    },
+    {
+      "id": "rice_blight_irri",
+      "title": "IRRI: Bacterial blight",
+      "url": "https://www.knowledgebank.irri.org/decision-tools/rice-doctor/rice-doctor-fact-sheets/item/bacterial-blight",
+      "scope": "International agronomy",
+      "access": "search_excerpt",
+      "published": null,
+      "checkedOn": "2026-09-06",
+      "note": "Relevant indexed management excerpts checked; direct page fetch timed out.",
+      "kind": "reference"
+    },
+    {
+      "id": "rice_brown_irri",
+      "title": "IRRI: Brown spot",
+      "url": "https://www.knowledgebank.irri.org/training/fact-sheets/pest-management/diseases/item/brown-spot",
+      "scope": "International agronomy",
+      "access": "search_excerpt",
+      "published": null,
+      "checkedOn": "2026-09-06",
+      "note": "Relevant indexed excerpts checked; direct page fetch timed out.",
+      "kind": "reference"
+    },
+    {
+      "id": "rice_blast_irri",
+      "title": "IRRI: Blast (leaf and collar)",
+      "url": "https://www.knowledgebank.irri.org/training/fact-sheets/pest-management/diseases/item/blast-leaf-collar",
+      "scope": "International agronomy",
+      "access": "search_excerpt",
+      "published": null,
+      "checkedOn": "2026-09-06",
+      "note": "Relevant indexed excerpts checked; direct page fetch timed out.",
+      "kind": "reference"
+    },
+    {
+      "id": "rice_tungro_irri",
+      "title": "IRRI: Tungro",
+      "url": "https://www.knowledgebank.irri.org/training/fact-sheets/pest-management/diseases/item/tungro",
+      "scope": "International agronomy",
+      "access": "search_excerpt",
+      "published": null,
+      "checkedOn": "2026-09-06",
+      "note": "Relevant indexed excerpts checked; direct page fetch timed out.",
+      "kind": "reference"
+    },
+    {
+      "id": "rice_health_irri",
+      "title": "IRRI: Pests and diseases",
+      "url": "https://www.knowledgebank.irri.org/step-by-step-production/growth/pests-and-diseases",
+      "scope": "International prevention guidance",
+      "access": "search_excerpt",
+      "published": null,
+      "checkedOn": "2026-09-06",
+      "note": "",
+      "kind": "reference"
+    },
+    {
+      "id": "pk_tilt",
+      "title": "Syngenta Pakistan: TILT 250 EC",
+      "url": "https://www.syngenta.com.pk/product/crop-protection/tilt-250-ec-01",
+      "scope": "Pakistan manufacturer product page; NOT complete approved label",
+      "access": "page_read",
+      "published": null,
+      "checkedOn": "2026-09-06",
+      "note": "Rust entry is broad; full label, specific rust coverage, water volume, REI and registration remain unresolved. Page also contains unrelated placeholder material.",
+      "kind": "manufacturer_page"
+    },
+    {
+      "id": "pk_amistar",
+      "title": "Syngenta Pakistan: Amistar Top",
+      "url": "https://www.syngenta.com.pk/product/crop-protection/amistar-top-02",
+      "scope": "Pakistan manufacturer product page; NOT complete approved label",
+      "access": "page_read",
+      "published": null,
+      "checkedOn": "2026-09-06",
+      "note": "Rice blast and brown leaf spot have different rates. Cotton stem/twig blight is NOT mapped to cotton bacterial blight.",
+      "kind": "manufacturer_page"
+    },
+    {
+      "id": "pk_score",
+      "title": "Syngenta Pakistan: Score 250 EC",
+      "url": "https://www.syngenta.com.pk/product/crop-protection/score-250-ec-01",
+      "scope": "Pakistan manufacturer product page; NOT complete approved label",
+      "access": "page_read",
+      "published": null,
+      "checkedOn": "2026-09-06",
+      "note": "Rice blast rate and water volume transcribed from table. Full label, REI and registration unresolved.",
+      "kind": "manufacturer_page"
+    },
+    {
+      "id": "pk_registry",
+      "title": "DPP: List of registered pesticides in Pakistan",
+      "url": "https://plantprotection.gov.pk/services/pesticide-registration/list-of-registered-pesticides-in-pakistan/",
+      "scope": "Official registration verification destination",
+      "access": "unavailable",
+      "published": null,
+      "checkedOn": "2026-09-06",
+      "note": "Listing discovered, but underlying current registration documents could not be read. No product has been marked registration-verified.",
+      "kind": "reference"
+    },
+    {
+      "id": "pk_punjab_literature",
+      "title": "Punjab Agriculture: Literature and brochures",
+      "url": "https://agripunjab.gov.pk/pw_literature",
+      "scope": "Pakistan advisory discovery destination",
+      "access": "search_excerpt",
+      "published": null,
+      "checkedOn": "2026-09-06",
+      "note": "Listing only; not used to justify a specific chemical dose.",
+      "kind": "reference"
+    }
+  ],
+  "records": [
+    {
+      "crop": "cotton",
+      "key": "bacterial_blight",
+      "name": "Cotton bacterial blight",
+      "kind": "bacterial",
+      "aliases": [
+        "cotton bacterial blight",
+        "angular leaf spot",
+        "Bacterial Blight"
+      ],
+      "summary": {
+        "en": "Bacterial disease; angular, water-soaked leaf spots may occur. A photo is a suspected diagnosis.",
+        "romanUrdu": "Yeh bacteria se hone wali bimari hai. Patton par konon wale, pani se bheege hue dhabbe nazar aa sakte hain. Sirf tasveer se pakki tashkhees nahi hoti.",
+        "sourceIds": [
+          "cotton_blight_aces"
+        ]
+      },
+      "today": [
+        {
+          "en": "Avoid working through wet plants and clean equipment before moving between fields.",
+          "romanUrdu": "Jab pauday geelay hon to un ke darmiyan kaam karne se parhez karein. Doosre khet mein jaane se pehle auzar saaf karein.",
+          "sourceIds": [
+            "cotton_blight_aces"
+          ]
+        },
+        {
+          "en": "Avoid unnecessary nitrogen and overhead irrigation that wets foliage.",
+          "romanUrdu": "Zaroorat se zyada nitrogen wali khaad na dein. Aisi aabpashi se parhez karein jis se pattay baar baar geelay hon.",
+          "sourceIds": [
+            "cotton_blight_aces"
+          ]
+        }
+      ],
+      "prevention": [
+        {
+          "en": "Plan clean seed, locally suitable resistant varieties and rotation away from cotton.",
+          "romanUrdu": "Agli fasal ke liye saaf beej aur apne ilaqay ki munasib, bimari ke khilaf muzahamat rakhne wali variety chunein. Kapas ke baad doosri munasib fasal lagane ka mashwara lein.",
+          "sourceIds": [
+            "cotton_blight_aces"
+          ]
+        }
+      ],
+      "avoid": [
+        {
+          "en": "No chemical cure is approved in this catalogue; do not substitute a fungal-blight product.",
+          "romanUrdu": "Is bimari ke liye koi chemical ilaaj is catalogue mein approve nahi hua. Fungal blight ki dawa ko bacterial blight ka ilaaj samajh kar istemal na karein.",
+          "sourceIds": []
+        }
+      ],
+      "escalation": "Request local diagnosis if stem lesions, boll damage or rapid spread occur. / Tanay ya tindon par nuksan nazar aaye, ya bimari tezi se phail rahi ho, to ilaqay ke zarai maahir se tashkhees karwayein.",
+      "sourceIds": [
+        "cotton_blight_aces"
+      ],
+      "reviewStatus": "source_backed_local_review_pending",
+      "localExpert": null,
+      "lastEvidenceCheck": "2026-09-06",
+      "localityNote": "General guidance for use in Pakistan; province-specific agronomic review is pending.",
+      "chemicalPolicy": "no_automatic_chemical"
+    },
+    {
+      "crop": "cotton",
+      "key": "curl_virus",
+      "name": "Cotton leaf curl disease",
+      "kind": "viral",
+      "aliases": [
+        "leaf curl",
+        "leaf curl virus",
+        "cotton leaf curl virus",
+        "cotton leaf curl disease",
+        "Cotton Leaf Curl Virus"
+      ],
+      "summary": {
+        "en": "Leaf curl disease is viral and spread by whiteflies; thick veins and curled leaves can occur.",
+        "romanUrdu": "Kapas ki leaf curl virus ki bimari hai jo safed makhi se phailti hai. Patton ki ragein moti ho sakti hain aur pattay mur sakte hain.",
+        "sourceIds": [
+          "cotton_curl_nsw"
+        ]
+      },
+      "today": [
+        {
+          "en": "Check leaf undersides for whiteflies and keep dated photos of affected patches.",
+          "romanUrdu": "Patton ki nichli satah par safed makhi ka muaina karein. Mutasir jagahon ki tasveerein tareekh ke saath rakh lein.",
+          "sourceIds": [
+            "cotton_curl_nsw"
+          ]
+        },
+        {
+          "en": "Discuss local whitefly IPM and suitable resistant germplasm with an agriculture officer.",
+          "romanUrdu": "Apne ilaqay ke zarai afsar se safed makhi ki rok tham aur bimari ke khilaf muzahamat rakhne wali munasib variety ke bare mein mashwara karein.",
+          "sourceIds": [
+            "cotton_curl_pk"
+          ]
+        }
+      ],
+      "prevention": [
+        {
+          "en": "Keep equipment clean and monitor the crop regularly.",
+          "romanUrdu": "Auzar saaf rakhein aur fasal ka baqaidgi se muaina karte rahein.",
+          "sourceIds": [
+            "cotton_curl_nsw"
+          ]
+        }
+      ],
+      "avoid": [
+        {
+          "en": "No virus-curing spray is approved here. Vector control is not proof an infected plant is cured.",
+          "romanUrdu": "Virus se mutasir pauday ko theek karne wala spray yahan recommend nahi kiya gaya. Safed makhi par qaboo paane ka matlab yeh nahi ke pauday se virus khatam ho gaya hai.",
+          "sourceIds": []
+        }
+      ],
+      "escalation": "Ask a local expert to distinguish viral symptoms from mites, herbicide injury or nutrient problems. / Zarai maahir se jaanch karwayein ke pattay virus, mites, jari booti maar dawa ke asar ya ghizai kami ki wajah se to nahi mur rahe.",
+      "sourceIds": [
+        "cotton_curl_nsw",
+        "cotton_curl_pk"
+      ],
+      "reviewStatus": "source_backed_local_review_pending",
+      "localExpert": null,
+      "lastEvidenceCheck": "2026-09-06",
+      "localityNote": "General guidance for use in Pakistan; province-specific agronomic review is pending.",
+      "chemicalPolicy": "no_automatic_chemical"
+    },
+    {
+      "crop": "wheat",
+      "key": "brown_rust",
+      "name": "Wheat brown rust",
+      "kind": "fungal",
+      "aliases": [
+        "leaf rust",
+        "wheat leaf rust",
+        "wheat brown rust",
+        "Wheat Brown Rust"
+      ],
+      "summary": {
+        "en": "Yellow rust often forms stripes; brown rust has scattered orange-brown pustules.",
+        "romanUrdu": "Yellow rust mein danay aksar lakeeron ki shakal mein hote hain. Brown rust mein narangi ya bhooray danay pattay par bikhre hue nazar aate hain.",
+        "sourceIds": [
+          "wheat_rust_cpn"
+        ]
+      },
+      "today": [
+        {
+          "en": "Inspect upper leaves and record crop stage; obtain local confirmation before choosing a fungicide.",
+          "romanUrdu": "Ooper ke patton ka muaina karein aur fasal ki umar ya marhala note karein. Fungicide chunne se pehle ilaqay ke zarai afsar se tashkhees ki tasdeeq karwayein.",
+          "sourceIds": []
+        }
+      ],
+      "prevention": [
+        {
+          "en": "For the next crop, ask for current local rust-resistance ratings when choosing a variety.",
+          "romanUrdu": "Agli fasal ke liye variety chunte waqt maloom karein ke woh aapke ilaqay mein rust ke khilaf kitni muzahamat rakhti hai.",
+          "sourceIds": [
+            "wheat_rust_cpn"
+          ]
+        }
+      ],
+      "avoid": [
+        {
+          "en": "A high AI score does not set spray dose. The listed wheat product says only “rust”; exact coverage needs label review.",
+          "romanUrdu": "AI ka confidence score dawa ki miqdaar nahi batata. Manufacturer ne sirf \"Rust\" likha hai; exact bimari ke liye product ka label check karein.",
+          "sourceIds": []
+        }
+      ],
+      "escalation": "Seek prompt field advice if rust reaches upper leaves or is spreading quickly. / Rust ooper ke patton tak pahunch jaye ya tezi se phailay to jald field ka muaina karwayein.",
+      "sourceIds": [
+        "wheat_rust_cpn",
+        "pk_tilt"
+      ],
+      "reviewStatus": "source_backed_local_review_pending",
+      "localExpert": null,
+      "lastEvidenceCheck": "2026-09-06",
+      "localityNote": "General guidance for use in Pakistan; province-specific agronomic review is pending.",
+      "chemicalPolicy": "review_required"
+    },
+    {
+      "crop": "wheat",
+      "key": "yellow_rust",
+      "name": "Wheat yellow rust",
+      "kind": "fungal",
+      "aliases": [
+        "stripe rust",
+        "wheat stripe rust",
+        "wheat yellow rust",
+        "Wheat Yellow Rust"
+      ],
+      "summary": {
+        "en": "Yellow rust often forms stripes; brown rust has scattered orange-brown pustules.",
+        "romanUrdu": "Yellow rust mein danay aksar lakeeron ki shakal mein hote hain. Brown rust mein narangi ya bhooray danay pattay par bikhre hue nazar aate hain.",
+        "sourceIds": [
+          "wheat_rust_cpn"
+        ]
+      },
+      "today": [
+        {
+          "en": "Inspect upper leaves and record crop stage; obtain local confirmation before choosing a fungicide.",
+          "romanUrdu": "Ooper ke patton ka muaina karein aur fasal ki umar ya marhala note karein. Fungicide chunne se pehle ilaqay ke zarai afsar se tashkhees ki tasdeeq karwayein.",
+          "sourceIds": []
+        }
+      ],
+      "prevention": [
+        {
+          "en": "For the next crop, ask for current local rust-resistance ratings when choosing a variety.",
+          "romanUrdu": "Agli fasal ke liye variety chunte waqt maloom karein ke woh aapke ilaqay mein rust ke khilaf kitni muzahamat rakhti hai.",
+          "sourceIds": [
+            "wheat_rust_cpn"
+          ]
+        }
+      ],
+      "avoid": [
+        {
+          "en": "A high AI score does not set spray dose. The listed wheat product says only “rust”; exact coverage needs label review.",
+          "romanUrdu": "AI ka confidence score dawa ki miqdaar nahi batata. Manufacturer ne sirf \"Rust\" likha hai; exact bimari ke liye product ka label check karein.",
+          "sourceIds": []
+        }
+      ],
+      "escalation": "Seek prompt field advice if rust reaches upper leaves or is spreading quickly. / Rust ooper ke patton tak pahunch jaye ya tezi se phailay to jald field ka muaina karwayein.",
+      "sourceIds": [
+        "wheat_rust_cpn",
+        "pk_tilt"
+      ],
+      "reviewStatus": "source_backed_local_review_pending",
+      "localExpert": null,
+      "lastEvidenceCheck": "2026-09-06",
+      "localityNote": "General guidance for use in Pakistan; province-specific agronomic review is pending.",
+      "chemicalPolicy": "review_required"
+    },
+    {
+      "crop": "rice",
+      "key": "bacterial_leaf_blight",
+      "name": "Rice bacterial leaf blight",
+      "kind": "bacterial",
+      "aliases": [
+        "bacterial blight",
+        "rice bacterial blight",
+        "rice bacterial leaf blight",
+        "blb",
+        "Rice Bacterial Leaf Blight"
+      ],
+      "summary": {
+        "en": "Bacterial blight management emphasizes resistant varieties and crop management.",
+        "romanUrdu": "Dhan ki bacterial leaf blight mein bimari ke khilaf muzahamat rakhne wali variety aur fasal ki munasib dekh bhaal aham hain.",
+        "sourceIds": [
+          "rice_blight_irri"
+        ]
+      },
+      "today": [
+        {
+          "en": "Use balanced nutrition, especially nitrogen, and maintain suitable field and nursery drainage.",
+          "romanUrdu": "Khaad, khaas taur par nitrogen, zaroorat ke mutabiq dein. Khet aur nursery mein pani ki munasib nikasi rakhein.",
+          "sourceIds": [
+            "rice_blight_irri"
+          ]
+        }
+      ],
+      "prevention": [
+        {
+          "en": "Choose a locally recommended resistant variety for the next planting.",
+          "romanUrdu": "Agli kasht ke liye apne ilaqay mein recommend ki gayi, bimari ke khilaf muzahamat rakhne wali variety chunein.",
+          "sourceIds": [
+            "rice_blight_irri"
+          ]
+        }
+      ],
+      "avoid": [
+        {
+          "en": "Do not treat bacterial blight with a rice-blast fungicide simply because both damage leaves.",
+          "romanUrdu": "Sirf patton par dhabbe dekh kar blast ki fungicide ko bacterial blight ke liye istemal na karein. Donon bimariyon ki wajah mukhtalif hai.",
+          "sourceIds": []
+        }
+      ],
+      "escalation": "Request field diagnosis when symptoms spread or plants wilt; confirm the cause before chemical decisions. / Bimari phail rahi ho ya pauday murjha rahe hon to chemical istemal karne se pehle field mein tashkhees karwayein.",
+      "sourceIds": [
+        "rice_blight_irri"
+      ],
+      "reviewStatus": "source_backed_local_review_pending",
+      "localExpert": null,
+      "lastEvidenceCheck": "2026-09-06",
+      "localityNote": "General guidance for use in Pakistan; province-specific agronomic review is pending.",
+      "chemicalPolicy": "no_automatic_chemical"
+    },
+    {
+      "crop": "rice",
+      "key": "brown_spot",
+      "name": "Rice brown spot",
+      "kind": "fungal",
+      "aliases": [
+        "brown leaf spot",
+        "rice brown spot",
+        "rice brown leaf spot",
+        "Rice Brown Spot"
+      ],
+      "summary": {
+        "en": "Brown spot may resemble blast; soil fertility is a central management consideration.",
+        "romanUrdu": "Brown spot ke dhabbe kabhi blast jaise lag sakte hain. Is bimari mein mitti ki zarkhaizi aur ghizai ajza ki kami ka jaiza lena aham hai.",
+        "sourceIds": [
+          "rice_brown_irri"
+        ]
+      },
+      "today": [
+        {
+          "en": "Review soil nutrient results and correct documented deficiencies with local advice.",
+          "romanUrdu": "Mitti ke test ki report dekhein. Jo ghizai kami sabit ho, use ilaqay ke zarai afsar ke mashware se poora karein.",
+          "sourceIds": [
+            "rice_brown_irri"
+          ]
+        },
+        {
+          "en": "Have the spot pattern confirmed before choosing between brown-spot and blast products.",
+          "romanUrdu": "Brown spot ya blast ki dawa chunne se pehle dhabbon ki sahi tashkhees karwayein.",
+          "sourceIds": []
+        }
+      ],
+      "prevention": [
+        {
+          "en": "Monitor soil nutrients rather than applying an arbitrary fertilizer dose.",
+          "romanUrdu": "Andazay se khaad dene ke bajaye mitti mein ghizai ajza ki miqdaar check karwayein.",
+          "sourceIds": [
+            "rice_brown_irri"
+          ]
+        }
+      ],
+      "avoid": [
+        {
+          "en": "Do not copy a blast rate onto brown spot: the same product can have different crop-disease rates.",
+          "romanUrdu": "Blast wali dose ko brown spot par apply na karein. Ek hi product ki miqdaar bimari ke mutabiq alag ho sakti hai.",
+          "sourceIds": [
+            "pk_amistar"
+          ]
+        }
+      ],
+      "escalation": "Get local advice if spots spread, crop stress is marked, or grain/panicles are affected. / Dhabbe tezi se phail rahe hon, fasal kamzor ho ya baali aur danon par asar ho to zarai maahir se mashwara karein.",
+      "sourceIds": [
+        "rice_brown_irri",
+        "pk_amistar"
+      ],
+      "reviewStatus": "source_backed_local_review_pending",
+      "localExpert": null,
+      "lastEvidenceCheck": "2026-09-06",
+      "localityNote": "General guidance for use in Pakistan; province-specific agronomic review is pending.",
+      "chemicalPolicy": "review_required"
+    },
+    {
+      "crop": "rice",
+      "key": "leaf_blast",
+      "name": "Rice leaf blast",
+      "kind": "fungal",
+      "aliases": [
+        "rice leaf blast",
+        "blast",
+        "rice blast",
+        "Rice Leaf Blast"
+      ],
+      "summary": {
+        "en": "Blast and brown spot can look similar. Resistant varieties are an important control option.",
+        "romanUrdu": "Blast aur brown spot ke dhabbe milte julte ho sakte hain. Bimari ke khilaf muzahamat rakhne wali variety bachao ka aham tareeqa hai.",
+        "sourceIds": [
+          "rice_blast_irri"
+        ]
+      },
+      "today": [
+        {
+          "en": "Inspect leaves and panicles; ask an agriculture officer to confirm the affected stage.",
+          "romanUrdu": "Patton aur baali ka muaina karein. Zarai afsar se tasdeeq karwayein ke pauday ka kaunsa hissa mutasir hai.",
+          "sourceIds": []
+        },
+        {
+          "en": "Avoid a single excessive nitrogen application; follow a locally planned split schedule.",
+          "romanUrdu": "Ek hi baar zaroorat se zyada nitrogen na dein. Ilaqay ki sifarish ke mutabiq khaad ko mukhtalif waqton mein taqseem karke dein.",
+          "sourceIds": [
+            "rice_blast_irri"
+          ]
+        }
+      ],
+      "prevention": [
+        {
+          "en": "Choose a locally suitable resistant variety and confirm the local planting window.",
+          "romanUrdu": "Apne ilaqay ki munasib, bimari ke khilaf muzahamat rakhne wali variety chunein aur kasht ka sahi waqt maloom karein.",
+          "sourceIds": [
+            "rice_blast_irri"
+          ]
+        }
+      ],
+      "avoid": [
+        {
+          "en": "Leaf prediction alone does not establish neck blast or determine spray timing.",
+          "romanUrdu": "Sirf pattay ki tasveer se baali ki gardan par blast ya spray ka sahi waqt tay nahi kiya ja sakta.",
+          "sourceIds": []
+        }
+      ],
+      "escalation": "Seek prompt advice if panicle necks are affected or symptoms spread rapidly. / Baali ki gardan mutasir ho ya bimari tezi se phail rahi ho to jald zarai maahir se mashwara karein.",
+      "sourceIds": [
+        "rice_blast_irri",
+        "pk_amistar",
+        "pk_score"
+      ],
+      "reviewStatus": "source_backed_local_review_pending",
+      "localExpert": null,
+      "lastEvidenceCheck": "2026-09-06",
+      "localityNote": "General guidance for use in Pakistan; province-specific agronomic review is pending.",
+      "chemicalPolicy": "review_required"
+    },
+    {
+      "crop": "rice",
+      "key": "tungro",
+      "name": "Rice tungro",
+      "kind": "viral",
+      "aliases": [
+        "rice tungro",
+        "tungro virus",
+        "Rice Tungro"
+      ],
+      "summary": {
+        "en": "Tungro-infected plants cannot be cured; prevention and limiting spread are the focus.",
+        "romanUrdu": "Tungro se mutasir pauday ka ilaaj mumkin nahi. Maqsad doosre paudon ko bachana aur bimari ka phailao kam karna hai.",
+        "sourceIds": [
+          "rice_tungro_irri"
+        ]
+      },
+      "today": [
+        {
+          "en": "Ask a local specialist to confirm suspected tungro and assess nearby plants.",
+          "romanUrdu": "Tungro ka shak ho to ilaqay ke zarai maahir se tasdeeq karwayein aur aas paas ke paudon ka bhi muaina karwayein.",
+          "sourceIds": []
+        },
+        {
+          "en": "Discuss locally suitable resistant varieties and coordinated planting with extension staff.",
+          "romanUrdu": "Zarai afsar se munasib resistant varieties aur aas paas ke kisano ke saath kasht ke waqt ki planning par mashwara karein.",
+          "sourceIds": [
+            "rice_tungro_irri"
+          ]
+        }
+      ],
+      "prevention": [
+        {
+          "en": "Plan prevention with the local agriculture office rather than relying on a curative spray.",
+          "romanUrdu": "Pauday ko theek karne wale spray par bharosa karne ke bajaye zarai afsar ke saath bachao ka plan banayein.",
+          "sourceIds": [
+            "rice_tungro_irri"
+          ]
+        }
+      ],
+      "avoid": [
+        {
+          "en": "Leafhopper insecticides often fail to prevent tungro spread; do not promise cure through insect control.",
+          "romanUrdu": "Leafhopper ke khilaf spray aksar tungro ka phailao nahi rok pata. Keeron par qaboo paane ko virus ka ilaaj na samjhein.",
+          "sourceIds": [
+            "rice_tungro_irri"
+          ]
+        }
+      ],
+      "escalation": "Local confirmation is required: a model label does not establish a tungro outbreak in your district. / Sirf model ka result aapke zila mein tungro ke phailao ka saboot nahi. Ilaqay ke zarai maahir se tasdeeq zaroor karwayein.",
+      "sourceIds": [
+        "rice_tungro_irri"
+      ],
+      "reviewStatus": "source_backed_local_review_pending",
+      "localExpert": null,
+      "lastEvidenceCheck": "2026-09-06",
+      "localityNote": "General guidance for use in Pakistan; province-specific agronomic review is pending.",
+      "chemicalPolicy": "no_automatic_chemical"
+    },
+    {
+      "crop": "cotton",
+      "key": "healthy",
+      "name": "Cotton — no supported disease detected",
+      "kind": "healthy",
+      "aliases": [
+        "cotton healthy",
+        "Healthy Cotton"
+      ],
+      "summary": {
+        "en": "The model did not identify a supported disease in this image. This is not proof the whole field is disease-free.",
+        "romanUrdu": "Is tasveer mein model ki pehchani hui koi bimari nazar nahi aayi. Is ka matlab yeh nahi ke poora khet bimari se paak hai.",
+        "sourceIds": []
+      },
+      "today": [
+        {
+          "en": "Continue field observation. If visible symptoms persist, take new clear photos and seek local advice.",
+          "romanUrdu": "Fasal ka muaina karte rahein. Alamat nazar aati rahen to saaf tasveerein dobara lein aur ilaqay ke zarai afsar se mashwara karein.",
+          "sourceIds": []
+        }
+      ],
+      "prevention": [
+        {
+          "en": "Plan locally suitable seed/varieties and routine crop care with extension staff.",
+          "romanUrdu": "Apne ilaqay ke mutabiq beej, variety aur fasal ki rozmarrah dekh bhaal ka plan banayein.",
+          "sourceIds": [
+            "cotton_blight_aces",
+            "cotton_curl_nsw"
+          ]
+        }
+      ],
+      "avoid": [
+        {
+          "en": "A healthy label alone is not a reason to apply a pesticide.",
+          "romanUrdu": "Sirf healthy result aane par pesticide istemal karne ki zaroorat nahi.",
+          "sourceIds": []
+        }
+      ],
+      "escalation": "Persistent symptoms override reassurance from one image. / Alamat barqarar hon to sirf ek tasveer ke healthy result par bharosa na karein.",
+      "sourceIds": [
+        "cotton_blight_aces",
+        "cotton_curl_nsw"
+      ],
+      "reviewStatus": "source_backed_local_review_pending",
+      "localExpert": null,
+      "lastEvidenceCheck": "2026-09-06",
+      "localityNote": "General guidance for use in Pakistan; province-specific agronomic review is pending.",
+      "chemicalPolicy": "no_automatic_chemical"
+    },
+    {
+      "crop": "wheat",
+      "key": "healthy",
+      "name": "Wheat — no supported disease detected",
+      "kind": "healthy",
+      "aliases": [
+        "wheat healthy",
+        "Healthy Wheat"
+      ],
+      "summary": {
+        "en": "The model did not identify a supported disease in this image. This is not proof the whole field is disease-free.",
+        "romanUrdu": "Is tasveer mein model ki pehchani hui koi bimari nazar nahi aayi. Is ka matlab yeh nahi ke poora khet bimari se paak hai.",
+        "sourceIds": []
+      },
+      "today": [
+        {
+          "en": "Continue field observation. If visible symptoms persist, take new clear photos and seek local advice.",
+          "romanUrdu": "Fasal ka muaina karte rahein. Alamat nazar aati rahen to saaf tasveerein dobara lein aur ilaqay ke zarai afsar se mashwara karein.",
+          "sourceIds": []
+        }
+      ],
+      "prevention": [
+        {
+          "en": "Plan locally suitable seed/varieties and routine crop care with extension staff.",
+          "romanUrdu": "Apne ilaqay ke mutabiq beej, variety aur fasal ki rozmarrah dekh bhaal ka plan banayein.",
+          "sourceIds": [
+            "wheat_rust_cpn"
+          ]
+        }
+      ],
+      "avoid": [
+        {
+          "en": "A healthy label alone is not a reason to apply a pesticide.",
+          "romanUrdu": "Sirf healthy result aane par pesticide istemal karne ki zaroorat nahi.",
+          "sourceIds": []
+        }
+      ],
+      "escalation": "Persistent symptoms override reassurance from one image. / Alamat barqarar hon to sirf ek tasveer ke healthy result par bharosa na karein.",
+      "sourceIds": [
+        "wheat_rust_cpn"
+      ],
+      "reviewStatus": "source_backed_local_review_pending",
+      "localExpert": null,
+      "lastEvidenceCheck": "2026-09-06",
+      "localityNote": "General guidance for use in Pakistan; province-specific agronomic review is pending.",
+      "chemicalPolicy": "no_automatic_chemical"
+    },
+    {
+      "crop": "rice",
+      "key": "healthy",
+      "name": "Rice — no supported disease detected",
+      "kind": "healthy",
+      "aliases": [
+        "rice healthy",
+        "Healthy Rice"
+      ],
+      "summary": {
+        "en": "The model did not identify a supported disease in this image. This is not proof the whole field is disease-free.",
+        "romanUrdu": "Is tasveer mein model ki pehchani hui koi bimari nazar nahi aayi. Is ka matlab yeh nahi ke poora khet bimari se paak hai.",
+        "sourceIds": []
+      },
+      "today": [
+        {
+          "en": "Continue field observation. If visible symptoms persist, take new clear photos and seek local advice.",
+          "romanUrdu": "Fasal ka muaina karte rahein. Alamat nazar aati rahen to saaf tasveerein dobara lein aur ilaqay ke zarai afsar se mashwara karein.",
+          "sourceIds": []
+        }
+      ],
+      "prevention": [
+        {
+          "en": "Plan locally suitable seed/varieties and routine crop care with extension staff.",
+          "romanUrdu": "Apne ilaqay ke mutabiq beej, variety aur fasal ki rozmarrah dekh bhaal ka plan banayein.",
+          "sourceIds": [
+            "rice_health_irri"
+          ]
+        }
+      ],
+      "avoid": [
+        {
+          "en": "A healthy label alone is not a reason to apply a pesticide.",
+          "romanUrdu": "Sirf healthy result aane par pesticide istemal karne ki zaroorat nahi.",
+          "sourceIds": []
+        }
+      ],
+      "escalation": "Persistent symptoms override reassurance from one image. / Alamat barqarar hon to sirf ek tasveer ke healthy result par bharosa na karein.",
+      "sourceIds": [
+        "rice_health_irri"
+      ],
+      "reviewStatus": "source_backed_local_review_pending",
+      "localExpert": null,
+      "lastEvidenceCheck": "2026-09-06",
+      "localityNote": "General guidance for use in Pakistan; province-specific agronomic review is pending.",
+      "chemicalPolicy": "no_automatic_chemical"
+    }
+  ]
+}

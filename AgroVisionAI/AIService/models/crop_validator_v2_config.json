@@ -1,0 +1,59 @@
+{
+  "schema_version": 2,
+  "service_role": "automatic_crop_router",
+  "model_filename": "crop_validator_v2_best.keras",
+  "architecture": "MobileNetV3Small_ImageNet",
+  "class_names": [
+    "cotton",
+    "wheat",
+    "rice",
+    "out_of_scope"
+  ],
+  "image_size": [
+    224,
+    224
+  ],
+  "color_mode": "rgb",
+  "input_pixel_range": [
+    0,
+    255
+  ],
+  "preprocessing": "built_into_saved_mobilenetv3_model",
+  "routing": {
+    "out_of_scope_class": "out_of_scope",
+    "minimum_confidence": 0.4,
+    "below_threshold_result": "uncertain",
+    "threshold_status": "provisional_until_manual_field_photo_validation"
+  },
+  "selected_checkpoint": "fine_tuned",
+  "validation_metrics": {
+    "loss": 0.08705585449934006,
+    "accuracy": 0.9807520143240823,
+    "balanced_accuracy": 0.9787012198962919,
+    "macro_precision": 0.9797178845168041,
+    "macro_recall": 0.9787012198962919,
+    "macro_f1": 0.9791819017990908,
+    "weighted_precision": 0.9807607243611786,
+    "weighted_recall": 0.9807520143240823,
+    "weighted_f1": 0.9807299636795669,
+    "top2_accuracy": 0.9991047382354736,
+    "images": 2234,
+    "correct": 2191,
+    "incorrect": 43
+  },
+  "untouched_external_test_metrics": {
+    "loss": 0.21929273009300232,
+    "accuracy": 0.9333333333333333,
+    "balanced_accuracy": 0.9333333333333333,
+    "macro_precision": 0.9350146627565983,
+    "macro_recall": 0.9333333333333333,
+    "macro_f1": 0.93168689234263,
+    "weighted_precision": 0.9350146627565982,
+    "weighted_recall": 0.9333333333333333,
+    "weighted_f1": 0.9316868923426299,
+    "top2_accuracy": 1.0,
+    "images": 120,
+    "correct": 112,
+    "incorrect": 8
+  }
+}

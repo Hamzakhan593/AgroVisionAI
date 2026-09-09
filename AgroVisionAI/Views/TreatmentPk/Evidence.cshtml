@@ -1,0 +1,27 @@
+@model AgroVisionAI.TreatmentPk.EvidencePage
+@using System.Linq
+@{ ViewData["Title"] = "Treatment evidence review"; }
+<link rel="stylesheet" href="~/css/treatment-pk.css" asp-append-version="true" />
+<div class="tpk-wrap tpk">
+    <span class="tpk-eyebrow">ADMIN · EVIDENCE REVIEW</span><h1>Treatment evidence register</h1>
+    <p class="tpk-caution">The numbers below are transcribed manufacturer-page observations, not approved farmer prescriptions. A product page does not prove current registration, a complete label or local suitability. Manufacturer-source chemical options are visible on the farmer page in v2. Independently approved prescriptions remain unpublished.</p>
+    <p>Catalogue @Model.Catalog.CatalogVersion · @Model.Catalog.Records.Count condition records · @Model.Products.Count product-use records</p>
+    @foreach (var p in Model.Products)
+    {
+        var source = Model.Catalog.Sources.Single(s => s.Id == p.ManufacturerSourceId);
+        <article class="tpk-card"><h2>@p.Brand · @p.Crop</h2>
+            <p>@p.ActiveIngredient · @p.Formulation</p><p>Candidate disease keys: @string.Join(", ", p.DiseaseKeys)</p>
+            <dl class="tpk-facts"><dt>Observed product rate</dt><dd>@p.ObservedDoseMlPerAcre ml/acre</dd>
+                <dt>Observed water volume</dt><dd>@(p.ObservedWaterLitresPerAcre.HasValue ? p.ObservedWaterLitresPerAcre + " litres/acre" : "Not supplied")</dd>
+                <dt>Observed harvest interval</dt><dd>@p.ObservedPhiDays days</dd>
+                <dt>Registration / full label / local review</dt><dd>@p.RegistrationVerified / @p.LabelVerified / @p.LocalExpertApproved</dd>
+                <dt>Status</dt><dd>@p.Status</dd></dl>
+            <p>@p.CoverageNote</p><p><a href="@source.Url" target="_blank" rel="noopener noreferrer">@source.Title</a> · checked @source.CheckedOn</p>
+            <p class="tpk-small">Publishing also requires current review dates, registration number, label and registration sources, crop/disease scope, province, growth stage, dose, water, PHI, REI, application limits, PPE and resistance instructions. See docs/REVIEW_WORKFLOW.md.</p>
+        </article>
+    }
+    <h2>Source access register</h2><ul>
+        @foreach (var s in Model.Catalog.Sources)
+        { <li><a href="@s.Url" target="_blank" rel="noopener noreferrer">@s.Title</a> — @s.Access. @s.Note</li> }
+    </ul>
+</div>

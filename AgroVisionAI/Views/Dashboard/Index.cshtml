@@ -53,8 +53,7 @@
                 </h2>
 
                 <p>
-                    Select a clear image of a crop leaf to begin
-                    an AI-based disease assessment.
+                    Upload a clear leaf image. Crop identification happens automatically before disease analysis.
                 </p>
 
             </div>
@@ -140,21 +139,19 @@
                                 </strong>
 
                                 <span>
-                                    @detection.CreatedAt
-                                    .ToLocalTime()
-                                    .ToString("dd MMM yyyy, hh:mm tt")
+                                    @detection.CreatedAt.ToLocalTime().ToString("dd MMM yyyy, hh:mm tt")
                                 </span>
 
                             </div>
 
                             <span class="history-status">
-                                Pending
+                                @(detection.Disease?.Name ?? "Unavailable")
                             </span>
 
                             <a asp-controller="Detection"
                                asp-action="Result"
                                asp-route-id="@detection.Id"
-                               class="dashboard-recent-link">
+                               class="dashboard-recent-link" aria-label="View analysis for @detection.Crop">
 
                                 <i class="bi bi-arrow-right"></i>
 
@@ -178,7 +175,7 @@
                         SUPPORTED CROPS
                     </span>
 
-                    <h2>Choose a crop to get started</h2>
+                    <h2>Supported crops — identified automatically</h2>
                 </div>
 
             </div>

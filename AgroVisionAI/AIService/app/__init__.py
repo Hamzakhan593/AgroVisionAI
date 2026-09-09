@@ -1,0 +1,2 @@
+"""AgroVisionAI FastAPI inference service."""
+

@@ -1,6 +1,19 @@
 ﻿@{
     ViewData["Title"] = "Privacy Policy";
 }
-<h1>@ViewData["Title"]</h1>
-
-<p>Use this page to detail your site's privacy policy.</p>
+<article class="privacy-content">
+    <span class="dashboard-eyebrow">LOCAL PROJECT · DATA HANDLING</span>
+    <h1>Your images and account</h1>
+    <p>This page describes this project's local setup. It is not a policy for a public hosted service.</p>
+    <h2>What is stored</h2>
+    <p>Your account name and email are stored in the configured database. Successful analyses store the crop, predicted condition, disease confidence, timestamp and image reference. Uploaded images are saved on the application computer.</p>
+    <h2>How analysis works</h2>
+    <p>The website sends the leaf image to its configured AI service. With the default localhost configuration, inference runs on the same computer. Changing that service address changes where images are sent.</p>
+    <h2>Access and retention</h2>
+    <p>Sign-in and ownership checks protect the analysis and image routes. The computer or database administrator can still access stored data. There is no automatic retention period or self-service deletion feature; ask your project administrator about removal.</p>
+    <h2>External resources</h2>
+    <p>The interface loads fonts and icons from external providers. Your browser may contact those providers. Leaf images are not sent to them by the inference workflow.</p>
+    <h2>Use results carefully</h2>
+    <p>Only Cotton, Wheat and Rice leaf photographs are supported. Crop identification and disease predictions can be wrong. Confidence is a model score, not a guarantee, and the system does not measure disease severity.</p>
+    <a asp-controller="Home" asp-action="Index" class="btn dashboard-outline-btn">Back to Home</a>
+</article>

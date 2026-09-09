@@ -1,4 +1,4 @@
-﻿using AgroVisionAI.Data;
+using AgroVisionAI.Data;
 using AgroVisionAI.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
@@ -24,25 +24,24 @@ namespace AgroVisionAI.Controllers
         public async Task<IActionResult> Index()
         {
             var user = await _userManager.GetUserAsync(User);
-
             if (user == null)
             {
                 return RedirectToAction("Login", "Account");
             }
 
             var recentDetections = await _context.Detections
-                .Where(d => d.UserId == user.Id)
-                .OrderByDescending(d => d.CreatedAt)
+                .Include(item => item.Disease)
+                .Where(item => item.UserId == user.Id)
+                .OrderByDescending(item => item.CreatedAt)
                 .Take(3)
                 .ToListAsync();
 
-            var model = new DashboardViewModel
+            return View(new DashboardViewModel
             {
                 User = user,
                 RecentDetections = recentDetections
-            };
-
-            return View(model);
+            });
         }
     }
 }
+

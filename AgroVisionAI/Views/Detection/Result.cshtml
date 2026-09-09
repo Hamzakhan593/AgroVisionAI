@@ -1,145 +1,56 @@
-﻿@model AgroVisionAI.Models.Detection
-
+@model AgroVisionAI.Models.Detection
+@using System.Globalization
 @{
-    ViewData["Title"] = "Analysis Result";
+    ViewData["Title"] = "Your crop care plan";
+    var hasResult = Model.Disease != null && Model.Confidence.HasValue && double.IsFinite(Model.Confidence.Value);
+    var healthy = Model.Disease?.Name.StartsWith("Healthy", StringComparison.OrdinalIgnoreCase) == true;
+    var score = hasResult ? Math.Clamp(Model.Confidence!.Value * 100, 0, 100) : 0;
+    var days = ViewData["DaysToHarvest"] as int?;
+    var whitefly = ViewData["WhiteflyTreatmentNeeded"] as bool?;
+    var cottonCurl = Model.Crop.Equals("Cotton", StringComparison.OrdinalIgnoreCase) && Model.Disease?.Name == "Cotton Leaf Curl Virus";
 }
-
-<div class="result-page">
-
-    <div class="container">
-
-        <div class="result-header">
-
-            <span class="dashboard-eyebrow">
-                ANALYSIS COMPLETE
-            </span>
-
-            <h1>
-                Crop analysis
-            </h1>
-
-            <p>
-                Your image has been uploaded successfully and is ready
-                for AI analysis.
-            </p>
-
-        </div>
-
-
-        <div class="result-layout">
-
-            <!-- Image -->
-            <div class="result-image-card">
-
-                <img src="@Url.Action("Image", "Detection", new { id = Model.Id })"
-                     alt="@Model.Crop leaf image" />
-
-                <div class="result-image-caption">
-                    <span>Analyzed crop</span>
-
-                    <strong>
-                        @Model.Crop
-                    </strong>
-                </div>
-
-            </div>
-
-
-            <!-- Result -->
-            <div class="result-info-card">
-
-                <div class="result-status result-status-pending">
-                    <i class="bi bi-hourglass-split"></i>
-
-                    <span>
-                        Awaiting AI analysis
-                    </span>
-                </div>
-
-
-                <div class="result-crop">
-                    <span>SELECTED CROP</span>
-
-                    <h2>
-                        @Model.Crop
-                    </h2>
-                </div>
-
-
-                <div class="result-disease">
-
-                    <span>DETECTED CONDITION</span>
-
-                    <h2>
-                        Analysis Pending
-                    </h2>
-
-                    <p>
-                        The AI disease detection model will provide
-                        the disease prediction here.
-                    </p>
-
-                </div>
-
-
-                <div class="result-confidence">
-
-                    <div class="confidence-heading">
-                        <span>AI CONFIDENCE</span>
-
-                        <strong>
-                            Pending
-                        </strong>
-                    </div>
-
-                    <div class="confidence-bar">
-                        <div class="confidence-progress"
-                             style="width: 0%;">
-                        </div>
-                    </div>
-
-                </div>
-
-
-                <div class="result-note">
-
-                    <i class="bi bi-info-circle"></i>
-
-                    <p>
-                        This result will be updated once the
-                        AgroVision AI disease detection model
-                        is connected.
-                    </p>
-
-                </div>
-
-            </div>
-
-        </div>
-
-
-        <div class="result-actions">
-
-            <a asp-controller="Detection"
-               asp-action="Index"
-               class="btn dashboard-outline-btn">
-
-                <i class="bi bi-arrow-left me-1"></i>
-                Analyze Another Crop
-
-            </a>
-
-            <a asp-controller="Dashboard"
-               asp-action="Index"
-               class="btn dashboard-primary-btn">
-
-                Go to Dashboard
-                <i class="bi bi-arrow-right"></i>
-
-            </a>
-
-        </div>
-
+<link rel="stylesheet" href="~/css/treatment-pk.css" asp-append-version="true" />
+<link rel="stylesheet" href="~/css/care-result.css" asp-append-version="true" />
+<div class="care-page">
+    <nav class="care-breadcrumb" aria-label="Breadcrumb"><a asp-controller="Dashboard" asp-action="Index">Dashboard</a><span>/</span><a asp-controller="History" asp-action="Index">My analyses</a><span>/</span><span>Care plan</span></nav>
+    <header class="care-heading"><div><span class="care-eyebrow">AGROVISION AI · PAKISTAN CROP CARE</span><h1><span class="lang-ur">Aapki fasal ka ilaaj aur dekh bhaal</span><span class="lang-en">Your crop. A clearer next step.</span></h1><p><span class="lang-ur">Bimari ka natija dekhein, phir neeche bataye gaye dekh bhaal ke tareeqay aur dawa ki maloomat parhein.</span><span class="lang-en">Review the suspected condition, then explore the matching care and chemical options.</span></p></div><a class="care-button" asp-action="Index"><i class="bi bi-camera" aria-hidden="true"></i> <span class="lang-ur">Nayi tasveer check karein</span><span class="lang-en">Analyze another leaf</span></a></header>
+    <div class="care-overview">
+        <figure class="care-photo"><img src="@Url.Action("Image", "Detection", new { id = Model.Id })" alt="Uploaded @Model.Crop leaf" /><figcaption><span><span class="lang-ur">AAPKI BHEJI HUI TASVEER</span><span class="lang-en">YOUR UPLOADED IMAGE</span></span><strong>@Model.Crop</strong></figcaption></figure>
+        <section class="care-diagnosis" aria-labelledby="diagnosis-title">
+            <div class="care-status"><span class="care-dot"></span><span class="lang-ur">@(hasResult ? healthy ? "Koi pehchani hui bimari nazar nahi aayi" : "Bimari ki alamat nazar aayi hain" : "Natija dastiyab nahi")</span><span class="lang-en">@(hasResult ? healthy ? "No supported disease detected" : "Disease pattern identified" : "Prediction unavailable")</span></div>
+            <span class="care-eyebrow"><span class="lang-ur">@(healthy ? "TASVEER KA NATIJA" : "MUMKINA BIMARI")</span><span class="lang-en">@(healthy ? "IMAGE RESULT" : "SUSPECTED CONDITION")</span></span><h2 id="diagnosis-title">@(Model.Disease?.Name ?? "No saved prediction")</h2>
+            <p class="lang-en">@Model.Disease?.Description</p>
+            <div class="care-metrics"><div><span><span class="lang-ur">Fasal</span><span class="lang-en">Crop detected</span></span><strong>@Model.Crop</strong></div><div><span><span class="lang-ur">Model ka aitmaad</span><span class="lang-en">Model confidence</span></span><strong>@(hasResult ? score.ToString("0.0") + "%" : "Unavailable")</strong></div><div><span><span class="lang-ur">Report number</span><span class="lang-en">Analysis reference</span></span><strong>#@Model.Id</strong></div></div>
+            @if (hasResult)
+            { <div class="care-score" role="progressbar" aria-label="Model confidence, not severity" aria-valuemin="0" aria-valuemax="100" aria-valuenow="@score.ToString("0.0", CultureInfo.InvariantCulture)"><span style="width:@(score.ToString("0.0", CultureInfo.InvariantCulture))%"></span></div> }
+            <p class="care-note"><i class="bi bi-info-circle" aria-hidden="true"></i> <span class="lang-ur">Yeh percentage model ke aitmaad ko dikhati hai, bimari ki shiddat ko nahi. Sirf tasveer se laboratory wali tasdeeq nahi hoti.</span><span class="lang-en">Confidence describes the model's prediction, not disease severity. A photo is not a laboratory diagnosis.</span></p>
+        </section>
     </div>
-
+    @if (hasResult)
+    {
+        <div class="care-content">
+            <aside class="care-sidebar">
+                <section class="care-panel"><span class="care-eyebrow"><span class="lang-ur">KHET KI MALOOMAT</span><span class="lang-en">FIELD CHECK</span></span><h2><span class="lang-ur">Spray se pehle</span><span class="lang-en">Before you spray</span></h2><p><span class="lang-ur">Katai mein kitne din baqi hain? Is se pata chalega ke dawa ke baad zaroori intezar ka waqt mil sakta hai ya nahi.</span><span class="lang-en">Your harvest timing helps check whether a chemical option fits.</span></p>
+                    @if (ViewData["FieldContextError"] is string error) { <p class="care-error" role="alert">@error</p> }
+                    <form method="get" action="@Url.Action("Result", new { id = Model.Id })">
+                        <label for="care-days"><span class="lang-ur">Katai mein baqi din <span>(agar maloom hon)</span></span><span class="lang-en">Days until harvest <span>(optional)</span></span></label><input id="care-days" type="number" name="daysToHarvest" min="0" max="365" step="1" value="@(days >= 0 ? days : null)" placeholder="Din likhein / Enter days" />
+                        @if (cottonCurl)
+                        {
+                            <label for="care-whitefly"><span class="lang-ur">Kya khet ka muaina karke safed makhi ke khilaf dawa ki zaroorat ki tasdeeq hui hai?</span><span class="lang-en">Has a local field assessment confirmed a need to treat whitefly?</span></label>
+                            <select id="care-whitefly" name="whiteflyTreatmentNeeded"><option value="">Abhi muaina nahi hua / Not assessed</option><option value="true" selected="@(whitefly == true)">Haan, zaroorat hai / Confirmed</option><option value="false" selected="@(whitefly == false)">Nahi / No</option></select>
+                        }
+                        <button type="submit" class="care-button"><span class="lang-ur">Maloomat ke mutabiq dobara dekhein</span><span class="lang-en">Update care options</span> <i class="bi bi-arrow-right" aria-hidden="true"></i></button>
+                        <p class="care-note"><span class="lang-ur">Isi report mein dawa ki maloomat dobara check hogi. Nayi tasveer dene ki zaroorat nahi.</span><span class="lang-en">This updates the care plan for this saved result. No new photo or disease selection is needed.</span></p>
+                    </form>
+                </section>
+                <section class="care-panel care-soft"><h2><span class="lang-ur">Kin alamat ko dekhein? (English)</span><span class="lang-en">What to look for</span></h2><p>@Model.Disease?.Symptoms</p></section>
+                <section class="care-panel"><h2><span class="lang-ur">Dawa ki maloomat kahan se aayi?</span><span class="lang-en">Read the evidence</span></h2><p><span class="lang-ur">Har dawa ke saath Pakistan mein manufacturer ka hawala diya gaya hai. Jahan koi tafseel nahi mili, woh bhi wazeh likha hai.</span><span class="lang-en">Each chemical card links to the Pakistan manufacturer and shows which details are available.</span></p><p class="care-note"><span class="lang-ur">Manufacturer ki maloomat ko registration ki azad tasdeeq ya aapke khet ke liye nuskha na samjhein.</span><span class="lang-en">Published product information is not independent registration verification or a personalized prescription.</span></p></section>
+            </aside>
+            <div class="care-main" id="care-plan">
+                @await Component.InvokeAsync("TreatmentPk", new { detectionId = Model.Id, daysToHarvest = days, whiteflyTreatmentNeeded = whitefly })
+            </div>
+        </div>
+    }
+    else { <section class="care-panel"><p><span class="lang-ur">Bimari ka mukammal natija maujood nahi. Care plan ke liye nayi tasveer check karein.</span><span class="lang-en">No completed prediction is saved. Run a new analysis to generate a care plan.</span></p></section> }
+    <footer class="care-footer"><span><span class="lang-ur">Rehnumai aapki fasal aur pehchani gayi bimari ke mutabiq hai.</span><span class="lang-en">Care advice follows the detected crop and condition.</span></span><a asp-controller="History" asp-action="Index"><span class="lang-ur">Purani reports dekhein</span><span class="lang-en">View analysis history</span> <i class="bi bi-arrow-right" aria-hidden="true"></i></a></footer>
 </div>

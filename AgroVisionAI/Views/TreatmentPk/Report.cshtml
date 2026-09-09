@@ -1,0 +1,32 @@
+@model AgroVisionAI.TreatmentPk.TreatmentPage
+@{ ViewData["Title"] = "Treatment and crop care"; }
+<div class="tpk-wrap">
+    @if (Model.DetectionId.HasValue)
+    {
+        <form method="get" action="@Url.Action("Report", "TreatmentPk", new { id = Model.DetectionId.Value })" class="tpk-context">
+            <h2>Your field context</h2><p>Optional details for discussing this report with a local agriculture officer. Regional recommendations still need local review.</p>
+            <label>Province<select name="province">
+                <option value="">Not provided</option>
+                @foreach (var province in new[] { "Sindh", "Punjab", "Khyber Pakhtunkhwa", "Balochistan", "Islamabad", "Gilgit-Baltistan", "Azad Jammu and Kashmir" })
+                { <option value="@province" selected="@(Model.Context.Province == province)">@province</option> }
+            </select></label>
+            <label>Crop stage<select name="stage"><option value="">Unknown</option>
+                @foreach (var stage in new[] { "seedling", "vegetative", "flowering", "grain_or_boll_filling", "near_harvest" })
+                { <option value="@stage" selected="@(Model.Context.Stage == stage)">@stage.Replace('_', ' ')</option> }
+            </select></label>
+            <label>Days until harvest<input type="number" name="daysToHarvest" min="0" max="365" value="@Model.Context.DaysToHarvest" /></label>
+            @if (Model.Result.Condition?.Key == "curl_virus" && Model.Result.Condition?.Crop == "cotton")
+            {
+                <label>Whitefly treatment need confirmed by field assessment?
+                    <select name="whiteflyTreatmentNeeded">
+                        <option value="">Not assessed</option>
+                        <option value="true" selected="@(Model.Context.WhiteflyTreatmentNeeded == true)">Yes — a local field assessment supports treatment</option>
+                        <option value="false" selected="@(Model.Context.WhiteflyTreatmentNeeded == false)">No</option>
+                    </select>
+                </label>
+            }
+            <button type="submit">Update context</button>
+        </form>
+    }
+    @await Html.PartialAsync("~/Views/Shared/Components/TreatmentPk/Default.cshtml", Model)
+</div>

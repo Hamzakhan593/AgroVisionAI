@@ -18,7 +18,7 @@
                 </h1>
 
                 <p class="hero-description">
-                    Upload a leaf photograph to instantly identify crop diseases, evaluate severity metrics, and receive verified agronomic treatments.
+                    Upload a clear leaf photograph. AgroVision identifies the supported crop automatically, checks disease patterns, and provides guidance for your next steps.
                 </p>
 
                 <div class="hero-actions">
@@ -32,16 +32,16 @@
 
                 <div class="hero-stats">
                     <div class="stat-item">
-                        <h4>98.2%</h4>
-                        <p>Model Accuracy</p>
+                        <h4>Auto</h4>
+                        <p>Crop Identification</p>
                     </div>
                     <div class="stat-item">
                         <h4>3 Core</h4>
                         <p>Crops Covered</p>
                     </div>
                     <div class="stat-item">
-                        <h4>&lt; 2s</h4>
-                        <p>Inference Time</p>
+                        <h4>Local</h4>
+                        <p>Model Inference</p>
                     </div>
                 </div>
             </div>
@@ -55,9 +55,9 @@
                     <div class="floating-diagnostic">
                         <div class="d-flex justify-content-between align-items-center mb-1">
                             <span class="badge bg-success-subtle text-success border border-success-subtle px-2.5 py-1 fw-semibold">
-                                <i class="bi bi-shield-check me-1" aria-hidden="true"></i> Diagnosis Result
+                                <i class="bi bi-shield-check me-1" aria-hidden="true"></i> Illustrative Result
                             </span>
-                            <span class="small fw-bold text-dark">96.4% Match</span>
+                            <span class="small fw-bold text-dark">Example only</span>
                         </div>
                         <div class="fw-bold text-dark mt-1">Bacterial Leaf Blight</div>
                         <div class="confidence-bar" role="progressbar" aria-valuenow="96" aria-valuemin="0" aria-valuemax="100">
@@ -87,7 +87,7 @@
                         <i class="bi bi-upc-scan" aria-hidden="true"></i>
                     </div>
                     <h3>Early Detection</h3>
-                    <p>Detect pathogen signs before visible field-wide outbreaks occur, preserving root stock and overall harvest yield.</p>
+                    <p>Check visible leaf patterns against the conditions supported by each crop model. Results need field confirmation.</p>
                 </div>
             </div>
 
@@ -97,7 +97,7 @@
                         <i class="bi bi-cpu-fill" aria-hidden="true"></i>
                     </div>
                     <h3>Confidence Scoring</h3>
-                    <p>Receive probabilistic assessments indicating detection reliability, preventing inaccurate or unnecessary pesticide use.</p>
+                    <p>Review model confidence alongside each prediction. High confidence does not guarantee a correct result.</p>
                 </div>
             </div>
 
@@ -142,7 +142,7 @@
                         <i class="bi bi-gear-wide-connected" aria-hidden="true"></i>
                     </div>
                     <h3>Neural Analysis</h3>
-                    <p>The system evaluates leaf patterns, discolorations, and lesions against specialized crop disease classification models.</p>
+                    <p>The crop validator identifies Cotton, Wheat, or Rice, then routes the image to the corresponding disease model. Unsupported or uncertain predictions are rejected.</p>
                 </div>
             </div>
 
@@ -153,7 +153,7 @@
                         <i class="bi bi-journal-medical" aria-hidden="true"></i>
                     </div>
                     <h3>Review Action Plan</h3>
-                    <p>Review the disease profile, severity level, prevention tips, and recommended chemical or organic treatments.</p>
+                    <p>Review the predicted condition and prevention guidance. Confirm important cases with a qualified agricultural expert before treatment.</p>
                 </div>
             </div>
         </div>
@@ -179,8 +179,8 @@
                     </div>
                     <div class="crop-card-body">
                         <h3>Cotton</h3>
-                        <p>Identify Leaf Curl Virus, Bacterial Blight, Alternaria Leaf Spot, and nutrient deficiency markers.</p>
-                        <a asp-controller="Detection" asp-action="Index" asp-route-crop="cotton" class="crop-action-link">
+                        <p>Check for Bacterial Blight, Leaf Curl Virus, or a healthy leaf pattern.</p>
+                        <a asp-controller="Detection" asp-action="Index" class="crop-action-link">
                             Inspect Cotton <i class="bi bi-arrow-right" aria-hidden="true"></i>
                         </a>
                     </div>
@@ -196,8 +196,8 @@
                     </div>
                     <div class="crop-card-body">
                         <h3>Wheat</h3>
-                        <p>Screen for Yellow Rust, Brown Leaf Rust, Powdery Mildew, and Septoria leaf blotch damage.</p>
-                        <a asp-controller="Detection" asp-action="Index" asp-route-crop="wheat" class="crop-action-link">
+                        <p>Check for Brown Rust, Yellow Rust, or a healthy leaf pattern.</p>
+                        <a asp-controller="Detection" asp-action="Index" class="crop-action-link">
                             Inspect Wheat <i class="bi bi-arrow-right" aria-hidden="true"></i>
                         </a>
                     </div>
@@ -213,8 +213,8 @@
                     </div>
                     <div class="crop-card-body">
                         <h3>Rice</h3>
-                        <p>Detect Rice Blast, Brown Spot, Bacterial Panicle Blight, and Sheath Rot symptoms rapidly.</p>
-                        <a asp-controller="Detection" asp-action="Index" asp-route-crop="rice" class="crop-action-link">
+                        <p>Check for Bacterial Leaf Blight, Brown Spot, Leaf Blast, Tungro, or a healthy leaf pattern.</p>
+                        <a asp-controller="Detection" asp-action="Index" class="crop-action-link">
                             Inspect Rice <i class="bi bi-arrow-right" aria-hidden="true"></i>
                         </a>
                     </div>
@@ -229,10 +229,10 @@
     <div class="container">
         <div class="cta-banner text-center">
             <div class="eyebrow eyebrow-light mb-3">
-                Fast &amp; Field-Ready
+                LEAF-IMAGE DECISION SUPPORT
             </div>
             <h2>Ready to diagnose your crop?</h2>
-            <p>Upload a clear crop image now to receive a diagnosis report with guided treatment steps in seconds.</p>
+            <p>Upload a clear leaf image for a model prediction and practical guidance. Confirm important results in the field.</p>
             <a asp-controller="Detection" asp-action="Index" class="btn btn-cta btn-lg">
                 <i class="bi bi-camera-fill me-2" aria-hidden="true"></i> Launch Detection Tool
             </a>

@@ -1,0 +1,107 @@
+[
+  {
+    "file": "AgroVisionAI.csproj",
+    "change": "updated",
+    "sha256": "9e1291870e2c1ae42ae98160c2a62f2e8d7853a01463f4e0471fcda96117fbf5"
+  },
+  {
+    "file": "App_Data/TreatmentPk/catalog.json",
+    "change": "added",
+    "sha256": "467ca8dd60d2a0739f884d9b03434b9b99afec5ea0fb03a194e6c3467b0a2446"
+  },
+  {
+    "file": "App_Data/TreatmentPk/chemical-options.json",
+    "change": "added",
+    "sha256": "6452c18a9bdfa4079acd6c5eb9891a2b2be8716119fe633bdd1a111300e9a490"
+  },
+  {
+    "file": "App_Data/TreatmentPk/products.review.json",
+    "change": "added",
+    "sha256": "2354a26b0bd9555c791b90a485963151a9fcf57f66c68e81b603cc673d302a75"
+  },
+  {
+    "file": "App_Data/TreatmentPk/settings.json",
+    "change": "added",
+    "sha256": "a15be3f3b1394b29e882170cc345a62f7e1f265a26b31957d0b599dd8220c735"
+  },
+  {
+    "file": "Controllers/DetectionController.cs",
+    "change": "updated",
+    "sha256": "3618d9d04698104f494aee0bfdb7466b3f5f081ad022028eec0f0f6bb0974246"
+  },
+  {
+    "file": "Controllers/TreatmentPkController.cs",
+    "change": "added",
+    "sha256": "7e5ae44f8f105b86dc09603f6cc8bb5666127136b05e8dd81a11b1a91ad52d86"
+  },
+  {
+    "file": "TreatmentPk/ChemicalOptions.cs",
+    "change": "added",
+    "sha256": "bdb7e35e6f96a78c48971a3a95dc40261ed4371a80d53984e589eac4e888902c"
+  },
+  {
+    "file": "TreatmentPk/Contracts.cs",
+    "change": "added",
+    "sha256": "135e2b148efa59e18e311c62822264702d2f0b5a2b8185cc2cb9578d0a26a5e9"
+  },
+  {
+    "file": "TreatmentPk/TreatmentEngine.cs",
+    "change": "added",
+    "sha256": "b64aafae5a9d1ace862c91d1c4c1824292d86cb0eb095c18ab6f93134445b40f"
+  },
+  {
+    "file": "TreatmentPk/TreatmentStore.cs",
+    "change": "added",
+    "sha256": "ff94dea4ea55b9f583de871997b3c2621a48a77530242a43ca1c2d13fed6a9f6"
+  },
+  {
+    "file": "ViewComponents/TreatmentPkViewComponent.cs",
+    "change": "added",
+    "sha256": "53b563bff0c1a71d40c25afb564e8141d9b20a4f68ba98c9f3885c81e4b3aaf6"
+  },
+  {
+    "file": "Views/Detection/Result.cshtml",
+    "change": "updated",
+    "sha256": "3ad232a4511289f06074c816358b4b6e2a721396e35163ca146779215979dcbc"
+  },
+  {
+    "file": "Views/Shared/Components/TreatmentPk/Default.cshtml",
+    "change": "added",
+    "sha256": "df8d3891d6254fb83b9b599d7d1b2c42e45a5cbad27aeec38879e669265687b4"
+  },
+  {
+    "file": "Views/TreatmentPk/Evidence.cshtml",
+    "change": "added",
+    "sha256": "a7c6456c1d687826d9e3aef252dc985aa2f7dd678a75bed7ce97207887468b9b"
+  },
+  {
+    "file": "Views/TreatmentPk/Index.cshtml",
+    "change": "added",
+    "sha256": "f7a1a4c0420951e79a5d36628ba970d294b899171c579e3cd8dc8e48ff7ec4eb"
+  },
+  {
+    "file": "Views/TreatmentPk/Report.cshtml",
+    "change": "added",
+    "sha256": "f66aa7dd06cec781ce086d1744c9ef7e01390371c036dab9967df0084fc5fa4d"
+  },
+  {
+    "file": "Views/TreatmentPk/_ChemicalOptions.cshtml",
+    "change": "added",
+    "sha256": "f4752cdc17d8db33d727aeb7afcf20ac98100f4c24e7a3ad962d2fdbc834419a"
+  },
+  {
+    "file": "wwwroot/css/care-result.css",
+    "change": "added",
+    "sha256": "a18ddb2a0c398a9aebb84907391a852e6a687fa4feeb6c2dd047069fce632d76"
+  },
+  {
+    "file": "wwwroot/css/treatment-pk.css",
+    "change": "added",
+    "sha256": "f559883eb89f412255d8a243be6e74dec8797168af91e7919fb0f9c7e226af18"
+  },
+  {
+    "file": "wwwroot/js/care-language.js",
+    "change": "added",
+    "sha256": "9755cd02546c304354e5aa00bd0b74a3ba8f8adc495499a0483c5b640842544f"
+  }
+]

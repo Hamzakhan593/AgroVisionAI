@@ -1,88 +1,75 @@
-﻿// Please see documentation at https://learn.microsoft.com/aspnet/core/client-side/bundling-and-minification
-// for details on configuring this project to bundle and minify static web assets.
-
-// Write your JavaScript code.
-document.addEventListener("DOMContentLoaded", function () {
-
-    const cropOptions = document.querySelectorAll(".crop-option");
-    const uploadSection = document.getElementById("uploadSection");
-    const selectedCropMessage = document.getElementById("selectedCropMessage");
-    const selectedCropName = document.getElementById("selectedCropName");
-
-    const cropImage = document.getElementById("cropImage");
-    const imagePreview = document.getElementById("imagePreview");
-    const imagePreviewContainer = document.getElementById("imagePreviewContainer");
-
-    const removeImage = document.getElementById("removeImage");
-    const analyzeButton = document.getElementById("analyzeButton");
-
-
-    let selectedCrop = null;
-
-
-    // Crop selection
-    cropOptions.forEach(function (option) {
-
-        option.addEventListener("click", function () {
-
-            cropOptions.forEach(function (item) {
-                item.classList.remove("selected");
-            });
-
-            option.classList.add("selected");
-
-            selectedCrop = option.dataset.crop;
-
-            selectedCropName.textContent = selectedCrop;
-
-            document.getElementById("selectedCrop").value = selectedCrop;
-
-            selectedCropMessage.classList.add("visible");
-
-            uploadSection.classList.add("visible");
-
-        });
-
-    });
-
-
-    // Image selection
-    cropImage.addEventListener("change", function () {
-
-        const file = this.files[0];
-
-        if (!file) {
-            return;
+document.addEventListener("DOMContentLoaded", () => {
+    document.querySelectorAll(".nav-link-custom[href]").forEach(link => {
+        const url = new URL(link.href);
+        if (!url.hash && url.pathname.toLowerCase() === location.pathname.toLowerCase()) {
+            link.classList.add("active");
+            link.setAttribute("aria-current", "page");
         }
-
-        if (!file.type.startsWith("image/")) {
-            alert("Please select a valid image file.");
-            cropImage.value = "";
-            return;
+    });
+    const form = document.getElementById("detectionForm");
+    if (!form) return;
+    const input = document.getElementById("cropImage");
+    const preview = document.getElementById("imagePreview");
+    const container = document.getElementById("imagePreviewContainer");
+    const button = document.getElementById("analyzeButton");
+    const remove = document.getElementById("removeImage");
+    const feedback = document.getElementById("uploadFeedback");
+    const drop = document.getElementById("dropZone");
+    let objectUrl = null;
+    let submitting = false;
+    function clear() {
+        if (objectUrl) URL.revokeObjectURL(objectUrl);
+        objectUrl = null;
+        input.value = "";
+        preview.removeAttribute("src");
+        container.classList.remove("visible");
+        button.disabled = true;
+    }
+    function showFile() {
+        const file = input.files[0];
+        feedback.textContent = "";
+        if (!file) { clear(); return; }
+        if (!/\.(jpe?g|png)$/i.test(file.name) || file.size === 0 || file.size > 5 * 1024 * 1024) {
+            clear(); feedback.textContent = "Choose a non-empty JPG or PNG image, 5 MB or smaller."; return;
         }
-
-        const imageUrl = URL.createObjectURL(file);
-
-        imagePreview.src = imageUrl;
-
-        imagePreviewContainer.classList.add("visible");
-
-        analyzeButton.classList.add("visible");
-
+        if (objectUrl) URL.revokeObjectURL(objectUrl);
+        objectUrl = URL.createObjectURL(file);
+        button.disabled = true;
+        preview.onload = () => {
+            if (preview.naturalWidth < 32 || preview.naturalHeight < 32) {
+                clear(); feedback.textContent = "Choose an image at least 32 × 32 pixels."; return;
+            }
+            container.classList.add("visible"); button.disabled = false;
+        };
+        preview.onerror = () => { clear(); feedback.textContent = "This image cannot be opened. Please choose another."; };
+        preview.src = objectUrl;
+        document.getElementById("imageFileName").textContent = file.name;
+    }
+    input.addEventListener("change", showFile);
+    remove.addEventListener("click", () => { if (!submitting) { clear(); feedback.textContent = "Image removed."; input.focus(); } });
+    ["dragenter", "dragover"].forEach(name => drop.addEventListener(name, event => {
+        event.preventDefault(); if (!submitting) drop.classList.add("drag-active");
+    }));
+    ["dragleave", "drop"].forEach(name => drop.addEventListener(name, event => {
+        event.preventDefault(); drop.classList.remove("drag-active");
+    }));
+    drop.addEventListener("drop", event => {
+        if (submitting) return;
+        if (event.dataTransfer.files.length !== 1) { feedback.textContent = "Drop one image at a time."; return; }
+        input.files = event.dataTransfer.files; showFile();
     });
-
-
-    // Remove image
-    removeImage.addEventListener("click", function () {
-
-        cropImage.value = "";
-
-        imagePreview.src = "#";
-
-        imagePreviewContainer.classList.remove("visible");
-
-        analyzeButton.classList.remove("visible");
-
+    form.addEventListener("submit", event => {
+        if (submitting || !input.files.length || button.disabled) { event.preventDefault(); return; }
+        submitting = true; button.disabled = true; remove.disabled = true;
+        form.setAttribute("aria-busy", "true");
+        button.querySelector("span").textContent = "Identifying crop and checking leaf…";
+        button.querySelector("i").className = "bi bi-arrow-repeat analyze-spinner";
+        feedback.textContent = "Please wait. The first analysis can take longer while models load.";
     });
-
+    window.addEventListener("pageshow", () => {
+        submitting = false; remove.disabled = false; form.removeAttribute("aria-busy");
+        button.querySelector("span").textContent = "Detect crop & analyze";
+        button.querySelector("i").className = "bi bi-stars";
+        showFile();
+    });
 });

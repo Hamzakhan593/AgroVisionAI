@@ -1,0 +1,78 @@
+@model AgroVisionAI.TreatmentPk.TreatmentPage
+@{ var result = Model.Result; var condition = result.Condition; }
+<link rel="stylesheet" href="~/css/treatment-pk.css" asp-append-version="true" />
+<script src="~/js/care-language.js" asp-append-version="true" defer></script>
+<section class="tpk" aria-labelledby="tpk-title">
+    <div class="tpk-head">
+        <div><span class="tpk-eyebrow">AGROVISION · PAKISTAN</span><h2 id="tpk-title"><span class="lang-ur">Fasal ki dekh bhaal aur ilaaj</span><span class="lang-en">Treatment &amp; crop care</span></h2></div>
+        <div class="care-language" role="group" aria-label="Choose language"><button type="button" data-care-set-language="ur" aria-pressed="true">Roman Urdu</button><button type="button" data-care-set-language="en" aria-pressed="false">English</button></div>
+    </div>
+    @{ var statusUr = result.State switch {
+        "healthy" => "Tasveer mein model ko koi pehchani hui bimari nazar nahi aayi. Fasal ka muaina jari rakhein.",
+        "guidance" => "Neeche is bimari ke mutabiq dekh bhaal aur dawa ki maloomat di gayi hai. Spray se pehle khet ki surat-e-haal aur asal label zaroor dekhein.",
+        "reference" => "Yeh aam rehnumai hai. Yeh aapke khet ke liye tasdeeq shuda nuskha nahi hai.",
+        "uncertain" => "Model ka andaza wazeh nahi hai. Spray ka faisla karne se pehle bimari ki tasdeeq karwayein.",
+        _ => "Is natije ke liye bharosemand ilaaj ki rehnumai dastiyab nahi. Saaf tasveer dobara dein ya zarai maahir se mashwara karein."
+    }; }
+    <p class="tpk-message" role="status"><span class="lang-ur">@statusUr</span><span class="lang-en">@result.Message</span></p>
+    @if (condition != null)
+    {
+        <h3>@condition.Name</h3>
+        <p><span class="lang-en">@condition.Summary.En</span><span class="lang-ur">@condition.Summary.RomanUrdu</span></p>
+        @if (result.Confidence.HasValue)
+        {
+            <p class="tpk-small"><span class="lang-ur">Model ka aitmaad:</span><span class="lang-en">Model confidence:</span> <strong>@result.Confidence.Value.ToString("P1")</strong>. <span class="lang-ur">Yeh bimari ki shiddat nahi batata.</span><span class="lang-en">This is not a disease-severity score.</span></p>
+            @if (!result.CalibrationValidated)
+            { <p class="tpk-small"><span class="lang-ur">Model ke aitmaad ki had ko maqami kheton ki tasveeron par abhi jaanchna baqi hai.</span><span class="lang-en">Confidence thresholds still need validation on local field images.</span></p> }
+        }
+        <div class="tpk-grid">
+            <article class="tpk-card"><h4><span class="lang-ur">Ab kya karein</span><span class="lang-en">What to do now</span></h4><ol>
+                @foreach (var tip in condition.Today)
+                { <li><span class="lang-en">@tip.En</span><span class="lang-ur">@tip.RomanUrdu</span></li> }
+            </ol></article>
+            <article class="tpk-card"><h4><span class="lang-ur">Bimari se bachao</span><span class="lang-en">Prevention</span></h4><ul>
+                @foreach (var tip in condition.Prevention)
+                { <li><span class="lang-en">@tip.En</span><span class="lang-ur">@tip.RomanUrdu</span></li> }
+            </ul></article>
+        </div>
+        @await Html.PartialAsync("~/Views/TreatmentPk/_ChemicalOptions.cshtml", result)
+        <article class="tpk-caution"><h4><span class="lang-ur">Spray se pehle yeh baatein yaad rakhein</span><span class="lang-en">Before choosing a spray</span></h4>
+            @foreach (var tip in condition.Avoid)
+            { <p><span class="lang-en">@tip.En</span><span class="lang-ur">@tip.RomanUrdu</span></p> }
+            <details><summary><span class="lang-ur">Dawa ki tasdeeq ki tafseel (English)</span><span class="lang-en">Chemical verification details</span></summary><p>@result.ChemicalMessage</p></details>
+        </article>
+        @foreach (var product in result.Prescriptions)
+        {
+            <article class="tpk-card">
+                <h4>@product.ActiveIngredient · @product.Formulation</h4><p>Product: @product.Brand</p>
+                <dl class="tpk-facts">
+                    <dt>Product per acre</dt><dd>@product.DoseMlPerAcre ml</dd>
+                    <dt>Water per acre</dt><dd>@product.WaterLitresPerAcre litres</dd>
+                    <dt>Minimum wait before harvest</dt><dd>@product.PhiDays days</dd>
+                    <dt>Restricted entry after spraying</dt><dd>@product.ReiHours hours</dd>
+                </dl>
+                <p>@product.Instructions</p><p>Protection: @product.Ppe</p><p>Resistance management: @product.Resistance</p>
+                <p><a href="@product.LabelUrl" target="_blank" rel="noopener noreferrer">Exact label</a> · <a href="@product.RegistrationUrl" target="_blank" rel="noopener noreferrer">Registration evidence</a></p>
+                <p class="tpk-small">Reviewed by @product.ReviewedBy · Review due @product.ReviewDueOn</p>
+            </article>
+        }
+        var escalation = condition.Escalation.Split(new[] { " / " }, 2, StringSplitOptions.None);
+        <p class="tpk-escalation"><strong><span class="lang-ur">Zarai maahir se kab rabta karein:</span><span class="lang-en">When to ask an expert:</span></strong> <span class="lang-en">@escalation[0]</span><span class="lang-ur">@(escalation.Length > 1 ? escalation[1] : escalation[0])</span></p>
+        <details class="tpk-sources"><summary><span class="lang-ur">Maloomat ke hawalay aur jaanch ki tafseel (English)</span><span class="lang-en">Evidence and review status</span></summary>
+            <p>@condition.LocalityNote</p>
+            <p>Local expert review: @(condition.ReviewStatus == "local_expert_reviewed" ? condition.LocalExpert : "Pending — source-backed general guidance only")</p>
+            <p>Last evidence check: @condition.LastEvidenceCheck · Catalogue: @result.CatalogVersion</p>
+            <ul>@foreach (var source in result.Sources)
+            { <li><a href="@source.Url" target="_blank" rel="noopener noreferrer">@source.Title</a><span class="tpk-small">@source.Scope · @(source.Access == "page_read" ? "Page read" : source.Access == "search_excerpt" ? "Indexed excerpt checked" : "Not retrieved")</span></li> }</ul>
+        </details>
+    }
+    else
+    {
+        <p><span class="lang-ur">Pattay ki saaf tasveer dobara dein. Alamat barqarar rahein to maqami zarai afsar se mashwara karein.</span><span class="lang-en">Upload a clear leaf photo. If symptoms persist, consult a local agriculture officer.</span></p>
+    }
+    <nav class="tpk-actions" aria-label="Treatment links">
+        @if (Model.DetectionId.HasValue)
+        { <a href="@Url.Action("Report", "TreatmentPk", new { id = Model.DetectionId.Value })"><span class="lang-ur">Mukammal care report dekhein</span><span class="lang-en">Open full care report</span></a> }
+        <a href="@Url.Action("Index", "TreatmentPk")"><span class="lang-ur">Doosri faslon ki rehnumai dekhein</span><span class="lang-en">Browse crop-care reference</span></a>
+    </nav>
+</section>

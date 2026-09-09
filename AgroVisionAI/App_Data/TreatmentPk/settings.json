@@ -1,0 +1,22 @@
+{
+  "schemaVersion": 1,
+  "confidenceScale": "fraction",
+  "minimumConfidence": 0.85,
+  "minimumMargin": 0.15,
+  "thresholdsValidated": false,
+  "calibrationReference": null,
+  "calibrationReviewedOn": null,
+  "calibrationReviewDueOn": null,
+  "modelVersion": null,
+  "paths": {
+    "crop": "Crop",
+    "disease": "Disease.Name",
+    "confidence": "Confidence",
+    "secondConfidence": "",
+    "cropAccepted": "",
+    "imageUsable": "",
+    "inferenceSucceeded": "",
+    "modelVersion": ""
+  },
+  "notes": "Integrated with the supplied September 6 working project: Detection.Crop, Disease.Name and Confidence (fraction). Unknown quality/model-calibration fields remain unknown."
+}

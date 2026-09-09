@@ -1,0 +1,37 @@
+/* Accessible, responsive refinements shared by every module. */
+:focus-visible { outline: 3px solid #16754a; outline-offset: 4px; }
+.skip-link { position: fixed; top: -100px; left: 16px; z-index: 2000; background: #fff; color: #164b31; padding: 12px 20px; border-radius: 8px; }
+.skip-link:focus { top: 12px; }
+.nav-link-custom.active { color: #166534 !important; font-weight: 800; }
+.site-main { min-width: 0; }
+.site-main:focus { outline: none; }
+.dashboard-welcome h1, .profile-summary-card, .history-condition, .brand-text { overflow-wrap: anywhere; }
+.auto-crop-info { display: flex; gap: 16px; padding: 20px; margin-bottom: 24px; background: #edf7ef; border: 1px solid #c9e3d0; border-radius: 16px; color: #194d31; }
+.auto-crop-info > i { font-size: 1.6rem; }
+.auto-crop-info p { margin: 6px 0 0; font-size: .92rem; line-height: 1.6; }
+.upload-label { display: block; font-size: 1.2rem; font-weight: 700; cursor: pointer; }
+.upload-area:focus-within, .upload-area.drag-active { outline: 3px solid #16754a; background: #edf7ef; }
+.upload-area input[type="file"] { position: static; display: block; opacity: 1; pointer-events: auto; width: 100%; max-width: 360px; height: auto; margin: 18px auto 0; font-size: .9rem; }
+.upload-area input::file-selector-button { background: #e1eee5; color: #194d31; border: 1px solid #b3d1bd; border-radius: 6px; padding: 8px 12px; cursor: pointer; }
+.upload-feedback { color: #8a311f; min-height: 1.5em; margin: 14px 0; overflow-wrap: anywhere; }
+.scan-disclaimer { margin: 18px 0 0; color: #58645c; font-size: .85rem; line-height: 1.7; }
+.preview-info { gap: 12px; }
+.preview-info span { min-width: 0; overflow-wrap: anywhere; }
+.remove-image-btn { flex-shrink: 0; }
+.confidence-heading { gap: 16px; }
+.confidence-heading span { font-size: .75rem; }
+.history-card-top { flex-wrap: wrap; gap: 8px; }
+.privacy-content { max-width: 840px; margin: 0 auto; padding: 64px 24px; line-height: 1.8; }
+.privacy-content h2 { font-size: 1.3rem; margin-top: 28px; }
+@media (max-width: 575px) {
+    .detection-card, .auth-card, .profile-form-card, .result-info-card { padding: 24px 18px; }
+    .detection-header h1, .dashboard-welcome h1, .history-header h1 { font-size: 2rem; }
+    .upload-area { padding: 24px 12px; }
+    .dashboard-recent-item, .dashboard-scan-card, .result-actions, .history-header { flex-wrap: wrap; gap: 16px; }
+    .dashboard-recent-info { min-width: 0; flex: 1; }
+    .analyze-btn { white-space: normal; }
+    .hero-stats { flex-wrap: wrap; gap: 18px; }
+}
+@media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after { animation: none !important; transition: none !important; scroll-behavior: auto !important; }
+}

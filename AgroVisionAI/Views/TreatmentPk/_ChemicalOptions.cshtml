@@ -1,0 +1,42 @@
+@model AgroVisionAI.TreatmentPk.TreatmentResult
+@if (Model.ChemicalOptions.Count > 0)
+{
+<section class="tpk-chemical-section" aria-label="Pakistan chemical options">
+    <h3><span class="lang-ur">Is bimari ke liye dawa ki maloomat</span><span class="lang-en">Chemical options for this condition</span></h3>
+    <p><span class="lang-ur">Yeh maloomat Pakistan mein manufacturer ke diye gaye hawalay se li gayi hai. Istemal se pehle dabbe ka asal label, formulation aur khet mein dawa ki zaroorat check karein. Maujooda registration, mukammal label aur maqami maahir ki manzoori ki azad tasdeeq abhi baqi hai.</span><span class="lang-en">Published by a Pakistan manufacturer. Confirm the exact container label, formulation and field need before use. Current registration, full-label verification and local expert approval have not been independently established.</span></p>
+    <p class="tpk-small"><span class="lang-ur">Neeche di gayi dawaein alag options hain; inhein aapas mein na milayein. Pani, khet mein dobara dakhil hone aur dobara spray ki jo tafseel nahi di gayi, woh asal label se dekhein. Andaza na lagayein.</span><span class="lang-en">These are alternatives, not a tank mix. Missing water, re-entry or repeat-spray details must come from the exact label; do not guess them.</span></p>
+    @foreach (var card in Model.ChemicalOptions)
+    {
+        var p = card.Product;
+        <article class="tpk-card tpk-chemical-card">
+            <span class="tpk-badge"><span class="lang-ur">@(p.Purpose == "vector_control" ? "Safed makhi ke liye — virus ka ilaaj nahi" : "Manufacturer ki di hui fungicide ki maloomat")</span><span class="lang-en">@(p.Purpose == "vector_control" ? "Whitefly control — not a virus cure" : "Manufacturer-documented fungicide option")</span></span>
+            <h4>@p.Brand</h4><p><strong>@p.ActiveIngredient</strong> · @p.Formulation</p>
+            @{ var messageUr = card.Status switch {
+                "harvest_conflict" => "Katai tak baqi din is dawa ke zaroori intezar se kam hain. Di gayi katai ki tareekh ke saath yeh dawa istemal na karein.",
+                "invalid_harvest" => "Katai mein baqi din durust likhein. Filhal dawa ki miqdaar nahi dikhayi ja rahi.",
+                "assess_whiteflies" => "Pehle khet ka muaina karke safed makhi ke khilaf dawa ki zaroorat ki tasdeeq karwayein. Yeh virus ka ilaaj nahi hai.",
+                "review_due" => "Is hawalay ki dobara jaanch zaroori hai. Tasdeeq tak dawa ki miqdaar nahi dikhayi ja rahi.",
+                _ => "Yeh manufacturer ki shaya karda miqdaar hai. Spray se pehle asal label, khet ki zaroorat aur katai tak zaroori intezar ki tasdeeq karein."
+            }; }
+            <p class="tpk-message" role="status"><span class="lang-ur">@messageUr</span><span class="lang-en">@card.Message</span></p>
+            <dl class="tpk-dose-grid">
+                <div><dt><span class="lang-ur">Dawa ki miqdaar</span><span class="lang-en">Published product quantity</span></dt><dd>@(card.ShowPublishedDose ? p.DoseMlPerAcre.ToString("0.##") + " ml / acre" : "Miqdaar rok di gayi hai / Withheld")</dd></div>
+                <div><dt><span class="lang-ur">Pani ki miqdaar</span><span class="lang-en">Published water quantity</span></dt><dd>@(card.ShowPublishedDose && p.WaterLitresPerAcre.HasValue ? p.WaterLitresPerAcre.Value.ToString("0.##") + " L / acre" : "Asal label se dekhein / Check exact label")</dd></div>
+                <div><dt><span class="lang-ur">Katai se pehle intezar (PHI)</span><span class="lang-en">Minimum time before harvest (PHI)</span></dt><dd>@p.PhiDays <span class="lang-ur">din, aakhri spray ke baad</span><span class="lang-en">days after the final spray</span></dd></div>
+            </dl>
+            <dl class="tpk-facts">
+                <dt><span class="lang-ur">Kin alamat ke liye</span><span class="lang-en">Manufacturer's target</span></dt><dd>@p.SourceTarget</dd>
+                <dt><span class="lang-ur">Khet mein dobara dakhil hona (REI)</span><span class="lang-en">Restricted re-entry (REI)</span></dt><dd>@(p.ReiHours.HasValue ? p.ReiHours.Value + " hours" : "Maloomat nahi mili; asal label dekhein / Check label before use")</dd>
+                <dt><span class="lang-ur">Dobara spray ka waqfa</span><span class="lang-en">Repeat interval</span></dt><dd>@(p.RepeatIntervalDays.HasValue ? p.RepeatIntervalDays.Value + " days; only if label conditions allow" : "Maloomat nahi mili; dobara spray khud se na karein / No automatic repeat")</dd>
+                <dt><span class="lang-ur">Spray ki zyada se zyada tadaad</span><span class="lang-en">Maximum applications</span></dt><dd>@(p.MaxApplications.HasValue ? p.MaxApplications.Value.ToString() : "Asal label aur pichle spray check karein / Check label and spray history")</dd>
+            </dl>
+            <p><strong><span class="lang-ur">Spray ka waqt (English):</span><span class="lang-en">Timing:</span></strong> @p.Timing</p>
+            <p><strong><span class="lang-ur">Istemal ki hudood (English):</span><span class="lang-en">Scope:</span></strong> @p.CoverageNote</p>
+            <p class="tpk-small"><span class="lang-ur">PHI katai se pehle intezar hai, dobara spray ka waqfa nahi. Pani ya dawa ki miqdaar apni taraf se tabdeel na karein.</span><span class="lang-en">PHI is the wait before harvest, not a repeat-spray interval. Do not change water or product quantities yourself.</span></p>
+            <p><a href="@p.SourceUrl" target="_blank" rel="noopener noreferrer">@p.SourceTitle</a> · checked @p.CheckedOn</p>
+            <details><summary><span class="lang-ur">Mazeed hawalay aur jaanch ki tafseel (English)</span><span class="lang-en">Evidence details</span></summary><p>@p.Notes</p><p>Next source review by @p.ReviewDueOn. This review date is an application policy, not pesticide-registration expiry.</p></details>
+        </article>
+    }
+    <p class="tpk-small"><span class="lang-ur">Spray ka tareeqa, hifazati libaas, mausam ki pabandiyan aur khaali dabbe ko thikane lagane ka tareeqa asal label ke mutabiq rakhein. Zaroori hidayat na mile to spray se pehle tasdeeq karwayein. Model ke confidence se dawa ki miqdaar na nikalein.</span><span class="lang-en">Follow the label's application method, protective equipment, weather restrictions and disposal instructions. If an essential instruction is missing, confirm it before applying. Do not use the AI confidence score to calculate a dose.</span></p>
+</section>
+}
