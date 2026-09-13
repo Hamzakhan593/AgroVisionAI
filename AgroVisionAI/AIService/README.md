@@ -12,8 +12,8 @@ Place the final files in `AIService\models` using these preferred names:
 - `rice_v2_efficientnetv2b0_best.keras`
 
 Alternative filenames and environment-variable overrides are documented in
-`models\README.md`. The models are intentionally not duplicated in this ZIP because the
-uploaded website did not contain them.
+`models\README.md`. Trained model binaries are distributed separately from Git. The
+repository contains only their configuration and class labels.
 
 ## 2. One-time setup on Windows
 
@@ -76,4 +76,3 @@ Prediction labels are correct only when `classes` in `app\config.py` have the ex
 order used during training. The included order matches alphabetically named training
 folders. If any training script used a manual order, update that one tuple before the final
 demo.
-

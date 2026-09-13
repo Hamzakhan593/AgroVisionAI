@@ -1,0 +1,121 @@
+@model AgroVisionAI.Models.ExpertReviewQueueViewModel
+@using AgroVisionAI.Models
+@{
+    ViewData["Title"] = "Expert Review";
+}
+
+<section class="expert-review-page">
+    <div class="container py-5">
+        <div class="d-flex flex-column flex-lg-row justify-content-between align-items-lg-end gap-3 mb-4">
+            <div>
+                <span class="expert-kicker"><i class="bi bi-person-check-fill"></i> Human-in-the-loop AI</span>
+                <h1 class="expert-title">Expert Review Queue</h1>
+                <p class="expert-subtitle mb-0">Review user feedback before any sample can become a verified retraining candidate.</p>
+            </div>
+            <a asp-action="ExportVerified" class="btn expert-export-btn">
+                <i class="bi bi-file-earmark-zip me-2"></i>Export verified dataset
+            </a>
+        </div>
+
+        @if (TempData["ExpertReviewSuccess"] is string success)
+        {
+            <div class="alert alert-success"><i class="bi bi-check-circle me-2"></i>@success</div>
+        }
+        @if (TempData["ExpertReviewError"] is string error)
+        {
+            <div class="alert alert-warning"><i class="bi bi-exclamation-triangle me-2"></i>@error</div>
+        }
+
+        <div class="expert-stats mb-4">
+            <a asp-action="Index" asp-route-status="pending" class="expert-stat @(Model.StatusFilter == "pending" ? "active" : "")">
+                <span class="expert-stat-label">Pending</span>
+                <strong>@Model.PendingCount</strong>
+            </a>
+            <a asp-action="Index" asp-route-status="verified" class="expert-stat @(Model.StatusFilter == "verified" ? "active" : "")">
+                <span class="expert-stat-label">Verified</span>
+                <strong>@Model.VerifiedCount</strong>
+            </a>
+            <a asp-action="Index" asp-route-status="rejected" class="expert-stat @(Model.StatusFilter == "rejected" ? "active" : "")">
+                <span class="expert-stat-label">Rejected</span>
+                <strong>@Model.RejectedCount</strong>
+            </a>
+            <a asp-action="Index" asp-route-status="all" class="expert-stat @(Model.StatusFilter == "all" ? "active" : "")">
+                <span class="expert-stat-label">All feedback</span>
+                <strong>@(Model.PendingCount + Model.VerifiedCount + Model.RejectedCount)</strong>
+            </a>
+        </div>
+
+        <div class="expert-panel">
+            <div class="expert-panel-head">
+                <div>
+                    <h2>@(Model.StatusFilter == "all" ? "All feedback" : $"{char.ToUpperInvariant(Model.StatusFilter[0])}{Model.StatusFilter[1..]} feedback")</h2>
+                    <p>Showing up to the latest 100 records.</p>
+                </div>
+            </div>
+
+            @if (Model.Items.Count == 0)
+            {
+                <div class="expert-empty">
+                    <i class="bi bi-inbox"></i>
+                    <h3>No records here</h3>
+                    <p>New user feedback will appear in this review queue.</p>
+                </div>
+            }
+            else
+            {
+                <div class="table-responsive">
+                    <table class="table expert-table align-middle mb-0">
+                        <thead>
+                            <tr>
+                                <th>Analysis</th>
+                                <th>AI result</th>
+                                <th>User feedback</th>
+                                <th>User</th>
+                                <th>Updated</th>
+                                <th></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                        @foreach (var item in Model.Items)
+                        {
+                            var statusClass = item.VerificationStatus.ToString().ToLowerInvariant();
+                            <tr>
+                                <td>
+                                    <div class="expert-analysis-cell">
+                                        <img src="@Url.Action("Image", "ExpertReview", new { id = item.DetectionId })" alt="Crop sample" loading="lazy" />
+                                        <div>
+                                            <strong>#@item.DetectionId · @item.Crop</strong>
+                                            <span class="expert-status expert-status-@statusClass">@item.VerificationStatus</span>
+                                        </div>
+                                    </div>
+                                </td>
+                                <td>
+                                    <strong>@item.AiDisease</strong>
+                                    <small>@(item.Confidence.HasValue ? $"{item.Confidence.Value:P1} confidence" : "confidence unavailable")</small>
+                                </td>
+                                <td>
+                                    <strong>@item.Verdict</strong>
+                                    @if (!string.IsNullOrWhiteSpace(item.SuggestedDisease))
+                                    {
+                                        <small>Suggested: @item.SuggestedDisease</small>
+                                    }
+                                </td>
+                                <td>@item.UserDisplayName</td>
+                                <td><span title="@item.UpdatedAt.ToUniversalTime().ToString("O")">@item.UpdatedAt.ToLocalTime().ToString("dd MMM yyyy, h:mm tt")</span></td>
+                                <td class="text-end">
+                                    <a asp-action="Details" asp-route-id="@item.FeedbackId" class="btn btn-sm expert-review-btn">Review</a>
+                                </td>
+                            </tr>
+                        }
+                        </tbody>
+                    </table>
+                </div>
+            }
+        </div>
+
+        <div class="expert-note mt-4">
+            <i class="bi bi-shield-check"></i>
+            <p class="mb-0"><strong>Safety rule:</strong> verified exports are still retraining candidates. Re-audit duplicates, leakage, class balance and image quality before model training.</p>
+        </div>
+    </div>
+</section>

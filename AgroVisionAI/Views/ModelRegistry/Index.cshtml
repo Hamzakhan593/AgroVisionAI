@@ -1,0 +1,182 @@
+@model AgroVisionAI.Models.ModelRegistry.ModelRegistryIndexViewModel
+@using AgroVisionAI.Models
+@{
+    ViewData["Title"] = "Model Registry";
+    string Metric(double? value) => value.HasValue ? $"{value.Value * 100:F2}%" : "—";
+}
+
+<section class="model-registry-page py-5">
+    <div class="container">
+        <div class="registry-hero mb-4">
+            <div>
+                <div class="registry-kicker">Admin · MLOps</div>
+                <h1>AI Model Registry</h1>
+                <p>Track disease-model versions, benchmark metadata and the model currently serving new predictions.</p>
+            </div>
+            <div class="registry-service @(Model.AiServiceReachable ? "is-ready" : "is-offline")">
+                <i class="bi @(Model.AiServiceReachable ? "bi-check-circle-fill" : "bi-exclamation-triangle-fill")"></i>
+                <div>
+                    <strong>@(Model.AiServiceReachable ? "AI service connected" : "AI service unavailable")</strong>
+                    <span>@Model.ServiceMessage</span>
+                </div>
+            </div>
+        </div>
+
+        @if (TempData["ModelRegistrySuccess"] is string success)
+        {
+            <div class="alert alert-success">@success</div>
+        }
+        @if (TempData["ModelRegistryError"] is string error)
+        {
+            <div class="alert alert-danger">@error</div>
+        }
+
+        <div class="registry-note mb-4">
+            <i class="bi bi-shield-check"></i>
+            <div>
+                <strong>Safe activation</strong>
+                <span>A candidate is loaded and checked before it replaces the current runtime model. Activating an older version acts as rollback. New models must keep the crop class order defined in AIService/app/config.py.</span>
+            </div>
+        </div>
+
+        @if (!Model.Models.Any())
+        {
+            <div class="registry-empty">
+                <i class="bi bi-cpu"></i>
+                <h2>No disease models synchronized yet</h2>
+                <p>Start <code>AIService\start_api.bat</code>, then refresh this page.</p>
+            </div>
+        }
+        else
+        {
+            @foreach (var cropGroup in Model.Models.GroupBy(item => item.Crop).OrderBy(group => group.Key))
+            {
+                var active = cropGroup.FirstOrDefault(item => item.Status == AiModelLifecycleStatus.Active);
+                <section class="crop-registry mb-4">
+                    <header class="crop-registry-header">
+                        <div>
+                            <span class="crop-pill">@cropGroup.Key</span>
+                            <h2>@char.ToUpperInvariant(cropGroup.Key[0])@cropGroup.Key.Substring(1) models</h2>
+                        </div>
+                        <div class="active-summary">
+                            <span>Active runtime</span>
+                            <strong>@(active?.Version ?? "None")</strong>
+                            <small>@(active?.Filename ?? "AI service not synchronized")</small>
+                        </div>
+                    </header>
+
+                    <div class="row g-3">
+                        @foreach (var item in cropGroup)
+                        {
+                            var statusClass = item.Status switch
+                            {
+                                AiModelLifecycleStatus.Active => "status-active",
+                                AiModelLifecycleStatus.Archived => "status-archived",
+                                _ => "status-candidate"
+                            };
+                            <div class="col-12">
+                                <article class="model-card @statusClass">
+                                    <div class="model-card-main">
+                                        <div class="model-identity">
+                                            <div class="model-icon"><i class="bi bi-cpu-fill"></i></div>
+                                            <div>
+                                                <div class="d-flex flex-wrap align-items-center gap-2">
+                                                    <h3>@item.Version</h3>
+                                                    <span class="registry-status">@item.Status</span>
+                                                    @if (item.IsLoaded)
+                                                    {
+                                                        <span class="loaded-badge">Loaded</span>
+                                                    }
+                                                    @if (!item.IsAvailable)
+                                                    {
+                                                        <span class="missing-badge">File missing</span>
+                                                    }
+                                                </div>
+                                                <code>@item.Filename</code>
+                                            </div>
+                                        </div>
+
+                                        <div class="model-metrics">
+                                            <div><span>Architecture</span><strong>@(item.Architecture ?? "—")</strong></div>
+                                            <div><span>Accuracy</span><strong>@Metric(item.Accuracy)</strong></div>
+                                            <div><span>Macro F1</span><strong>@Metric(item.MacroF1)</strong></div>
+                                            <div><span>External</span><strong>@Metric(item.ExternalAccuracy)</strong></div>
+                                            <div><span>Preprocess</span><strong>@(item.Preprocessing ?? "Auto / not loaded")</strong></div>
+                                        </div>
+                                    </div>
+
+                                    @if (item.SelectionLockedByEnvironment)
+                                    {
+                                        <div class="alert alert-warning py-2 mb-3">
+                                            Runtime selection is locked by an environment model override. Remove that override before switching from the admin panel.
+                                        </div>
+                                    }
+
+                                    <div class="model-actions">
+                                        <form asp-action="Activate" method="post">
+                                            @Html.AntiForgeryToken()
+                                            <input type="hidden" name="id" value="@item.Id" />
+                                            <button class="btn btn-success" type="submit"
+                                                    disabled="@(item.Status == AiModelLifecycleStatus.Active || !item.IsAvailable || item.SelectionLockedByEnvironment)">
+                                                <i class="bi bi-play-fill"></i>
+                                                @(item.Status == AiModelLifecycleStatus.Archived ? "Rollback / Activate" : "Activate")
+                                            </button>
+                                        </form>
+
+                                        @if (item.Status == AiModelLifecycleStatus.Candidate)
+                                        {
+                                            <form asp-action="Archive" method="post">
+                                                @Html.AntiForgeryToken()
+                                                <input type="hidden" name="id" value="@item.Id" />
+                                                <button class="btn btn-outline-secondary" type="submit">Archive</button>
+                                            </form>
+                                        }
+                                        else if (item.Status == AiModelLifecycleStatus.Archived)
+                                        {
+                                            <form asp-action="MarkCandidate" method="post">
+                                                @Html.AntiForgeryToken()
+                                                <input type="hidden" name="id" value="@item.Id" />
+                                                <button class="btn btn-outline-secondary" type="submit">Mark Candidate</button>
+                                            </form>
+                                        }
+                                    </div>
+
+                                    <details class="metadata-editor mt-3">
+                                        <summary><i class="bi bi-pencil-square me-1"></i>Edit benchmark metadata</summary>
+                                        <form asp-action="SaveMetadata" method="post" class="row g-3 mt-1">
+                                            @Html.AntiForgeryToken()
+                                            <input type="hidden" name="Id" value="@item.Id" />
+                                            <div class="col-md-4">
+                                                <label class="form-label">Architecture</label>
+                                                <input class="form-control" name="Architecture" maxlength="120" value="@item.Architecture" />
+                                            </div>
+                                            <div class="col-md-2">
+                                                <label class="form-label">Accuracy (0–1)</label>
+                                                <input class="form-control" name="Accuracy" type="number" min="0" max="1" step="0.000001" value="@(item.Accuracy?.ToString("0.######", System.Globalization.CultureInfo.InvariantCulture))" />
+                                            </div>
+                                            <div class="col-md-2">
+                                                <label class="form-label">Macro F1</label>
+                                                <input class="form-control" name="MacroF1" type="number" min="0" max="1" step="0.000001" value="@(item.MacroF1?.ToString("0.######", System.Globalization.CultureInfo.InvariantCulture))" />
+                                            </div>
+                                            <div class="col-md-2">
+                                                <label class="form-label">External acc.</label>
+                                                <input class="form-control" name="ExternalAccuracy" type="number" min="0" max="1" step="0.000001" value="@(item.ExternalAccuracy?.ToString("0.######", System.Globalization.CultureInfo.InvariantCulture))" />
+                                            </div>
+                                            <div class="col-md-10">
+                                                <label class="form-label">Notes</label>
+                                                <input class="form-control" name="Notes" maxlength="500" value="@item.Notes" placeholder="Dataset, benchmark or deployment notes" />
+                                            </div>
+                                            <div class="col-md-2 d-flex align-items-end">
+                                                <button class="btn btn-dark w-100" type="submit">Save</button>
+                                            </div>
+                                        </form>
+                                    </details>
+                                </article>
+                            </div>
+                        }
+                    </div>
+                </section>
+            }
+        }
+    </div>
+</section>

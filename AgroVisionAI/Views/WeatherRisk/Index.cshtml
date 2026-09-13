@@ -1,0 +1,187 @@
+@model AgroVisionAI.Models.WeatherRisk.WeatherRiskViewModel
+@using AgroVisionAI.Models.WeatherRisk
+@{
+    ViewData["Title"] = "Weather Disease Risk";
+
+    string RiskClass(DiseaseRiskLevel level) => level switch
+    {
+        DiseaseRiskLevel.High => "risk-high",
+        DiseaseRiskLevel.Moderate => "risk-moderate",
+        _ => "risk-low"
+    };
+}
+
+<link rel="stylesheet" href="~/css/weather-risk.css" asp-append-version="true" />
+
+<section class="weather-risk-page">
+    <div class="container py-5">
+        <div class="weather-risk-hero mb-4">
+            <div>
+                <div class="weather-risk-eyebrow">
+                    <i class="bi bi-cloud-sun"></i>
+                    Pakistan weather advisory
+                </div>
+                <h1>Weather + Disease Risk</h1>
+                <p>
+                    Check whether upcoming temperature, humidity and rainfall are favorable for common diseases of Cotton, Wheat or Rice.
+                </p>
+            </div>
+            <div class="weather-risk-note">
+                <i class="bi bi-shield-check"></i>
+                <div>
+                    <strong>Advisory only</strong>
+                    <span>Risk means weather favorability, not confirmed disease.</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="weather-search-card mb-4">
+            <form asp-action="Index" method="post" class="row g-3 align-items-end">
+                @Html.AntiForgeryToken()
+
+                <div class="col-lg-6">
+                    <label asp-for="LocationQuery" class="form-label">Pakistan city or district</label>
+                    <div class="input-group weather-input-group">
+                        <span class="input-group-text"><i class="bi bi-geo-alt"></i></span>
+                        <input asp-for="LocationQuery"
+                               class="form-control"
+                               maxlength="120"
+                               placeholder="e.g. Sanghar, Hyderabad, Multan"
+                               autocomplete="off" />
+                    </div>
+                </div>
+
+                <div class="col-lg-3">
+                    <label asp-for="Crop" class="form-label">Crop</label>
+                    <select asp-for="Crop" class="form-select">
+                        @foreach (var crop in Model.SupportedCrops)
+                        {
+                            <option value="@crop">@crop</option>
+                        }
+                    </select>
+                </div>
+
+                <div class="col-lg-3 d-grid">
+                    <button type="submit" class="btn weather-risk-button">
+                        <i class="bi bi-search me-2"></i>Check Risk
+                    </button>
+                </div>
+            </form>
+        </div>
+
+        @if (!string.IsNullOrWhiteSpace(Model.ErrorMessage))
+        {
+            <div class="alert alert-warning weather-alert" role="alert">
+                <i class="bi bi-exclamation-triangle-fill me-2"></i>@Model.ErrorMessage
+            </div>
+        }
+
+        @if (Model.Weather != null)
+        {
+            <div class="weather-summary mb-4">
+                <div class="weather-summary-heading">
+                    <div>
+                        <span class="summary-label">Forecast location</span>
+                        <h2>@Model.Weather.DisplayLocation</h2>
+                    </div>
+                    <span class="crop-chip"><i class="bi bi-flower1"></i>@Model.Crop</span>
+                </div>
+
+                <div class="weather-metrics">
+                    <article>
+                        <i class="bi bi-thermometer-half"></i>
+                        <span>Now</span>
+                        <strong>@Model.Weather.CurrentTemperatureC.ToString("F1")°C</strong>
+                    </article>
+                    <article>
+                        <i class="bi bi-droplet-half"></i>
+                        <span>Humidity now</span>
+                        <strong>@Model.Weather.CurrentHumidityPercent.ToString("F0")%</strong>
+                    </article>
+                    <article>
+                        <i class="bi bi-moisture"></i>
+                        <span>24h avg humidity</span>
+                        <strong>@Model.Weather.Next24HoursAverageHumidityPercent.ToString("F0")%</strong>
+                    </article>
+                    <article>
+                        <i class="bi bi-cloud-rain-heavy"></i>
+                        <span>Next 72h rain</span>
+                        <strong>@Model.Weather.Next72HoursPrecipitationMm.ToString("F1") mm</strong>
+                    </article>
+                    <article>
+                        <i class="bi bi-cloud-drizzle"></i>
+                        <span>Max rain chance</span>
+                        <strong>@Model.Weather.Next72HoursMaximumPrecipitationProbabilityPercent.ToString("F0")%</strong>
+                    </article>
+                </div>
+            </div>
+
+            @if (Model.HighestRisk != null)
+            {
+                <div class="highest-risk @RiskClass(Model.HighestRisk.Level) mb-4">
+                    <div class="highest-risk-icon"><i class="bi bi-activity"></i></div>
+                    <div>
+                        <span>Highest environmental favorability</span>
+                        <h3>@Model.HighestRisk.Disease — @Model.HighestRisk.Level</h3>
+                        <p>@Model.HighestRisk.Summary</p>
+                    </div>
+                    <div class="risk-score">@Model.HighestRisk.Score<span>/100</span></div>
+                </div>
+            }
+
+            <div class="risk-grid">
+                @foreach (var risk in Model.Assessments)
+                {
+                    <article class="risk-card @RiskClass(risk.Level)">
+                        <div class="risk-card-top">
+                            <div>
+                                <span class="risk-badge">@risk.Level risk</span>
+                                <h3>@risk.Disease</h3>
+                            </div>
+                            <div class="risk-score-small">@risk.Score</div>
+                        </div>
+
+                        <p class="risk-summary">@risk.Summary</p>
+
+                        @if (risk.IsWeatherProxyOnly)
+                        {
+                            <div class="proxy-warning">
+                                <i class="bi bi-info-circle-fill"></i>
+                                Vector-borne disease: this score is only an indirect weather proxy.
+                            </div>
+                        }
+
+                        <div class="risk-section">
+                            <h4><i class="bi bi-cloud-check"></i>Why this score?</h4>
+                            <ul>
+                                @foreach (var reason in risk.Reasons)
+                                {
+                                    <li>@reason</li>
+                                }
+                            </ul>
+                        </div>
+
+                        <div class="risk-section">
+                            <h4><i class="bi bi-binoculars"></i>What to do</h4>
+                            <ul>
+                                @foreach (var advice in risk.Advice)
+                                {
+                                    <li>@advice</li>
+                                }
+                            </ul>
+                        </div>
+                    </article>
+                }
+            </div>
+
+            <div class="weather-disclaimer mt-4">
+                <i class="bi bi-info-circle"></i>
+                <div>
+                    <strong>Important:</strong>
+                    This module estimates whether weather is favorable for disease development. It does not confirm infection and does not replace field inspection, laboratory diagnosis, or AgroVision image analysis.
+                    <div class="mt-1 small">Weather data: <a href="https://open-meteo.com/" target="_blank" rel="noopener noreferrer">Open-Meteo</a>.</div>
+                </div>
+            </div>
+        }
+    </div>
+</section>

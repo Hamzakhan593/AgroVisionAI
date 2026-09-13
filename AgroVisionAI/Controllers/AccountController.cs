@@ -1,4 +1,5 @@
-﻿using AgroVisionAI.Models;
+using AgroVisionAI.Data;
+using AgroVisionAI.Models;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 
@@ -64,6 +65,17 @@ namespace AgroVisionAI.Controllers
 
             if (result.Succeeded)
             {
+                var roleResult = await _userManager.AddToRoleAsync(user, IdentityDataSeeder.UserRole);
+                if (!roleResult.Succeeded)
+                {
+                    await _userManager.DeleteAsync(user);
+                    foreach (var error in roleResult.Errors)
+                    {
+                        ModelState.AddModelError("", error.Description);
+                    }
+                    return View();
+                }
+
                 await _signInManager.SignInAsync(user, isPersistent: false);
                 return RedirectToAction("Index", "Dashboard");
             }

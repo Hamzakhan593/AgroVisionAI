@@ -361,3 +361,66 @@ MigrationBackup/
 
 # Fody - auto-generated XML schema
 FodyWeavers.xsd
+# AgroVisionAI local/container secrets and runtime data
+.env
+!.env.example
+AgroVisionAI/App_Data/CropImages/*
+!AgroVisionAI/App_Data/CropImages/.gitkeep
+AgroVisionAI/App_Data/Explainability/*
+!AgroVisionAI/App_Data/Explainability/.gitkeep
+
+# Local AI runtime model selection
+AgroVisionAI/AIService/active_models.json
+
+# Private settings and credentials (examples stay versioned)
+.env.*
+!.env.example
+!**/.env.example
+appsettings.Local.json
+appsettings.*.Local.json
+*.pem
+*.key
+*.p12
+secrets.json
+
+# Python environments, caches and ML binaries
+.venv/
+venv/
+env/
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+*.py[cod]
+.coverage
+htmlcov/
+*.keras
+*.h5
+*.hdf5
+*.onnx
+*.pt
+*.pth
+*.ckpt
+*.tflite
+AgroVisionAI/AIService/models/**/saved_model.pb
+AgroVisionAI/AIService/models/**/variables/
+
+# Private datasets, exports and database backups
+datasets/
+training-data/
+*.bak
+*.bacpac
+*.db
+*.sqlite
+*.sqlite3
+AgroVisionAI/App_Data/Exports/
+AgroVisionAI/wwwroot/uploads/
+
+# Local task summaries and machine/editor state
+/TASK*_WHAT_CHANGED.txt
+/CHANGED_FILES.json
+/VALIDATION.json
+.codex/
+.agents/
+.idea/
+.DS_Store
+Thumbs.db

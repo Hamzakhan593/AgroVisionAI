@@ -2,18 +2,21 @@ from __future__ import annotations
 
 import asyncio
 import io
+import re
+import secrets
+import os
 import time
 import uuid
 from contextlib import asynccontextmanager
 
-from fastapi import FastAPI, File, Form, HTTPException, UploadFile, status
+from fastapi import FastAPI, File, Form, Header, HTTPException, UploadFile, status
 from PIL import Image, ImageOps, UnidentifiedImageError
 
 from .config import CROP_SPECS, MAX_IMAGE_BYTES, MAX_IMAGE_PIXELS, MIN_IMAGE_SIDE
 from .disease_info import disease_info
 from .crop_validator import validator
 from .model_registry import ModelNotAvailableError, PredictionError, registry
-from .schemas import HealthResponse, ModelStatus, PredictionResponse, TopPrediction
+from .schemas import ActivateModelRequest, HealthResponse, ManagedModelStatus, ModelStatus, PredictionResponse, TopPrediction
 
 
 DISCLAIMER = (
@@ -34,17 +37,23 @@ async def lifespan(_: FastAPI):
 
 app = FastAPI(
     title="AgroVisionAI Inference API",
-    version="1.0.0",
+    version="1.3.0",
     description="Local crop-disease inference for Cotton, Wheat and Rice models.",
     lifespan=lifespan,
 )
+
+
+def _model_version(model_name: str) -> str:
+    """Return a compact model version from a versioned filename (for example v2/v3)."""
+    match = re.search(r"(?:^|_)v(\d+)(?:_|\.|$)", model_name, flags=re.IGNORECASE)
+    return f"v{match.group(1)}" if match else "unversioned"
 
 
 @app.get("/", tags=["Service"])
 async def root() -> dict[str, str]:
     return {
         "service": "AgroVisionAI Inference API",
-        "version": "1.0.0",
+        "version": "1.3.0",
         "health": "/health",
         "documentation": "/docs",
     }
@@ -60,6 +69,44 @@ async def health() -> HealthResponse:
 @app.get("/api/v1/models", response_model=list[ModelStatus], tags=["Service"])
 async def models() -> list[ModelStatus]:
     return [ModelStatus(**item) for item in [validator.status(), *registry.status()]]
+
+
+def _require_model_admin_key(x_agrovision_admin_key: str | None = Header(default=None)) -> None:
+    expected = os.getenv("AGROVISION_ADMIN_KEY", "").strip()
+    if len(expected) < 16:
+        raise HTTPException(
+            status_code=status.HTTP_503_SERVICE_UNAVAILABLE,
+            detail="Model management is disabled because AGROVISION_ADMIN_KEY is not configured.",
+        )
+    if not x_agrovision_admin_key or not secrets.compare_digest(x_agrovision_admin_key, expected):
+        raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="Invalid model-management key.")
+
+
+@app.get("/api/v1/admin/models", response_model=list[ManagedModelStatus], tags=["Model Management"])
+async def managed_models(x_agrovision_admin_key: str | None = Header(default=None)) -> list[ManagedModelStatus]:
+    _require_model_admin_key(x_agrovision_admin_key)
+    return [ManagedModelStatus(**item) for item in await asyncio.to_thread(registry.managed_models)]
+
+
+@app.post(
+    "/api/v1/admin/models/{crop}/activate",
+    response_model=ManagedModelStatus,
+    tags=["Model Management"],
+)
+async def activate_model(
+    crop: str,
+    request: ActivateModelRequest,
+    x_agrovision_admin_key: str | None = Header(default=None),
+) -> ManagedModelStatus:
+    _require_model_admin_key(x_agrovision_admin_key)
+    normalized_crop = crop.strip().lower()
+    try:
+        result = await asyncio.to_thread(registry.activate, normalized_crop, request.filename.strip())
+        return ManagedModelStatus(**result)
+    except ModelNotAvailableError as exc:
+        raise HTTPException(status_code=404, detail=str(exc)) from exc
+    except PredictionError as exc:
+        raise HTTPException(status_code=409, detail=str(exc)) from exc
 
 
 @app.post(
@@ -142,12 +189,23 @@ async def _predict(crop: str | None, file: UploadFile) -> PredictionResponse:
             )
         )
 
+    explanation = None
+    try:
+        explanation = await asyncio.to_thread(
+            registry.explain, normalized_crop, image, prediction["label"]
+        )
+    except (PredictionError, ModelNotAvailableError):
+        # Explainability is optional: a Grad-CAM failure must never invalidate an
+        # otherwise valid disease prediction.
+        explanation = None
+
     confidence = float(prediction["confidence"])
     return PredictionResponse(
         request_id=str(uuid.uuid4()),
         crop=normalized_crop.title(),
         crop_confidence=round(crop_prediction["confidence"], 6),
         crop_model_name=crop_prediction["model_name"],
+        crop_model_version=_model_version(crop_prediction["model_name"]),
         predicted_class=prediction["label"],
         disease=info["name"],
         confidence=round(confidence, 6),
@@ -159,6 +217,12 @@ async def _predict(crop: str | None, file: UploadFile) -> PredictionResponse:
         prevention=info["prevention"],
         top_predictions=top_predictions,
         model_name=prediction["model_name"],
+        model_version=_model_version(prediction["model_name"]),
         processing_time_ms=round((time.perf_counter() - started) * 1000.0, 2),
+        explanation_available=explanation is not None,
+        explanation_method=explanation["method"] if explanation else None,
+        explanation_layer=explanation["layer_name"] if explanation else None,
+        explanation_image_base64=explanation["image_base64"] if explanation else None,
+        explanation_image_media_type=explanation["image_media_type"] if explanation else None,
         disclaimer=DISCLAIMER,
     )

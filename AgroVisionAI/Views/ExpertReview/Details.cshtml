@@ -1,0 +1,161 @@
+@model AgroVisionAI.Models.ExpertReviewDetailsViewModel
+@using AgroVisionAI.Models
+@{
+    ViewData["Title"] = "Review Feedback";
+    var statusClass = Model.VerificationStatus.ToString().ToLowerInvariant();
+}
+
+<section class="expert-review-page">
+    <div class="container py-5">
+        <div class="d-flex flex-wrap justify-content-between align-items-center gap-3 mb-4">
+            <div>
+                <a asp-action="Index" class="expert-back"><i class="bi bi-arrow-left"></i> Back to review queue</a>
+                <h1 class="expert-title mt-2">Review analysis #@Model.DetectionId</h1>
+                <p class="expert-subtitle mb-0">Make a human-reviewed decision before this sample is considered for retraining.</p>
+            </div>
+            <span class="expert-status expert-status-@statusClass expert-status-large">@Model.VerificationStatus</span>
+        </div>
+
+        @if (TempData["ExpertReviewSuccess"] is string success)
+        {
+            <div class="alert alert-success"><i class="bi bi-check-circle me-2"></i>@success</div>
+        }
+        @if (TempData["ExpertReviewError"] is string error)
+        {
+            <div class="alert alert-warning"><i class="bi bi-exclamation-triangle me-2"></i>@error</div>
+        }
+
+        <div class="row g-4">
+            <div class="col-lg-5">
+                <div class="expert-image-card">
+                    <div class="expert-image-label">Original crop image</div>
+                    <img src="@Url.Action("Image", "ExpertReview", new { id = Model.DetectionId })" alt="Crop image submitted for AI analysis" />
+                </div>
+
+                @if (Model.HasExplanationImage)
+                {
+                    <div class="expert-image-card mt-3">
+                        <div class="expert-image-label">Grad-CAM model attention</div>
+                        <img src="@Url.Action("Explanation", "ExpertReview", new { id = Model.DetectionId })" alt="Grad-CAM explanation" />
+                        <small class="d-block mt-2">Attention visualization only; it is not a disease severity map.</small>
+                    </div>
+                }
+            </div>
+
+            <div class="col-lg-7">
+                <div class="expert-panel mb-4">
+                    <div class="expert-panel-head">
+                        <div>
+                            <h2>AI prediction</h2>
+                            <p>Prediction metadata saved at inference time.</p>
+                        </div>
+                    </div>
+                    <div class="expert-detail-grid">
+                        <div><span>Crop</span><strong>@Model.Crop</strong></div>
+                        <div><span>AI disease</span><strong>@Model.AiDisease</strong></div>
+                        <div><span>Disease confidence</span><strong>@(Model.Confidence.HasValue ? Model.Confidence.Value.ToString("P2") : "N/A")</strong></div>
+                        <div><span>Crop confidence</span><strong>@(Model.CropConfidence.HasValue ? Model.CropConfidence.Value.ToString("P2") : "N/A")</strong></div>
+                        <div><span>Model</span><strong>@(Model.DiseaseModelName ?? "N/A")</strong></div>
+                        <div><span>Version</span><strong>@(Model.DiseaseModelVersion ?? "N/A")</strong></div>
+                        <div><span>Request ID</span><strong class="expert-mono">@(Model.RequestId ?? "N/A")</strong></div>
+                        <div><span>Analyzed</span><strong>@Model.DetectionCreatedAt.ToLocalTime().ToString("dd MMM yyyy, h:mm tt")</strong></div>
+                    </div>
+                </div>
+
+                <div class="expert-panel mb-4">
+                    <div class="expert-panel-head">
+                        <div>
+                            <h2>User feedback</h2>
+                            <p>Human feedback is evidence to review, not automatically ground truth.</p>
+                        </div>
+                    </div>
+                    <div class="expert-feedback-box">
+                        <div class="expert-feedback-verdict">
+                            <span>Verdict</span>
+                            <strong>@Model.Verdict</strong>
+                        </div>
+                        @if (!string.IsNullOrWhiteSpace(Model.SuggestedDisease))
+                        {
+                            <div class="expert-feedback-verdict">
+                                <span>Suggested correction</span>
+                                <strong>@Model.SuggestedDisease</strong>
+                            </div>
+                        }
+                        <div class="expert-feedback-verdict">
+                            <span>Submitted by</span>
+                            <strong>@Model.UserDisplayName</strong>
+                            <small>@Model.UserEmail</small>
+                        </div>
+                        <div class="expert-user-comment">
+                            <span>User note</span>
+                            <p>@(string.IsNullOrWhiteSpace(Model.Comment) ? "No note provided." : Model.Comment)</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="expert-panel expert-decision-panel">
+                    <div class="expert-panel-head">
+                        <div>
+                            <h2>Expert decision</h2>
+                            <p>Select the final review outcome. This never retrains the model automatically.</p>
+                        </div>
+                    </div>
+
+                    @if (Model.VerificationStatus != FeedbackVerificationStatus.Pending)
+                    {
+                        <div class="expert-previous-review mb-4">
+                            <span>Current reviewed label</span>
+                            <strong>@(Model.VerifiedDisease ?? "No verified training label")</strong>
+                            @if (Model.VerifiedAt.HasValue)
+                            {
+                                <small>Reviewed @Model.VerifiedAt.Value.ToLocalTime().ToString("dd MMM yyyy, h:mm tt")</small>
+                            }
+                            @if (!string.IsNullOrWhiteSpace(Model.ReviewerNote))
+                            {
+                                <p>@Model.ReviewerNote</p>
+                            }
+                        </div>
+                    }
+
+                    <form asp-action="Review" method="post">
+                        @Html.AntiForgeryToken()
+                        <input type="hidden" name="feedbackId" value="@Model.FeedbackId" />
+
+                        <label class="form-label fw-semibold" for="verifiedDisease">Final label (for manual override)</label>
+                        <select id="verifiedDisease" name="verifiedDisease" class="form-select mb-3">
+                            <option value="">Select a condition...</option>
+                            @foreach (var option in Model.DiseaseOptions)
+                            {
+                                <option value="@option" selected="@(string.Equals(Model.VerifiedDisease, option, StringComparison.OrdinalIgnoreCase))">@option</option>
+                            }
+                        </select>
+
+                        <label class="form-label fw-semibold" for="reviewerNote">Reviewer note (optional)</label>
+                        <textarea id="reviewerNote" name="reviewerNote" maxlength="500" rows="3" class="form-control mb-4" placeholder="Why was this label accepted or rejected?"></textarea>
+
+                        <div class="expert-decision-actions">
+                            <button type="submit" name="decision" value="verify-ai" class="btn expert-action expert-action-primary">
+                                <i class="bi bi-check2-circle"></i> Verify AI prediction
+                            </button>
+
+                            @if (Model.Verdict == FeedbackVerdict.Incorrect && !string.IsNullOrWhiteSpace(Model.SuggestedDisease))
+                            {
+                                <button type="submit" name="decision" value="approve-correction" class="btn expert-action expert-action-correction">
+                                    <i class="bi bi-person-check"></i> Approve user correction
+                                </button>
+                            }
+
+                            <button type="submit" name="decision" value="verify-selected" class="btn expert-action expert-action-selected">
+                                <i class="bi bi-pencil-square"></i> Verify selected label
+                            </button>
+
+                            <button type="submit" name="decision" value="reject" class="btn expert-action expert-action-reject">
+                                <i class="bi bi-x-circle"></i> Reject feedback
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>

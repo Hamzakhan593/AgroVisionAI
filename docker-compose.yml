@@ -1,0 +1,69 @@
+name: agrovisionai
+
+services:
+  sqlserver:
+    image: mcr.microsoft.com/mssql/server:2022-latest
+    container_name: agrovision-sql
+    environment:
+      ACCEPT_EULA: "Y"
+      MSSQL_PID: "Developer"
+      MSSQL_SA_PASSWORD: "${SQL_SA_PASSWORD:?Set SQL_SA_PASSWORD in .env}"
+    ports:
+      - "${SQL_PORT:-14333}:1433"
+    volumes:
+      - agrovision_sql_data:/var/opt/mssql
+    restart: unless-stopped
+
+  ai-service:
+    build:
+      context: ./AgroVisionAI/AIService
+      dockerfile: Dockerfile
+    container_name: agrovision-ai
+    environment:
+      AGROVISION_MODELS_DIR: /app/models
+      AGROVISION_MODEL_SELECTION_FILE: /app/runtime/active_models.json
+      AGROVISION_ADMIN_KEY: "${AI_ADMIN_KEY:?Set AI_ADMIN_KEY in .env}"
+      TF_CPP_MIN_LOG_LEVEL: "2"
+    ports:
+      - "${AI_PORT:-8000}:8000"
+    volumes:
+      # The model files stay outside the Docker image/Git history and are mounted read-only.
+      - ./AgroVisionAI/AIService/models:/app/models:ro
+      - agrovision_model_registry:/app/runtime
+    restart: unless-stopped
+
+  web:
+    build:
+      context: ./AgroVisionAI
+      dockerfile: Dockerfile
+    container_name: agrovision-web
+    environment:
+      ASPNETCORE_ENVIRONMENT: Production
+      ASPNETCORE_URLS: http://+:8080
+      ConnectionStrings__DefaultSQLConnection: "Server=sqlserver,1433;Database=AgroVisionAI;User Id=sa;Password=${SQL_SA_PASSWORD};TrustServerCertificate=True;Encrypt=False"
+      AgroVisionApi__BaseUrl: http://ai-service:8000/
+      AgroVisionApi__AdminKey: "${AI_ADMIN_KEY}"
+      Database__ApplyMigrationsOnStartup: "true"
+      Jwt__Key: "${JWT_KEY:?Set JWT_KEY in .env}"
+      Jwt__Issuer: "${JWT_ISSUER:-AgroVisionAI}"
+      Jwt__Audience: "${JWT_AUDIENCE:-AgroVisionAI.Mobile}"
+      Jwt__AccessTokenMinutes: "${JWT_ACCESS_TOKEN_MINUTES:-60}"
+      IdentitySeed__Enabled: "${ADMIN_SEED_ENABLED:-false}"
+      IdentitySeed__Email: "${ADMIN_EMAIL:-admin@agrovision.local}"
+      IdentitySeed__FullName: "${ADMIN_FULL_NAME:-AgroVision Admin}"
+      IdentitySeed__Password: "${ADMIN_PASSWORD:-}"
+    ports:
+      - "${WEB_PORT:-8080}:8080"
+    volumes:
+      - agrovision_crop_images:/app/App_Data/CropImages
+      - agrovision_explanations:/app/App_Data/Explainability
+    depends_on:
+      - sqlserver
+      - ai-service
+    restart: unless-stopped
+
+volumes:
+  agrovision_sql_data:
+  agrovision_crop_images:
+  agrovision_explanations:
+  agrovision_model_registry:

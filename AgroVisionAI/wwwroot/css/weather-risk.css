@@ -1,0 +1,181 @@
+.weather-risk-page {
+    background: linear-gradient(180deg, #f4fbf6 0%, #ffffff 38%);
+    min-height: 70vh;
+}
+
+.weather-risk-hero {
+    display: flex;
+    justify-content: space-between;
+    gap: 2rem;
+    align-items: center;
+    padding: 2rem;
+    border: 1px solid #dcefe1;
+    border-radius: 24px;
+    background: #ffffff;
+    box-shadow: 0 18px 50px rgba(21, 128, 61, .08);
+}
+
+.weather-risk-hero h1 {
+    margin: .35rem 0 .65rem;
+    font-weight: 800;
+    color: #153d23;
+}
+
+.weather-risk-hero p {
+    margin: 0;
+    max-width: 760px;
+    color: #5b6f61;
+}
+
+.weather-risk-eyebrow {
+    display: inline-flex;
+    align-items: center;
+    gap: .5rem;
+    color: #15803d;
+    font-size: .82rem;
+    font-weight: 800;
+    letter-spacing: .08em;
+    text-transform: uppercase;
+}
+
+.weather-risk-note {
+    display: flex;
+    gap: .8rem;
+    align-items: center;
+    min-width: 260px;
+    padding: 1rem 1.15rem;
+    border-radius: 18px;
+    background: #ecfdf3;
+    color: #166534;
+}
+
+.weather-risk-note i { font-size: 1.5rem; }
+.weather-risk-note strong,
+.weather-risk-note span { display: block; }
+.weather-risk-note span { font-size: .82rem; color: #4b6b56; margin-top: .15rem; }
+
+.weather-search-card,
+.weather-summary {
+    background: #fff;
+    border: 1px solid #e3ece5;
+    border-radius: 22px;
+    padding: 1.5rem;
+    box-shadow: 0 12px 34px rgba(15, 23, 42, .05);
+}
+
+.weather-search-card .form-label { font-weight: 700; color: #274332; }
+.weather-input-group .input-group-text { background: #f1f8f3; border-color: #dce8df; color: #15803d; }
+.weather-input-group .form-control,
+.weather-search-card .form-select { min-height: 50px; border-color: #dce8df; }
+
+.weather-risk-button {
+    min-height: 50px;
+    background: #15803d;
+    color: #fff;
+    border-radius: 12px;
+    font-weight: 700;
+}
+.weather-risk-button:hover { background: #116b33; color: #fff; }
+
+.weather-alert { border-radius: 16px; }
+
+.weather-summary-heading {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 1rem;
+    margin-bottom: 1.25rem;
+}
+.weather-summary-heading h2 { margin: .2rem 0 0; font-size: 1.45rem; font-weight: 800; color: #173d24; }
+.summary-label { color: #718078; font-size: .82rem; font-weight: 700; text-transform: uppercase; letter-spacing: .06em; }
+.crop-chip { display: inline-flex; align-items: center; gap: .4rem; padding: .55rem .9rem; background: #eefaf1; color: #166534; border-radius: 999px; font-weight: 800; }
+
+.weather-metrics {
+    display: grid;
+    grid-template-columns: repeat(5, minmax(0, 1fr));
+    gap: .85rem;
+}
+.weather-metrics article {
+    padding: 1rem;
+    border-radius: 16px;
+    background: #f8fbf9;
+    border: 1px solid #e8f0ea;
+}
+.weather-metrics i { display: block; color: #15803d; font-size: 1.25rem; margin-bottom: .5rem; }
+.weather-metrics span { display: block; color: #748078; font-size: .78rem; }
+.weather-metrics strong { display: block; margin-top: .15rem; font-size: 1.15rem; color: #1f3b29; }
+
+.highest-risk {
+    display: grid;
+    grid-template-columns: auto 1fr auto;
+    gap: 1rem;
+    align-items: center;
+    padding: 1.25rem 1.4rem;
+    border-radius: 20px;
+    border: 1px solid;
+}
+.highest-risk-icon { width: 48px; height: 48px; display: grid; place-items: center; border-radius: 14px; background: rgba(255,255,255,.6); font-size: 1.4rem; }
+.highest-risk span { font-size: .78rem; text-transform: uppercase; letter-spacing: .06em; font-weight: 800; }
+.highest-risk h3 { margin: .2rem 0; font-weight: 800; font-size: 1.25rem; }
+.highest-risk p { margin: 0; opacity: .82; }
+.risk-score { font-size: 2rem; font-weight: 900; }
+.risk-score span { font-size: .72rem; display: block; text-align: center; letter-spacing: 0; }
+
+.risk-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 1.15rem;
+}
+.risk-card {
+    background: #fff;
+    border: 1px solid #e1e9e3;
+    border-top: 5px solid;
+    border-radius: 20px;
+    padding: 1.35rem;
+    box-shadow: 0 12px 30px rgba(15, 23, 42, .045);
+}
+.risk-card-top { display: flex; justify-content: space-between; gap: 1rem; }
+.risk-card h3 { margin: .35rem 0 0; font-size: 1.18rem; font-weight: 800; color: #203d2a; }
+.risk-badge { font-size: .75rem; text-transform: uppercase; letter-spacing: .06em; font-weight: 900; }
+.risk-score-small { min-width: 46px; height: 46px; display: grid; place-items: center; border-radius: 50%; font-weight: 900; background: #f5f7f5; }
+.risk-summary { color: #5e6d63; margin: .9rem 0 1rem; }
+.risk-section { border-top: 1px solid #edf1ee; padding-top: 1rem; margin-top: 1rem; }
+.risk-section h4 { font-size: .9rem; font-weight: 800; color: #35503e; display: flex; align-items: center; gap: .45rem; }
+.risk-section ul { padding-left: 1.2rem; margin-bottom: 0; color: #647168; font-size: .9rem; }
+.risk-section li + li { margin-top: .4rem; }
+.proxy-warning { display: flex; gap: .55rem; padding: .75rem; border-radius: 12px; background: #fff8e6; color: #7a5810; font-size: .84rem; }
+
+.risk-high { border-color: #f5b7b1; background-color: #fff8f7; color: #8b2e24; }
+.risk-moderate { border-color: #f3d59b; background-color: #fffdf6; color: #7c5b14; }
+.risk-low { border-color: #b9e2c4; background-color: #f8fff9; color: #24633a; }
+.risk-card.risk-high { border-top-color: #d94c3f; background: #fff; }
+.risk-card.risk-moderate { border-top-color: #d49b24; background: #fff; }
+.risk-card.risk-low { border-top-color: #2f9d57; background: #fff; }
+
+.weather-disclaimer {
+    display: flex;
+    gap: .8rem;
+    padding: 1rem 1.15rem;
+    border: 1px solid #dce6df;
+    border-radius: 16px;
+    background: #f9fbfa;
+    color: #56645b;
+}
+.weather-disclaimer i { color: #15803d; font-size: 1.2rem; }
+
+@media (max-width: 991.98px) {
+    .weather-risk-hero { flex-direction: column; align-items: stretch; }
+    .weather-risk-note { min-width: 0; }
+    .weather-metrics { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    .risk-grid { grid-template-columns: 1fr; }
+}
+
+@media (max-width: 575.98px) {
+    .weather-risk-hero,
+    .weather-search-card,
+    .weather-summary { padding: 1.15rem; border-radius: 18px; }
+    .weather-metrics { grid-template-columns: 1fr 1fr; }
+    .highest-risk { grid-template-columns: auto 1fr; }
+    .risk-score { grid-column: 2; justify-self: start; font-size: 1.5rem; }
+    .weather-summary-heading { align-items: flex-start; flex-direction: column; }
+}

@@ -1,0 +1,33 @@
+.venv/
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.coverage
+htmlcov/
+.git/
+
+# Keep model metadata/config in the image, but mount the large trained weights at runtime.
+models/*.keras
+models/*.h5
+
+# Tests are executed in CI, not shipped in the runtime image.
+tests/
+requirements-dev.txt
+setup_api.bat
+start_api.bat
+run_local.py
+**/.env
+**/.env.*
+active_models.json
+**/*.pem
+**/*.key
+**/*.onnx
+**/*.pt
+**/*.pth
+**/*.tflite
+**/*.keras
+**/*.h5
+**/*.hdf5
+**/*.ckpt
+**/saved_model.pb
+**/variables/

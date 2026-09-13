@@ -8,6 +8,7 @@
 
   <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="9.0.8" />
+    <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="9.0.8" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="9.0.8">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
@@ -17,10 +18,16 @@
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
+    <PackageReference Include="QuestPDF" Version="2026.8.0" />
   </ItemGroup>
 
   <ItemGroup>
     <Folder Include="App_Data\CropImages\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Remove="appsettings.Local.json;appsettings.*.Local.json;appsettings.Local.example.json;App_Data/CropImages/**;App_Data/Explainability/**;App_Data/Exports/**;wwwroot/uploads/**;AIService/**;.env;.env.*" />
+    <None Remove="appsettings.Local.json;appsettings.*.Local.json;.env;.env.*" />
   </ItemGroup>
 
   <ItemGroup>

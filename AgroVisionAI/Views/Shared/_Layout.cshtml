@@ -1,4 +1,4 @@
-﻿@using Microsoft.AspNetCore.Identity
+@using Microsoft.AspNetCore.Identity
 @using AgroVisionAI.Models
 @inject UserManager<ApplicationUser> UserManager
 
@@ -32,13 +32,15 @@
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/AgroVisionAI.styles.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/css/automatic-update.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/css/expert-review.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/css/model-registry.css" asp-append-version="true" />
 </head>
 <body class="site-wrapper">
     <a href="#main-content" class="skip-link">Skip to content</a>
 
     <!-- Header Navigation -->
     <header class="sticky-top">
-        <nav class="navbar navbar-expand-lg app-navbar">
+        <nav class="navbar navbar-expand-xl app-navbar" aria-label="Main navigation">
             <div class="container">
 
                 <!-- Brand -->
@@ -63,118 +65,67 @@
                 <!-- Navigation Menu Links -->
                 <div class="collapse navbar-collapse" id="mainNavbar">
 
-                    <ul class="navbar-nav ms-auto align-items-lg-center">
-
+                    <ul class="navbar-nav ms-auto app-nav-links">
                         <li class="nav-item">
-                            <a class="nav-link nav-link-custom"
-                               asp-controller="Home"
-                               asp-action="Index">
-                                Home
-                            </a>
+                            <a class="nav-link nav-link-custom" asp-controller="Home" asp-action="Index">Home</a>
                         </li>
-
-                        <li class="nav-item">
-                            <a class="nav-link nav-link-custom"
-                               asp-controller="Home"
-                               asp-action="Index"
-                               asp-fragment="how-it-works">
-                                How It Works
-                            </a>
+                        <li class="nav-item dropdown">
+                            <button class="nav-link nav-link-custom dropdown-toggle" id="exploreMenu" type="button" data-bs-toggle="dropdown" aria-expanded="false">Explore</button>
+                            <ul class="dropdown-menu app-nav-dropdown" aria-labelledby="exploreMenu">
+                                <li><a class="dropdown-item" asp-controller="Home" asp-action="Index" asp-fragment="how-it-works">How It Works</a></li>
+                                <li><a class="dropdown-item" asp-controller="Home" asp-action="Index" asp-fragment="crops">Supported Crops</a></li>
+                                <li><a class="dropdown-item" asp-controller="Home" asp-action="Index" asp-fragment="about">About</a></li>
+                            </ul>
                         </li>
-
-                        <li class="nav-item">
-                            <a class="nav-link nav-link-custom"
-                               asp-controller="Home"
-                               asp-action="Index"
-                               asp-fragment="crops">
-                                Supported Crops
-                            </a>
-                        </li>
-
-                        <li class="nav-item">
-                            <a class="nav-link nav-link-custom"
-                               asp-controller="Home"
-                               asp-action="Index"
-                               asp-fragment="about">
-                                About
-                            </a>
-                        </li>
-
-                        <li class="nav-item d-none d-lg-block nav-divider-item">
-                            <div class="nav-divider"></div>
-                        </li>
-
-
                         @if (User.Identity?.IsAuthenticated == true)
                         {
-                            <!-- Logged-in user -->
-                            <li class="nav-item"><a class="nav-link nav-link-custom" asp-controller="Dashboard" asp-action="Index">Dashboard</a></li>
-
                             <li class="nav-item">
-                                <a class="nav-link nav-link-custom"
-                                   asp-controller="Profile"
-                                   asp-action="Index">
-
-                                    <i class="bi bi-person-circle me-1"></i>
-                                    @currentUser?.FullName
-                                </a>
+                                <a class="nav-link nav-link-custom" asp-controller="Dashboard" asp-action="Index">Dashboard</a>
                             </li>
-
-                            <li class="nav-item">
-                                <a class="nav-link nav-link-custom"
-                                   asp-controller="History"
-                                   asp-action="Index">
-                                    History
-                                </a>
+                            <li class="nav-item dropdown">
+                                <button class="nav-link nav-link-custom dropdown-toggle" id="toolsMenu" type="button" data-bs-toggle="dropdown" aria-expanded="false">Tools</button>
+                                <ul class="dropdown-menu app-nav-dropdown" aria-labelledby="toolsMenu">
+                                    <li><a class="dropdown-item" asp-controller="AIAnalytics" asp-action="Index"><i class="bi bi-graph-up-arrow" aria-hidden="true"></i>AI Analytics</a></li>
+                                    <li><a class="dropdown-item" asp-controller="WeatherRisk" asp-action="Index"><i class="bi bi-cloud-sun" aria-hidden="true"></i>Weather Risk</a></li>
+                                    @if (User.IsInRole("Admin"))
+                                    {
+                                        <li><hr class="dropdown-divider" /></li>
+                                        <li><h6 class="dropdown-header">Administration</h6></li>
+                                        <li><a class="dropdown-item" asp-controller="ExpertReview" asp-action="Index"><i class="bi bi-person-check-fill" aria-hidden="true"></i>Expert Review</a></li>
+                                        <li><a class="dropdown-item" asp-controller="ModelRegistry" asp-action="Index"><i class="bi bi-cpu-fill" aria-hidden="true"></i>Model Registry</a></li>
+                                    }
+                                </ul>
                             </li>
-
-                            <li class="nav-item ms-lg-2 mt-3 mt-lg-0">
-                                <a class="btn btn-nav-cta"
-                                   asp-controller="Detection"
-                                   asp-action="Index">
-                                    <i class="bi bi-camera-fill me-1" aria-hidden="true"></i>
-                                    Scan Crop
-                                </a>
-                            </li>
-
-
-                            <li class="nav-item"><form asp-controller="Account"
-                                  asp-action="Logout"
-                                  method="post"
-                                  class="d-inline">
-
-                                @Html.AntiForgeryToken()
-
-                                <button type="submit"
-                                        class="nav-link nav-link-custom border-0 bg-transparent">
-                                    Sign Out
+                            <li class="nav-item dropdown">
+                                <button class="nav-link nav-link-custom dropdown-toggle app-account-toggle" id="accountMenu" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                    <i class="bi bi-person-circle" aria-hidden="true"></i>
+                                    <span class="app-account-name">@(string.IsNullOrWhiteSpace(currentUser?.FullName) ? "My Account" : currentUser.FullName)</span>
                                 </button>
-
-                            </form></li>
-
+                                <ul class="dropdown-menu dropdown-menu-end app-nav-dropdown" aria-labelledby="accountMenu">
+                                    <li><a class="dropdown-item" asp-controller="Profile" asp-action="Index"><i class="bi bi-person" aria-hidden="true"></i>My Profile</a></li>
+                                    <li><a class="dropdown-item" asp-controller="History" asp-action="Index"><i class="bi bi-clock-history" aria-hidden="true"></i>History</a></li>
+                                    <li><hr class="dropdown-divider" /></li>
+                                    <li>
+                                        <form asp-controller="Account" asp-action="Logout" method="post">
+                                            @Html.AntiForgeryToken()
+                                            <button type="submit" class="dropdown-item app-sign-out"><i class="bi bi-box-arrow-right" aria-hidden="true"></i>Sign Out</button>
+                                        </form>
+                                    </li>
+                                </ul>
+                            </li>
+                            <li class="nav-item app-nav-action">
+                                <a class="btn btn-nav-cta" asp-controller="Detection" asp-action="Index"><i class="bi bi-camera-fill" aria-hidden="true"></i>Scan Crop</a>
+                            </li>
                         }
                         else
                         {
-                            <!-- Logged-out user -->
-
                             <li class="nav-item">
-                                <a class="nav-link nav-link-custom"
-                                   asp-controller="Account"
-                                   asp-action="Login">
-                                    Sign In
-                                </a>
+                                <a class="nav-link nav-link-custom" asp-controller="Account" asp-action="Login">Sign In</a>
                             </li>
-
-                            <li class="nav-item ms-lg-2 mt-3 mt-lg-0">
-                                <a class="btn btn-nav-cta"
-                                   asp-controller="Account"
-                                   asp-action="Register">
-                                    Get Started
-                                    <i class="bi bi-arrow-up-right ms-1"></i>
-                                </a>
+                            <li class="nav-item app-nav-action">
+                                <a class="btn btn-nav-cta" asp-controller="Account" asp-action="Register">Get Started<i class="bi bi-arrow-up-right" aria-hidden="true"></i></a>
                             </li>
                         }
-
                     </ul>
 
                 </div>
@@ -216,6 +167,7 @@
                     <h5 class="footer-title">Platform</h5>
                     <ul class="footer-menu">
                         <li><a asp-controller="Detection" asp-action="Index">Disease Diagnostic</a></li>
+                        <li><a asp-controller="WeatherRisk" asp-action="Index">Weather Disease Risk</a></li>
                         <li><a asp-controller="Home" asp-action="Index" asp-fragment="crops">Supported Crops</a></li>
                         <li><a asp-controller="Home" asp-action="Index" asp-fragment="how-it-works">Methodology</a></li>
                         <li><a asp-controller="Home" asp-action="Index" asp-fragment="features">Capabilities</a></li>

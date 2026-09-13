@@ -1,9 +1,10 @@
 document.addEventListener("DOMContentLoaded", () => {
-    document.querySelectorAll(".nav-link-custom[href]").forEach(link => {
+    document.querySelectorAll(".app-navbar .nav-link-custom[href], .app-nav-dropdown a[href]").forEach(link => {
         const url = new URL(link.href);
         if (!url.hash && url.pathname.toLowerCase() === location.pathname.toLowerCase()) {
             link.classList.add("active");
             link.setAttribute("aria-current", "page");
+            link.closest(".dropdown")?.querySelector(".dropdown-toggle")?.classList.add("active");
         }
     });
     const form = document.getElementById("detectionForm");

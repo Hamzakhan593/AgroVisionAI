@@ -76,8 +76,8 @@ body {
     background: linear-gradient(180deg, #ffffff 0%, #f0fdf4 50%, #ffffff 100%);
     backdrop-filter: blur(20px);
     -webkit-backdrop-filter: blur(20px);
-    border-bottom: 5px solid #15803d;
-    padding: 24px 0;
+    border-bottom: 2px solid #15803d;
+    padding: 12px 0;
     box-shadow: 0 12px 40px -8px rgba(0, 0, 0, 0.18), 0 0 40px rgba(22, 163, 74, 0.08), inset 0 1px 0 rgba(255, 255, 255, 0.9);
     transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
@@ -112,6 +112,8 @@ body {
 }
 
 .app-toggler {
+    min-width: 44px;
+    min-height: 44px;
     border: 2.5px solid #15803d;
     padding: 10px 14px;
     border-radius: 10px;
@@ -131,10 +133,10 @@ body {
     }
 
 .nav-link-custom {
-    font-size: 1.1rem;
-    font-weight: 700;
+    font-size: .9rem;
+    font-weight: 600;
     color: #0f172a !important;
-    padding: 14px 22px !important;
+    padding: 10px 12px !important;
     border-radius: 10px;
     transition: all 0.2s ease-out;
     position: relative;
@@ -183,8 +185,8 @@ body {
     background: linear-gradient(135deg, #15803d 0%, #0f5723 100%);
     color: #ffffff !important;
     font-weight: 800;
-    font-size: 1.1rem;
-    padding: 16px 32px;
+    font-size: .9rem;
+    padding: 10px 18px;
     border-radius: 10px;
     border: 2px solid #0f5723;
     box-shadow: 0 8px 24px rgba(22, 163, 74, 0.4);
@@ -202,6 +204,86 @@ body {
     .btn-nav-cta:active {
         transform: translateY(-1px);
     }
+
+.app-navbar .app-brand {
+    flex-shrink: 0;
+    gap: 10px;
+    font-size: 1.25rem;
+    white-space: nowrap;
+    word-break: normal;
+}
+
+.app-navbar .brand-icon { width: 40px; height: 40px; flex-shrink: 0; }
+.app-navbar .navbar-collapse { min-width: 0; }
+.app-nav-links { gap: 4px; }
+.app-navbar .nav-link-custom,
+.app-navbar .btn-nav-cta {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    min-height: 44px;
+    white-space: nowrap;
+    line-height: 1.4;
+}
+.app-navbar button.nav-link-custom { border: 0; background: transparent; }
+.app-navbar .nav-link-custom::before { display: none; }
+.app-navbar .nav-link-custom:hover,
+.app-navbar .nav-link-custom.active,
+.app-navbar .nav-link-custom.show {
+    color: var(--primary-hover) !important;
+    background: #e7f4eb;
+    box-shadow: none;
+    font-weight: 600;
+}
+.app-navbar .btn-nav-cta { box-shadow: var(--shadow-sm); }
+.app-navbar .btn-nav-cta:hover { transform: none; box-shadow: var(--shadow-md); }
+.app-account-name { max-width: 150px; overflow: hidden; text-overflow: ellipsis; }
+.app-nav-dropdown {
+    min-width: 220px;
+    padding: 8px;
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    box-shadow: var(--shadow-lg);
+}
+.app-nav-dropdown .dropdown-item {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    min-height: 44px;
+    padding: 10px 12px;
+    border-radius: 6px;
+    font-size: .9rem;
+    white-space: normal;
+    overflow-wrap: anywhere;
+}
+.app-nav-dropdown .dropdown-item:hover,
+.app-nav-dropdown .dropdown-item:focus,
+.app-nav-dropdown .dropdown-item.active { color: var(--primary-hover); background: #e7f4eb; }
+.app-nav-dropdown .app-sign-out { color: #b42318; }
+.app-nav-dropdown form { margin: 0; }
+
+@media (min-width: 1200px) {
+    .app-nav-links { align-items: center; }
+    .app-nav-action { margin-left: 8px; }
+}
+
+@media (max-width: 1199.98px) {
+    .app-navbar .navbar-collapse { max-height: calc(100dvh - 80px); overflow-y: auto; }
+    .app-nav-links { padding: 12px 0 4px; border-top: 1px solid var(--border); margin-top: 12px; }
+    .app-navbar .nav-link-custom { width: 100%; justify-content: flex-start; text-align: left; }
+    .app-navbar .dropdown-toggle::after { margin-left: auto; }
+    .app-account-name { max-width: none; }
+    .app-nav-dropdown { min-width: 0; width: 100%; box-shadow: none; margin: 4px 0 8px; }
+    .app-nav-action { margin-top: 8px; }
+    .app-navbar .btn-nav-cta { width: 100%; }
+}
+
+@media (max-width: 359.98px) {
+    .app-navbar .app-brand { font-size: 1.05rem; gap: 6px; margin-right: 4px; }
+    .app-navbar .brand-icon { width: 34px; height: 34px; }
+    .app-navbar .app-toggler { padding: 8px 10px; }
+}
 
 :root {
     --primary: #15803d;

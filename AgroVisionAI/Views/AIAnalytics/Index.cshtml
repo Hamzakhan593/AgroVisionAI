@@ -1,0 +1,343 @@
+@model AgroVisionAI.Models.AIAnalyticsViewModel
+@using AgroVisionAI.Models
+@{
+    ViewData["Title"] = "AI Analytics";
+
+    string Percent(double? value) => value.HasValue ? $"{value.Value * 100:F1}%" : "—";
+    string Milliseconds(double? value) => value.HasValue ? $"{value.Value:F0} ms" : "—";
+    int dailyMax = Math.Max(1, Model.DailyAnalyses.Count == 0 ? 0 : Model.DailyAnalyses.Max(item => item.Count));
+    int cropMax = Math.Max(1, Model.CropDistribution.Count == 0 ? 0 : Model.CropDistribution.Max(item => item.Count));
+    int diseaseMax = Math.Max(1, Model.DiseaseDistribution.Count == 0 ? 0 : Model.DiseaseDistribution.Max(item => item.Count));
+    int confidenceMax = Math.Max(1, Model.ConfidenceBands.Count == 0 ? 0 : Model.ConfidenceBands.Max(item => item.Count));
+}
+
+<link rel="stylesheet" href="~/css/ai-analytics.css" asp-append-version="true" />
+
+<section class="analytics-page">
+    <div class="container py-5">
+        <div class="analytics-hero mb-4">
+            <div>
+                <div class="analytics-eyebrow">
+                    <i class="bi bi-graph-up-arrow" aria-hidden="true"></i>
+                    @Model.ScopeLabel
+                </div>
+                <h1>AI Analytics & Model Quality</h1>
+                <p>
+                    Monitor prediction volume, confidence, inference speed, model usage and human feedback without exposing another user's data.
+                </p>
+            </div>
+            <div class="scope-card">
+                <span class="scope-label">Current scope</span>
+                <strong>@(Model.IsAdminScope ? "All platform users" : "Your account only")</strong>
+                <span>
+                    @if (Model.IsAdminScope)
+                    {
+                        <text>Admin role enables platform-wide operational analytics.</text>
+                    }
+                    else
+                    {
+                        <text>Regular accounts only see their own predictions and feedback.</text>
+                    }
+                </span>
+            </div>
+        </div>
+
+        <div class="analytics-kpis mb-4">
+            <article class="analytics-kpi">
+                <div class="kpi-icon"><i class="bi bi-cpu"></i></div>
+                <div><span>Total analyses</span><strong>@Model.TotalAnalyses.ToString("N0")</strong><small>@Model.AnalysesLast7Days.ToString("N0") in last 7 days</small></div>
+            </article>
+            <article class="analytics-kpi">
+                <div class="kpi-icon"><i class="bi bi-bullseye"></i></div>
+                <div><span>Avg. disease confidence</span><strong>@Percent(Model.AverageDiseaseConfidence)</strong><small>Mean top-1 model confidence</small></div>
+            </article>
+            <article class="analytics-kpi">
+                <div class="kpi-icon"><i class="bi bi-flower2"></i></div>
+                <div><span>Avg. crop confidence</span><strong>@Percent(Model.AverageCropConfidence)</strong><small>Automatic crop validator</small></div>
+            </article>
+            <article class="analytics-kpi">
+                <div class="kpi-icon"><i class="bi bi-speedometer2"></i></div>
+                <div><span>Avg. inference time</span><strong>@Milliseconds(Model.AverageProcessingTimeMs)</strong><small>FastAPI model processing time</small></div>
+            </article>
+            <article class="analytics-kpi">
+                <div class="kpi-icon"><i class="bi bi-exclamation-triangle"></i></div>
+                <div><span>Low-confidence cases</span><strong>@Model.LowConfidenceCount.ToString("N0")</strong><small>Predictions below 75%</small></div>
+            </article>
+            <article class="analytics-kpi">
+                <div class="kpi-icon"><i class="bi bi-chat-square-check"></i></div>
+                <div><span>User-confirmed accuracy</span><strong>@Percent(Model.UserConfirmedAccuracy)</strong><small>@Model.FeedbackTotal.ToString("N0") feedback responses</small></div>
+            </article>
+        </div>
+
+        <div class="row g-4 mb-4">
+            <div class="col-xl-7">
+                <section class="analytics-panel h-100">
+                    <div class="panel-heading">
+                        <div>
+                            <span class="panel-kicker">Live service check</span>
+                            <h2>AI Service Health</h2>
+                        </div>
+                        <span class="health-pill @(Model.AiHealthReachable && Model.AiHealthStatus.Equals("ready", StringComparison.OrdinalIgnoreCase) ? "health-ready" : "health-degraded")">
+                            <span class="status-dot"></span>
+                            @(Model.AiHealthReachable ? Model.AiHealthStatus : "offline")
+                        </span>
+                    </div>
+
+                    @if (!Model.AiHealthReachable)
+                    {
+                        <div class="health-warning">
+                            <i class="bi bi-exclamation-circle"></i>
+                            <div><strong>FastAPI health endpoint is not reachable.</strong><span>@(Model.AiHealthError ?? "Start AIService and refresh this page.")</span></div>
+                        </div>
+                    }
+                    else if (Model.AiModels.Count == 0)
+                    {
+                        <div class="empty-state">The service responded, but no model status entries were returned.</div>
+                    }
+                    else
+                    {
+                        <div class="model-health-grid">
+                            @foreach (var aiModel in Model.AiModels)
+                            {
+                                var ready = aiModel.Available && aiModel.Loaded;
+                                <article class="model-health-card">
+                                    <div class="model-health-top">
+                                        <div>
+                                            <span class="model-crop">@aiModel.Crop.Replace("_", " ")</span>
+                                            <strong>@(aiModel.Filename ?? "Model file unavailable")</strong>
+                                        </div>
+                                        <span class="model-state @(ready ? "model-ready" : "model-error")">@(ready ? "Ready" : "Needs attention")</span>
+                                    </div>
+                                    <div class="model-health-meta">
+                                        <span><i class="bi bi-box"></i> @aiModel.Classes.Count class(es)</span>
+                                        @if (!string.IsNullOrWhiteSpace(aiModel.Preprocessing))
+                                        {
+                                            <span><i class="bi bi-sliders"></i> @aiModel.Preprocessing</span>
+                                        }
+                                    </div>
+                                    @if (!string.IsNullOrWhiteSpace(aiModel.Error))
+                                    {
+                                        <div class="model-error-text">@aiModel.Error</div>
+                                    }
+                                </article>
+                            }
+                        </div>
+                    }
+                </section>
+            </div>
+
+            <div class="col-xl-5">
+                <section class="analytics-panel h-100">
+                    <div class="panel-heading">
+                        <div>
+                            <span class="panel-kicker">Human-in-the-loop</span>
+                            <h2>Feedback Quality</h2>
+                        </div>
+                        <span class="review-count">@Model.FeedbackPendingReview pending</span>
+                    </div>
+
+                    <div class="feedback-score">
+                        <div class="score-ring" style="--score:@((Model.UserConfirmedAccuracy ?? 0) * 100)">
+                            <div><strong>@Percent(Model.UserConfirmedAccuracy)</strong><span>confirmed</span></div>
+                        </div>
+                        <div class="feedback-breakdown">
+                            <div><span class="feedback-dot correct"></span><span>Correct</span><strong>@Model.FeedbackCorrect</strong></div>
+                            <div><span class="feedback-dot incorrect"></span><span>Incorrect</span><strong>@Model.FeedbackIncorrect</strong></div>
+                            <div><span class="feedback-dot unsure"></span><span>Not sure</span><strong>@Model.FeedbackNotSure</strong></div>
+                        </div>
+                    </div>
+
+                    <p class="panel-note mb-0">
+                        Confirmed accuracy uses only <strong>Correct</strong> and <strong>Incorrect</strong> responses. “Not sure” is excluded from the denominator.
+                    </p>
+                </section>
+            </div>
+        </div>
+
+        <div class="row g-4 mb-4">
+            <div class="col-xl-7">
+                <section class="analytics-panel h-100">
+                    <div class="panel-heading">
+                        <div><span class="panel-kicker">14-day trend</span><h2>Prediction Activity</h2></div>
+                    </div>
+                    <div class="trend-chart" role="img" aria-label="Prediction counts for the last fourteen days">
+                        @foreach (var point in Model.DailyAnalyses)
+                        {
+                            var height = point.Count == 0 ? 3 : Math.Max(8, (int)Math.Round(point.Count * 100.0 / dailyMax));
+                            <div class="trend-column" title="@point.Label: @point.Count analysis(es)">
+                                <div class="trend-value">@point.Count</div>
+                                <div class="trend-track"><div class="trend-bar" style="height:@height%"></div></div>
+                                <span>@point.Label</span>
+                            </div>
+                        }
+                    </div>
+                </section>
+            </div>
+
+            <div class="col-xl-5">
+                <section class="analytics-panel h-100">
+                    <div class="panel-heading">
+                        <div><span class="panel-kicker">Prediction certainty</span><h2>Confidence Distribution</h2></div>
+                    </div>
+                    <div class="rank-list">
+                        @foreach (var point in Model.ConfidenceBands)
+                        {
+                            var width = point.Count == 0 ? 0 : Math.Max(4, (int)Math.Round(point.Count * 100.0 / confidenceMax));
+                            <div class="rank-row">
+                                <div class="rank-label"><span>@point.Label</span><strong>@point.Count</strong></div>
+                                <div class="rank-track"><div class="rank-fill" style="width:@width%"></div></div>
+                            </div>
+                        }
+                    </div>
+                    <div class="mini-stat mt-4">
+                        <span>Average top-1 vs top-2 margin</span>
+                        <strong>@Percent(Model.AverageConfidenceMargin)</strong>
+                    </div>
+                </section>
+            </div>
+        </div>
+
+        <div class="row g-4 mb-4">
+            <div class="col-lg-5">
+                <section class="analytics-panel h-100">
+                    <div class="panel-heading"><div><span class="panel-kicker">Routing</span><h2>Crop Distribution</h2></div></div>
+                    @if (Model.CropDistribution.Count == 0)
+                    {
+                        <div class="empty-state">No predictions are available yet.</div>
+                    }
+                    else
+                    {
+                        <div class="rank-list">
+                            @foreach (var point in Model.CropDistribution)
+                            {
+                                var width = Math.Max(4, (int)Math.Round(point.Count * 100.0 / cropMax));
+                                <div class="rank-row">
+                                    <div class="rank-label"><span>@point.Label</span><strong>@point.Count</strong></div>
+                                    <div class="rank-track"><div class="rank-fill" style="width:@width%"></div></div>
+                                </div>
+                            }
+                        </div>
+                    }
+                </section>
+            </div>
+            <div class="col-lg-7">
+                <section class="analytics-panel h-100">
+                    <div class="panel-heading"><div><span class="panel-kicker">Top conditions</span><h2>Disease Distribution</h2></div></div>
+                    @if (Model.DiseaseDistribution.Count == 0)
+                    {
+                        <div class="empty-state">No disease predictions are available yet.</div>
+                    }
+                    else
+                    {
+                        <div class="rank-list compact">
+                            @foreach (var point in Model.DiseaseDistribution)
+                            {
+                                var width = Math.Max(4, (int)Math.Round(point.Count * 100.0 / diseaseMax));
+                                <div class="rank-row">
+                                    <div class="rank-label"><span>@point.Label</span><strong>@point.Count</strong></div>
+                                    <div class="rank-track"><div class="rank-fill" style="width:@width%"></div></div>
+                                </div>
+                            }
+                        </div>
+                    }
+                </section>
+            </div>
+        </div>
+
+        <section class="analytics-panel mb-4">
+            <div class="panel-heading">
+                <div><span class="panel-kicker">Traceability</span><h2>Model Usage & Performance</h2></div>
+                @if (Model.IsAdminScope && Model.TotalUsers.HasValue)
+                {
+                    <span class="review-count">@Model.TotalUsers.Value.ToString("N0") registered user(s)</span>
+                }
+            </div>
+            @if (Model.ModelUsage.Count == 0)
+            {
+                <div class="empty-state">New predictions with Task 1 metadata will appear here.</div>
+            }
+            else
+            {
+                <div class="table-responsive">
+                    <table class="table analytics-table align-middle mb-0">
+                        <thead><tr><th>Crop</th><th>Model</th><th>Version</th><th>Predictions</th><th>Avg. confidence</th><th>Avg. latency</th></tr></thead>
+                        <tbody>
+                            @foreach (var row in Model.ModelUsage)
+                            {
+                                <tr>
+                                    <td><span class="crop-badge">@row.Crop</span></td>
+                                    <td class="model-file">@row.ModelName</td>
+                                    <td><span class="version-badge">@row.Version</span></td>
+                                    <td>@row.Predictions.ToString("N0")</td>
+                                    <td>@Percent(row.AverageConfidence)</td>
+                                    <td>@Milliseconds(row.AverageLatencyMs)</td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            }
+        </section>
+
+        <div class="row g-4">
+            <div class="col-xl-7">
+                <section class="analytics-panel h-100">
+                    <div class="panel-heading"><div><span class="panel-kicker">Quality watch</span><h2>Recent Low-Confidence Predictions</h2></div></div>
+                    @if (Model.RecentLowConfidence.Count == 0)
+                    {
+                        <div class="empty-state">No predictions below 75% confidence in the current scope.</div>
+                    }
+                    else
+                    {
+                        <div class="table-responsive">
+                            <table class="table analytics-table align-middle mb-0">
+                                <thead><tr><th>Crop / Disease</th><th>Confidence</th><th>Margin</th><th>Model</th><th>Time</th></tr></thead>
+                                <tbody>
+                                    @foreach (var row in Model.RecentLowConfidence)
+                                    {
+                                        <tr>
+                                            <td><strong>@row.Crop</strong><span class="table-subtext">@row.Disease</span></td>
+                                            <td><span class="confidence-low">@Percent(row.Confidence)</span></td>
+                                            <td>@Percent(row.ConfidenceMargin)</td>
+                                            <td><span class="version-badge">@row.ModelVersion</span></td>
+                                            <td>@row.CreatedAt.ToLocalTime().ToString("dd MMM, HH:mm")</td>
+                                        </tr>
+                                    }
+                                </tbody>
+                            </table>
+                        </div>
+                    }
+                </section>
+            </div>
+
+            <div class="col-xl-5">
+                <section class="analytics-panel h-100">
+                    <div class="panel-heading"><div><span class="panel-kicker">Latest responses</span><h2>Recent Feedback</h2></div></div>
+                    @if (Model.RecentFeedback.Count == 0)
+                    {
+                        <div class="empty-state">No human feedback has been submitted yet.</div>
+                    }
+                    else
+                    {
+                        <div class="feedback-list">
+                            @foreach (var row in Model.RecentFeedback)
+                            {
+                                var verdictClass = row.Verdict == FeedbackVerdict.Correct ? "correct" : row.Verdict == FeedbackVerdict.Incorrect ? "incorrect" : "unsure";
+                                <article class="feedback-item">
+                                    <div class="feedback-item-top">
+                                        <div><strong>@row.Crop</strong><span>@row.Disease</span></div>
+                                        <span class="feedback-verdict @verdictClass">@row.Verdict</span>
+                                    </div>
+                                    <div class="feedback-item-meta">
+                                        <span><i class="bi bi-clock"></i> @row.UpdatedAt.ToLocalTime().ToString("dd MMM, HH:mm")</span>
+                                        <span><i class="bi bi-shield-check"></i> @row.VerificationStatus</span>
+                                    </div>
+                                </article>
+                            }
+                        </div>
+                    }
+                </section>
+            </div>
+        </div>
+    </div>
+</section>

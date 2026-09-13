@@ -1,0 +1,24 @@
+**/bin/
+**/obj/
+.vs/
+.git/
+.gitignore
+*.user
+*.suo
+*.log
+
+# The ASP.NET image does not need the Python service or its large ML weights.
+AIService/
+
+# Runtime-generated/private data must not be baked into the image.
+App_Data/CropImages/
+App_Data/Explainability/
+App_Data/Exports/
+wwwroot/uploads/
+**/.env
+**/.env.*
+**/appsettings.Local.json
+**/appsettings.*.Local.json
+**/*.pem
+**/*.key
+**/*.pfx
