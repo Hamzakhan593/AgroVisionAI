@@ -7,6 +7,7 @@ them to the ASP.NET Core MVC website.
 
 Place the final files in `AIService\models` using these preferred names:
 
+- `crop_validator_v2_best.keras` and the matching `crop_validator_v2_config.json`
 - `cotton_cnn_v3_best.keras`
 - `wheat_v2_efficientnetv2b0_best.keras`
 - `rice_v2_efficientnetv2b0_best.keras`
@@ -30,8 +31,10 @@ py -3.11 -m venv .venv
 
 ## 3. Start the API
 
-Double-click `start_api.bat` and keep its window open. A successful startup shows all three
-models as `READY` and serves the API at `http://127.0.0.1:8000`.
+Double-click `start_api.bat` and keep its window open. The startup script checks the
+three disease models and serves the API at `http://127.0.0.1:8000`. Then check `/health`
+to confirm all four model entries are loaded, including the mandatory crop validator.
+Configure private settings using the root README before starting the web application.
 
 Useful URLs:
 

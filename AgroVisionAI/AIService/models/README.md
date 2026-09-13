@@ -1,6 +1,15 @@
 # Model files
 
-Copy the final `.keras` files into this folder. The preferred names are:
+The full inference pipeline needs four trained `.keras` files: a crop validator
+and one disease model for each supported crop. Model binaries are supplied separately
+and are not downloaded by cloning this repository.
+
+The mandatory crop gate requires `crop_validator_v2_best.keras` and its matching
+`crop_validator_v2_config.json` in this folder. The JSON is versioned; preserve the
+saved class order, dimensions and preprocessing settings. Its classes are `cotton`,
+`wheat`, `rice` and `out_of_scope`.
+
+The preferred disease-model names are:
 
 | Crop | Preferred model filename | API class order |
 |---|---|---|
@@ -20,4 +29,3 @@ Use `AGROVISION_COTTON_MODEL`, `AGROVISION_WHEAT_MODEL`, or
 
 The class order must be identical to the order used during model training. If a training
 script used a different order, edit only the relevant `classes` tuple in `app/config.py`.
-
